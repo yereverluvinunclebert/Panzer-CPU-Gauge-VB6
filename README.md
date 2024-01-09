@@ -30,7 +30,8 @@ The Panzer CPU Gauge VB6  is a useful utility displaying the CPU usage of all co
  windows. Mouse hover over the widget and press CTRL+mousewheel up/down to resize. It works well on Windows XP 
  to Windows 11.
  
-![panzergauge-help](https://github.com/yereverluvinunclebert/Panzer-CPU Gauge-VB6/assets/2788342/da7d68b6-31fd-4181-aad6-253999742658)
+![panzergauge-help](https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-VB6/assets/2788342/d5aeb2f6-307e-42de-ac9f-6238e0aa18ba)
+
  
  The Panzer CPU Gauge VB6 gauge is Beta-grade software, under development, not yet 
  ready to use on a production system - use at your own risk.
@@ -38,7 +39,7 @@ The Panzer CPU Gauge VB6  is a useful utility displaying the CPU usage of all co
  This version was developed on Windows 7 using 32 bit VisualBasic 6 as a FOSS 
  project creating a WoW64 widget for the desktop. 
  
-![Licence002](https://github.com/yereverluvinunclebert/Panzer-CPU Gauge-VB6/assets/2788342/b4f647b5-fffc-4c5c-8bdf-86353cd007e7)
+![Licence002](https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-VB6/assets/2788342/a24c5c45-5517-4423-938b-398f1d349d4c)
 
  It is open source to allow easy configuration, bug-fixing, enhancement and 
  community contribution towards free-and-useful VB6 utilities that can be created
@@ -47,9 +48,8 @@ The Panzer CPU Gauge VB6  is a useful utility displaying the CPU usage of all co
  is new VB6 widgets with more functionality and then hopefully, conversion of 
  each to RADBasic/TwinBasic for future-proofing and 64bit-ness. 
 
- ![menu01](https://github.com/yereverluvinunclebert/Panzer-CPU Gauge-VB6/assets/2788342/4f91507e-4d74-4486-b4d0-7138737fbd57)
+![menu01](https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-VB6/assets/2788342/45da67ae-8ec9-4730-a00d-e3c5a1db7519)
 
- 
  This utility is one of a set of steampunk and dieselpunk widgets. That you can 
  find here on Deviantart: https://www.deviantart.com/yereverluvinuncleber/gallery
  
@@ -57,7 +57,7 @@ The Panzer CPU Gauge VB6  is a useful utility displaying the CPU usage of all co
  enhancements and contributions will be gratefully received if you choose to 
  contribute.
 
- <img width="75" alt="security" src="https://github.com/yereverluvinunclebert/Panzer-CPU Gauge-VB6/assets/2788342/030384c0-f44d-4a74-9090-afe1248e5c70">
+ ![security](https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-VB6/assets/2788342/41c785ea-43f9-4850-94f6-3cc5ab69d890)
 
  BUILD: The program runs without any Microsoft plugins.
  
@@ -127,7 +127,8 @@ The Panzer CPU Gauge VB6  is a useful utility displaying the CPU usage of all co
  without any additional Microsoft OCX components, just the basic controls that 
  ship with VB6.  
  
- ![vb6-logo](https://github.com/yereverluvinunclebert/Panzer-CPU Gauge-VB6/assets/2788342/861f1ce1-7058-4d09-af94-daab9206ca86)
+ ![vb6-logo-200](https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-VB6/assets/2788342/bf00fa3d-f1d4-417b-bc50-9446f2c3e674)
+
  
  * Uses the latest version of the RC6 Cairo framework from Olaf Schmidt.
  
@@ -173,7 +174,7 @@ The Panzer CPU Gauge VB6  is a useful utility displaying the CPU usage of all co
  
  In the VB6 IDE - project - references - browse - select the OLEGuids.tlb
  
- ![prefs-window](https://github.com/yereverluvinunclebert/Panzer-CPU Gauge-VB6/assets/2788342/dd59d504-7a31-4e23-aff0-d528e92ec123)
+![prefs-about](https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-VB6/assets/2788342/2349098d-f7df-4084-885e-383a58b87bac)
 
 
  * SETUP.EXE - The program is currently distributed using setup2go, a very useful 
@@ -208,9 +209,12 @@ The Panzer CPU Gauge VB6  is a useful utility displaying the CPU usage of all co
  With regard to the commercial use of incorporated images, permission and a 
  licence would need to be obtained from the original owner and creator, ie. me.
  
-![about](https://github.com/yereverluvinunclebert/Panzer-CPU Gauge-VB6/assets/2788342/ee6b1f77-5827-4441-aa7e-7871c7ea39e0)
+![about](https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-VB6/assets/2788342/31fdceed-a7fe-4b50-afe1-9a0bb7cf60f8)
 
-![desktop](https://github.com/yereverluvinunclebert/Panzer-CPU Gauge-VB6/assets/2788342/8cf592a3-968f-4bf1-ab98-c734ff1cc261)
+![Panzer-CPU-Gauge-onDesktop](https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-VB6/assets/2788342/f2e06e77-77ee-46fb-840d-e14f96b4e0a5)
+
+
+
 
 
  
