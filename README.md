@@ -6,21 +6,22 @@
 
  Why VB6? Well, with a 64 bit, modern-language improvement upgrade on the way with 100% compatible TwinBasic coupled with support for transparent PNGs via RC/Cairo, VB6 code has an amazing future.
 
- ![vb6-logo-200](https://github.com/yereverluvinunclebert/Panzer-CPU Gauge-VB6/assets/2788342/7986e544-0b94-4a10-90bb-2d9fb60c294a)
- 
+![vb6-logo-350](https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-VB6/assets/2788342/39e2c93f-40a5-4c47-8c23-d8ce7c747b10)
+
  I created as a variation of the previous gauges I had previously created for the World of Tanks and War Thunder 
  communities. The Panzer CPU Gauge widget is an attractive dieselpunk VB6 widget for your desktop. 
  Functional and gorgeous at the same time. The graphics are my own, I took original inspiration from a CPU Gauge face by Italo Fortana. It is all my code with some help from the chaps at VBForums (credits given). 
   
 The Panzer CPU Gauge VB6  is a useful utility displaying the CPU usage of all cores combined in a dieselpunk fashion on your desktop. This Widget is a moveable widget that you can move anywhere around the desktop as you require.
  
-![panzer-CPU GaugeVB6beltring](https://github.com/yereverluvinunclebert/Panzer-CPU Gauge-VB6/assets/2788342/0fda4260-7828-4626-8121-51fb82a1474e)
+![panzer-cpuphoto-1440x900](https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-VB6/assets/2788342/b9b4ef35-d007-48f7-9440-135a3f3ca092)
 
  This widget can be increased in size, animation speed can be changed, 
  opacity/transparency may be set as to the users discretion. The widget can 
  also be made to hide for a pre-determined period.
  
-![CPU Gauge-image](https://github.com/yereverluvinunclebert/Panzer-CPU Gauge-VB6/assets/2788342/2f1080ed-8784-428f-8335-51e97a1a3bf5)
+![widgetOnWhite](https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-VB6/assets/2788342/79a2877e-6b3f-485d-9ae9-0196154ae7b7)
+
 
  Right clicking will bring up a menu of options. Double-clicking on the widget will cause a personalised Windows application to 
  fire up. The first time you run it there will be no assigned function and so it 
