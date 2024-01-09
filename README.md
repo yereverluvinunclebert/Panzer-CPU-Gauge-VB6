@@ -1,27 +1,26 @@
-# Panzer-JustClock-VB6
+# Panzer-CPU-Gauge-VB6
  
-  A FOSS Clock VB6 WoW64 Widget for Reactos, XP, Win7, 8 and 10/11+.
+  A FOSS CPU Gauge VB6 WoW64 Widget for Reactos, XP, Win7, 8 and 10/11+.
  
  My current VB6/RC6 PSD program being finished now, fundamentally complete, only awaiting testing on Windows XP and Win7 32bit and some multi monitor checking. I am working on integrating my native VB6 forms from other programs  and code alongside the RC6 Cairo code. This Panzer widget is based upon the Yahoo widget of the same visual design and very similar operation.
 
  Why VB6? Well, with a 64 bit, modern-language improvement upgrade on the way with 100% compatible TwinBasic coupled with support for transparent PNGs via RC/Cairo, VB6 code has an amazing future.
 
- ![vb6-logo-200](https://github.com/yereverluvinunclebert/Panzer-JustClock-VB6/assets/2788342/7986e544-0b94-4a10-90bb-2d9fb60c294a)
+ ![vb6-logo-200](https://github.com/yereverluvinunclebert/Panzer-CPU Gauge-VB6/assets/2788342/7986e544-0b94-4a10-90bb-2d9fb60c294a)
  
- I created as a variation of the stopwatch clock I had previously created for the World of Tanks and War Thunder 
- communities. The Panzer Just Clock widget is an attractive dieselpunk VB6 widget for your desktop. 
- Functional and gorgeous at the same time. The graphics are my own, I took original inspiration from a clock face by Italo Fortana. It is all my code with some help from the chaps at VBForums (credits given). 
+ I created as a variation of the previous gauges I had previously created for the World of Tanks and War Thunder 
+ communities. The Panzer CPU Gauge widget is an attractive dieselpunk VB6 widget for your desktop. 
+ Functional and gorgeous at the same time. The graphics are my own, I took original inspiration from a CPU Gauge face by Italo Fortana. It is all my code with some help from the chaps at VBForums (credits given). 
   
- It will be a simple multi-timezone Simple Clock and clock. This Widget is a moveable widget that you can move anywhere 
- around the desktop as you require.
+The Panzer CPU Gauge VB6  is a useful utility displaying the CPU usage of all cores combined in a dieselpunk fashion on your desktop. This Widget is a moveable widget that you can move anywhere around the desktop as you require.
  
-![panzer-justclockVB6beltring](https://github.com/yereverluvinunclebert/Panzer-JustClock-VB6/assets/2788342/0fda4260-7828-4626-8121-51fb82a1474e)
+![panzer-CPU GaugeVB6beltring](https://github.com/yereverluvinunclebert/Panzer-CPU Gauge-VB6/assets/2788342/0fda4260-7828-4626-8121-51fb82a1474e)
 
  This widget can be increased in size, animation speed can be changed, 
  opacity/transparency may be set as to the users discretion. The widget can 
  also be made to hide for a pre-determined period.
  
-![justClock-image](https://github.com/yereverluvinunclebert/Panzer-JustClock-VB6/assets/2788342/2f1080ed-8784-428f-8335-51e97a1a3bf5)
+![CPU Gauge-image](https://github.com/yereverluvinunclebert/Panzer-CPU Gauge-VB6/assets/2788342/2f1080ed-8784-428f-8335-51e97a1a3bf5)
 
  Right clicking will bring up a menu of options. Double-clicking on the widget will cause a personalised Windows application to 
  fire up. The first time you run it there will be no assigned function and so it 
@@ -30,15 +29,15 @@
  windows. Mouse hover over the widget and press CTRL+mousewheel up/down to resize. It works well on Windows XP 
  to Windows 11.
  
-![panzergauge-help](https://github.com/yereverluvinunclebert/Panzer-JustClock-VB6/assets/2788342/da7d68b6-31fd-4181-aad6-253999742658)
+![panzergauge-help](https://github.com/yereverluvinunclebert/Panzer-CPU Gauge-VB6/assets/2788342/da7d68b6-31fd-4181-aad6-253999742658)
  
- The Panzer Just Clock VB6 gauge is Beta-grade software, under development, not yet 
+ The Panzer CPU Gauge VB6 gauge is Beta-grade software, under development, not yet 
  ready to use on a production system - use at your own risk.
 
  This version was developed on Windows 7 using 32 bit VisualBasic 6 as a FOSS 
  project creating a WoW64 widget for the desktop. 
  
-![Licence002](https://github.com/yereverluvinunclebert/Panzer-JustClock-VB6/assets/2788342/b4f647b5-fffc-4c5c-8bdf-86353cd007e7)
+![Licence002](https://github.com/yereverluvinunclebert/Panzer-CPU Gauge-VB6/assets/2788342/b4f647b5-fffc-4c5c-8bdf-86353cd007e7)
 
  It is open source to allow easy configuration, bug-fixing, enhancement and 
  community contribution towards free-and-useful VB6 utilities that can be created
@@ -47,7 +46,7 @@
  is new VB6 widgets with more functionality and then hopefully, conversion of 
  each to RADBasic/TwinBasic for future-proofing and 64bit-ness. 
 
- ![menu01](https://github.com/yereverluvinunclebert/Panzer-JustClock-VB6/assets/2788342/4f91507e-4d74-4486-b4d0-7138737fbd57)
+ ![menu01](https://github.com/yereverluvinunclebert/Panzer-CPU Gauge-VB6/assets/2788342/4f91507e-4d74-4486-b4d0-7138737fbd57)
 
  
  This utility is one of a set of steampunk and dieselpunk widgets. That you can 
@@ -57,7 +56,7 @@
  enhancements and contributions will be gratefully received if you choose to 
  contribute.
 
- <img width="75" alt="security" src="https://github.com/yereverluvinunclebert/Panzer-JustClock-VB6/assets/2788342/030384c0-f44d-4a74-9090-afe1248e5c70">
+ <img width="75" alt="security" src="https://github.com/yereverluvinunclebert/Panzer-CPU Gauge-VB6/assets/2788342/030384c0-f44d-4a74-9090-afe1248e5c70">
 
  BUILD: The program runs without any Microsoft plugins.
  
@@ -127,7 +126,7 @@
  without any additional Microsoft OCX components, just the basic controls that 
  ship with VB6.  
  
- ![vb6-logo](https://github.com/yereverluvinunclebert/Panzer-JustClock-VB6/assets/2788342/861f1ce1-7058-4d09-af94-daab9206ca86)
+ ![vb6-logo](https://github.com/yereverluvinunclebert/Panzer-CPU Gauge-VB6/assets/2788342/861f1ce1-7058-4d09-af94-daab9206ca86)
  
  * Uses the latest version of the RC6 Cairo framework from Olaf Schmidt.
  
@@ -141,9 +140,9 @@
  referenced using modRC6regfree.bas which is compiled into the binary.	
  
  
- Requires a PzJustclock folder in C:\Users\<user>\AppData\Roaming\ 
- eg: C:\Users\<user>\AppData\Roaming\PzJustclock
- Requires a settings.ini file to exist in C:\Users\<user>\AppData\Roaming\PzJustclock
+ Requires a PzCPU Gauge folder in C:\Users\<user>\AppData\Roaming\ 
+ eg: C:\Users\<user>\AppData\Roaming\PzCPU Gauge
+ Requires a settings.ini file to exist in C:\Users\<user>\AppData\Roaming\PzCPU Gauge
  The above will be created automatically by the compiled program when run for the 
  first time.
  
@@ -154,7 +153,7 @@
  * CCRSlider.ocx
  
  This OCX will reside in the program folder. The program reference to this OCX is 
- contained within the supplied resource file Panzer Justclock Gauge.RES. It is 
+ contained within the supplied resource file Panzer CPU Gauge Gauge.RES. It is 
  compiled into the binary.
  
  * OLEGuids.tlb
@@ -173,13 +172,13 @@
  
  In the VB6 IDE - project - references - browse - select the OLEGuids.tlb
  
- ![prefs-window](https://github.com/yereverluvinunclebert/Panzer-JustClock-VB6/assets/2788342/dd59d504-7a31-4e23-aff0-d528e92ec123)
+ ![prefs-window](https://github.com/yereverluvinunclebert/Panzer-CPU Gauge-VB6/assets/2788342/dd59d504-7a31-4e23-aff0-d528e92ec123)
 
 
  * SETUP.EXE - The program is currently distributed using setup2go, a very useful 
  and comprehensive installer program that builds a .exe installer. Youll have to 
  find a copy of setup2go on the web as it is now abandonware. Contact me
- directly for a copy. The file "install PzJustclock 0.1.0.s2g" is the configuration 
+ directly for a copy. The file "install PzCPU Gauge 0.1.0.s2g" is the configuration 
  file for setup2go. When you build it will report any errors in the build.
  
  * HELP.CHM - the program documentation is built using the NVU HTML editor and 
@@ -208,9 +207,9 @@
  With regard to the commercial use of incorporated images, permission and a 
  licence would need to be obtained from the original owner and creator, ie. me.
  
-![about](https://github.com/yereverluvinunclebert/Panzer-JustClock-VB6/assets/2788342/ee6b1f77-5827-4441-aa7e-7871c7ea39e0)
+![about](https://github.com/yereverluvinunclebert/Panzer-CPU Gauge-VB6/assets/2788342/ee6b1f77-5827-4441-aa7e-7871c7ea39e0)
 
-![desktop](https://github.com/yereverluvinunclebert/Panzer-JustClock-VB6/assets/2788342/8cf592a3-968f-4bf1-ab98-c734ff1cc261)
+![desktop](https://github.com/yereverluvinunclebert/Panzer-CPU Gauge-VB6/assets/2788342/8cf592a3-968f-4bf1-ab98-c734ff1cc261)
 
 
  
