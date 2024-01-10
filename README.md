@@ -10,7 +10,7 @@
 
  I created as a variation of the previous gauges I had previously created for the World of Tanks and War Thunder 
  communities. The Panzer CPU Gauge widget is an attractive dieselpunk VB6 widget for your desktop. 
- Functional and gorgeous at the same time. The graphics are my own, I took original inspiration from a CPU Gauge face by Italo Fortana. It is all my code with some help from the chaps at VBForums (credits given). 
+ Functional and gorgeous at the same time. The graphics are my own, I took original inspiration from a clock face by Italo Fortana combining it with an aircraft gauge. It is all my code with some help from the chaps at VBForums (credits given). 
   
 The Panzer CPU Gauge VB6  is a useful utility displaying the CPU usage of all cores combined in a dieselpunk fashion on your desktop. This Widget is a moveable widget that you can move anywhere around the desktop as you require.
  
