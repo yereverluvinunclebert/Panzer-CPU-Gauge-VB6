@@ -6,6 +6,7 @@ Begin VB.Form menuForm
    ClientTop       =   285
    ClientWidth     =   4290
    ControlBox      =   0   'False
+   Icon            =   "frmMenu.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False

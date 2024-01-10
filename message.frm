@@ -6,6 +6,7 @@ Begin VB.Form frmMessage
    ClientTop       =   4800
    ClientWidth     =   5985
    ControlBox      =   0   'False
+   Icon            =   "message.frx":0000
    LinkTopic       =   "Form1"
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   2100
