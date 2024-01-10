@@ -451,7 +451,7 @@ Private Sub tmrClock_Timer()
     
     On Error GoTo tmrClock_Timer_Error
     
-    tmrClock.Interval = 3000
+    tmrClock.Interval = Val(PzGSamplingInterval) * 1000
 
 '    If mSmoothSecondHand = True Then
 
@@ -477,12 +477,16 @@ End Sub
 ' Procedure Kind: Function
 ' Procedure Access: Private
 ' Return Type: Long
-' Author:
+' Author: https://www.tek-tips.com/userinfo.cfm?member=Hypetia
 ' Date: 09/01/2024
 ' ----------------------------------------------------------------
 Private Function CPU_Usage_Percent() As Currency
-    Dim it As Currency, kt As Currency, ut As Currency
-    Static it1 As Currency, kt1 As Currency, ut1 As Currency
+    Dim it As Currency: it = 0
+    Dim kt As Currency: kt = 0
+    Dim ut As Currency: ut = 0
+    Static it1 As Currency
+    Static kt1 As Currency
+    Static ut1 As Currency
     
     On Error GoTo CPU_Usage_Percent_Error
 

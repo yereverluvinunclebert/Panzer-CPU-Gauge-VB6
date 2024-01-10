@@ -228,6 +228,9 @@ Private Sub initialiseGlobalVars()
     PzGStartup = vbNullString
     PzGGaugeFunctions = vbNullString
     PzGSmoothSecondHand = vbNullString
+    PzGSamplingInterval = vbNullString
+    
+        
 
 '    PzGClockFaceSwitchPref = vbNullString
 '    PzGMainGaugeTimeZone = vbNullString
@@ -278,6 +281,8 @@ Private Sub initialiseGlobalVars()
     PzGWindowLevel = vbNullString
     PzGPreventDragging = vbNullString
     PzGOpacity = vbNullString
+
+    
     PzGWidgetHidden = vbNullString
     PzGHidingTime = vbNullString
     PzGIgnoreMouse = vbNullString
@@ -582,8 +587,8 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGStartup = fGetINISetting(location, "startup", PzGSettingsFile)
         PzGGaugeFunctions = fGetINISetting(location, "gaugeFunctions", PzGSettingsFile)
         PzGSmoothSecondHand = fGetINISetting(location, "smoothSecondHand", PzGSettingsFile)
+        PzGSamplingInterval = fGetINISetting(location, "samplingInterval", PzGSettingsFile)
         
-
 '        PzGClockFaceSwitchPref = fGetINISetting(location, "clockFaceSwitchPref", PzGSettingsFile)
 '        PzGMainGaugeTimeZone = fGetINISetting(location, "mainGaugeTimeZone", PzGSettingsFile)
 '        PzGMainDaylightSaving = fGetINISetting(location, "mainDaylightSaving", PzGSettingsFile)
@@ -645,6 +650,9 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGPreventDragging = fGetINISetting(location, "preventDragging", PzGSettingsFile)
         PzGOpacity = fGetINISetting(location, "opacity", PzGSettingsFile)
         
+        
+
+        
         ' we do not want the widget to hide at startup
         'PzGWidgetHidden = fGetINISetting(location, "widgetHidden", PzGSettingsFile)
         PzGWidgetHidden = "0"
@@ -683,7 +691,11 @@ Public Sub validateInputs()
 '        If PzGAnimationInterval = vbNullString Then PzGAnimationInterval = "130"
         If PzGStartup = vbNullString Then PzGStartup = "1"
         If PzGSmoothSecondHand = vbNullString Then PzGSmoothSecondHand = "0"
+        If PzGSamplingInterval = vbNullString Then PzGSamplingInterval = "3"
         
+        
+ 
+ 
         'If PzGClockFaceSwitchPref = vbNullString Then PzGClockFaceSwitchPref = "0"
 '        If PzGMainGaugeTimeZone = vbNullString Then PzGMainGaugeTimeZone = "0"
 '        If PzGMainDaylightSaving = vbNullString Then PzGMainDaylightSaving = "0"
@@ -736,6 +748,8 @@ Public Sub validateInputs()
         If PzGHidingTime = vbNullString Then PzGHidingTime = "0"
         If PzGIgnoreMouse = vbNullString Then PzGIgnoreMouse = "0"
         If PzGPreventDragging = vbNullString Then PzGPreventDragging = "0"
+        
+        
         
         ' other
         If PzGFirstTimeRun = vbNullString Then PzGFirstTimeRun = "true"

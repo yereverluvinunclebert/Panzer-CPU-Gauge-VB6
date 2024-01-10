@@ -291,6 +291,8 @@ Public PzGStartup As String
 Public PzGGaugeFunctions As String
 'Public PzGAnimationInterval As String
 Public PzGSmoothSecondHand As String
+Public PzGSamplingInterval As String
+
 
 
 'Public PzGClockFaceSwitchPref As String
@@ -347,6 +349,8 @@ Public PzGWidgetHidden  As String
 Public PzGHidingTime  As String
 Public PzGIgnoreMouse  As String
 Public PzGFirstTimeRun  As String
+
+
 
 ' General storage variables declared
 Public PzGSettingsDir As String
