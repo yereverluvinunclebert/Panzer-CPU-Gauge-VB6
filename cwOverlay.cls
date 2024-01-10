@@ -23,6 +23,18 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Declare Function GetSystemTimes Lib "kernel32" (lpIdleTime As Any, lpKernelTime As Any, lpUserTime As Any) As Long
+Private Declare Sub GetSystemInfo Lib "kernel32" (lpSystemInfo As SYSTEM_INFO)
+Private Type SYSTEM_INFO
+    dwOemID As Long
+    dwPageSize As Long
+    lpMinimumApplicationAddress As Long
+    lpMaximumApplicationAddress As Long
+    dwActiveProcessorMask As Long
+    dwNumberOrfProcessors As Long
+    dwProcessorType As Long
+    dwAllocationGranularity As Long
+    dwReserved As Long
+End Type
 
 'these Public Properties are set in the Parent (here, cfAlpha)
 Public cCollOverlayImages As cCollection
@@ -36,6 +48,7 @@ Attribute tmrClock.VB_VarHelpID = -1
 
 Private SDeg As Double
 Private cpuPercent As Currency
+Private noOfProcessors As Currency
 
 '------------------------------------------------------ ENDS
 
@@ -55,6 +68,8 @@ Private mHidden As Boolean ' property Hidden
 '
 Private Sub Class_Initialize()
     Dim intervalValue As Integer: intervalValue = 0
+    Dim SInfo As SYSTEM_INFO
+    
     On Error GoTo Class_Initialize_Error
 
     Set W = Cairo.WidgetBase
@@ -65,7 +80,15 @@ Private Sub Class_Initialize()
 
     Set tmrClock = Nothing
     Set tmrClock = New_c.Timer(100, mTicking)
-
+    
+    'Get the system information
+    GetSystemInfo SInfo
+    noOfProcessors = SInfo.dwNumberOrfProcessors
+    
+'    "Processor:" + Str$(SInfo.dwProcessorType) & vbCrLf & _
+'    "Low memory address:" + Str$(SInfo.lpMinimumApplicationAddress) & vbCrLf & _
+'    "High memory address:" + Str$(SInfo.lpMaximumApplicationAddress)
+    
    On Error GoTo 0
    Exit Sub
 
@@ -337,7 +360,6 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     Dim Pat As cCairoPattern
     Dim txtNoOfCores As String: txtNoOfCores = vbNullString
     Dim txtCPUPercent As String: txtCPUPercent = vbNullString
-    Dim noOfCores As Integer: noOfCores = 0
     Dim textDrawn As Boolean:   textDrawn = False
     Dim thisOpacity As Double: thisOpacity = 0
     
@@ -354,11 +376,8 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     W.Refresh
     thisOpacity = (Val(PzGOpacity) / 100) * 0.75
     
-    noOfCores = 8
-    
     txtCPUPercent = CStr(Int(cpuPercent))
-     
-    txtNoOfCores = CStr(noOfCores)
+    txtNoOfCores = CStr(noOfProcessors)
 
     For I = 0 To cCollOverlayImages.Count - 1 ' this is the ExcludedPaths collection populated in cfAlpha by duplicating collPSDNonUIElements.
       Arr = cCollOverlayImages.ItemByIndex(I)
@@ -372,7 +391,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
             ' for specific keys perform rotation actions, clock hands &c
              Select Case Key
 
-                 Case "secondshadow", "secondhand" 'seconds-shadow- and seconds-hand
+                 Case "secondshadow", "secondhand"
                     
                      ' draw the date and day in the windows just once to retain opacity
                     CC.DrawText 265, 103, 200, 200, txtCPUPercent, , , 2, True, , thisOpacity
@@ -383,29 +402,28 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                     CC.TranslateDrawings W.Width * cxPerc, W.Height * cyPerc 'shift to the center-point of the Overlay-Widget-area
                     
                     CC.RotateDrawingsDeg SDeg
+                    CC.Paint Arr(2), Pat 'render the Pattern with the current PSD-LayerAlpha, present in Arr(2)
                     
                  Case "redlamptrue"
                     
-                    If cpuPercent > 90 Then
-                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1)) 'here we only shift the Pattern via the original PSD-Offsets (stored in Arr(0) and Arr(1))
-                    Else
-                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-1000, -1000) ' temporary placement off screen until I can figure out a way of making the lamp disappear.
+                    If cpuPercent >= 90 Then
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
+                        CC.Paint Arr(2), Pat 'render the Pattern
                     End If
                     
                  Case "redlampfalse"
                     
                     If cpuPercent < 90 Then
-                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1)) 'here we only shift the Pattern via the original PSD-Offsets (stored in Arr(0) and Arr(1))
-                    Else
-                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-1000, -1000)
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1))
+                        CC.Paint Arr(2), Pat ' render the Pattern
                     End If
                     
                  Case Else 'plain output for everything else ... this includes the reflection-layers,
                      
-                    Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1)) 'here we only shift the Pattern via the original PSD-Offsets (stored in Arr(0) and Arr(1))
-                    
+                    Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1))
+                    CC.Paint Arr(2), Pat 'render the Pattern
+                   
              End Select
-             CC.Paint Arr(2), Pat 'finally we render the Pattern with the current PSD-LayerAlpha, present in Arr(2)
              
              CC.Restore
       End If
