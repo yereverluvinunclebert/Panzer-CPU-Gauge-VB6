@@ -2,7 +2,7 @@
  
   A FOSS CPU Gauge VB6 WoW64 Widget for Reactos, XP, Win7, 8 and 10/11+.
  
- My current VB6/RC6 PSD program being finished now, fundamentally complete, only awaiting addition of smooth rotation to the CPU pointer, testing on Windows XP and Win7 32bit and some multi monitor checking, completion of the CHM help file and the creation of the setup.exe. I am working on integrating my native VB6 forms from other programs and code alongside the RC6 Cairo code. This Panzer widget is based upon the Yahoo widget of the same visual design and very similar operation.
+ My current VB6/RC6 PSD program being finished now, fundamentally complete, only awaiting addition of smooth rotation to the CPU pointer, testing on Windows XP and Win7 32bit and some multi monitor checking and the creation of the setup.exe. This Panzer widget is based upon the Yahoo widget of the same visual design and very similar operation.
 
  Why VB6? Well, with a 64 bit, modern-language improvement upgrade on the way with 100% compatible TwinBasic coupled with support for transparent PNGs via RC/Cairo, VB6 code has an amazing future.
 
