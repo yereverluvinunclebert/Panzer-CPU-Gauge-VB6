@@ -1,6 +1,6 @@
 PANZER CPU GAUGE WIDGET
 
-The Panzer CPU Gauge Widget is a utility displaying a clock in a dieselpunk fashion on your desktop. It can be resized and placed anywhere on your desktop. It uses minimal resources and helps give your desktop a dieselpunk make-over.
+The Panzer CPU Gauge Widget is a utility displaying the combined CPU usage of all cores in your system, in a dieselpunk fashion on your desktop. It can be resized and placed anywhere on your desktop. It uses minimal resources and helps give your desktop a dieselpunk make-over.
 
 This VB6 version of the CPU Gauge widget replaces the Yahoo widget version that is now obsolete.
 

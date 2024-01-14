@@ -53,7 +53,7 @@ Attribute lblDeclineOrNot.VB_VarHelpID = -1
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Sub initAndShowAboutForm(ByVal x As Long, ByVal y As Long, Optional ByVal dx As Long, Optional ByVal dy As Long, Optional ByVal Caption As String)
+Public Sub initAndShowAboutForm(ByVal x As Long, ByVal Y As Long, Optional ByVal dx As Long, Optional ByVal dy As Long, Optional ByVal Caption As String)
     
     Dim aboutFormWidth As Long: aboutFormWidth = 0
     Dim aboutFormHeight As Long: aboutFormHeight = 0
@@ -77,13 +77,13 @@ Public Sub initAndShowAboutForm(ByVal x As Long, ByVal y As Long, Optional ByVal
             aboutFormWidth = screenWidthPixels
             aboutWidgetZoomValue = 1
         Else
-            aboutWidgetZoomValue = 2
+            aboutWidgetZoomValue = 1.6
         End If
         If aboutFormHeight > screenHeightPixels Then
             aboutFormHeight = screenHeightPixels
             aboutWidgetZoomValue = 1
         Else
-            aboutWidgetZoomValue = 2
+            aboutWidgetZoomValue = 1.6
         End If
     End If
     aboutWidgetWidth = aboutFormWidth - 100
@@ -120,7 +120,7 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Sub initAndShowHelpForm(ByVal x As Long, ByVal y As Long, Optional ByVal dx As Long, Optional ByVal dy As Long, Optional ByVal Caption As String)
+Public Sub initAndShowHelpForm(ByVal x As Long, ByVal Y As Long, Optional ByVal dx As Long, Optional ByVal dy As Long, Optional ByVal Caption As String)
     
     Dim helpFormWidth As Long: helpFormWidth = 0
     Dim helpFormHeight As Long: helpFormHeight = 0
@@ -190,7 +190,7 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Sub initAndShowLicenceForm(ByVal x As Long, ByVal y As Long, Optional ByVal dx As Long, Optional ByVal dy As Long, Optional ByVal Caption As String)
+Public Sub initAndShowLicenceForm(ByVal x As Long, ByVal Y As Long, Optional ByVal dx As Long, Optional ByVal dy As Long, Optional ByVal Caption As String)
     
     Dim licenceFormWidth As Long: licenceFormWidth = 0
     Dim licenceFormHeight As Long: licenceFormHeight = 0
@@ -385,8 +385,8 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub licenceForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
-  Static x0 As Single, y0 As Single: If Button = 0 Then x0 = x: y0 = y 'just store the offsets when no button is down
+Private Sub licenceForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef Y As Single)
+  Static x0 As Single, y0 As Single: If Button = 0 Then x0 = x: y0 = Y 'just store the offsets when no button is down
   
    On Error GoTo licenceForm_MouseMove_Error
     
@@ -396,7 +396,7 @@ Private Sub licenceForm_MouseMove(ByRef Button As Integer, ByRef Shift As Intege
     If Button = vbLeftButton And Not licenceForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
 
       licenceFormX = (x - x0) * licenceForm.WidgetRoot.Zoom + licenceForm.Left
-      licenceFormY = (y - y0) * licenceForm.WidgetRoot.Zoom + licenceForm.Top
+      licenceFormY = (Y - y0) * licenceForm.WidgetRoot.Zoom + licenceForm.Top
       licenceForm.Move licenceFormX, licenceFormY
     End If
 

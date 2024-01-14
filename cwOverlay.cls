@@ -56,6 +56,8 @@ Private mTicking As Boolean ' property Ticking
 Private mSmoothSecondHand As Boolean ' property SmoothSecondHand
 Private mLocked As Boolean ' property Locked
 Private mHidden As Boolean ' property Hidden
+Private mThisOpacity As String ' property ThisOpacity
+Private mSamplingInterval As String ' property SamplingInterval
 
 
 
@@ -188,7 +190,44 @@ TickingLet_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Ticking of Class Module cwOverlay"
 End Property ' the earth Ticking flag
+'---------------------------------------------------------------------------------------
+' Property : thisOpacity
+' Author    : beededea
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get thisOpacity() As String
+   On Error GoTo thisOpacityGet_Error
 
+    thisOpacity = mThisOpacity
+
+   On Error GoTo 0
+   Exit Property
+
+thisOpacityGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisOpacity of Class Module cwOverlay"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : thisOpacity
+' Author    :
+' Date      : 09/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let thisOpacity(ByVal newValue As String)
+    On Error GoTo thisOpacityLet_Error
+
+    If mThisOpacity <> newValue Then mThisOpacity = newValue Else Exit Property
+        
+    On Error GoTo 0
+    Exit Property
+
+thisOpacityLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisOpacity of Class Module cwOverlay"
+End Property
 '---------------------------------------------------------------------------------------
 ' Property : SmoothSecondHand
 ' Author    : beededea
@@ -237,6 +276,46 @@ SmoothSecondHandLet_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property SmoothSecondHand of Class Module cwOverlay"
 End Property ' the earth SmoothSecondHand flag
 
+'---------------------------------------------------------------------------------------
+' Property : samplingInterval
+' Author    : beededea
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get samplingInterval() As String
+   On Error GoTo samplingIntervalGet_Error
+
+    samplingInterval = mSamplingInterval
+
+   On Error GoTo 0
+   Exit Property
+
+samplingIntervalGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property samplingInterval of Class Module cwOverlay"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : samplingInterval
+' Author    :
+' Date      : 09/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let samplingInterval(ByVal newValue As String)
+    On Error GoTo samplingIntervalLet_Error
+
+    If mSamplingInterval <> newValue Then mSamplingInterval = newValue Else Exit Property
+    
+    Call obtainCPU
+    
+    On Error GoTo 0
+    Exit Property
+
+samplingIntervalLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property samplingInterval of Class Module cwOverlay"
+End Property
 '---------------------------------------------------------------------------------------
 ' Property : Locked
 ' Author    : beededea
@@ -361,7 +440,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     Dim txtNoOfCores As String: txtNoOfCores = vbNullString
     Dim txtCPUPercent As String: txtCPUPercent = vbNullString
     Dim textDrawn As Boolean:   textDrawn = False
-    Dim thisOpacity As Double: thisOpacity = 0
+    Dim someOpacity As Double: someOpacity = 0
     
     Const cream As String = "&HFFF5F5F5"
    
@@ -374,7 +453,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     W.FontBold = True
     W.SelectFontSettingsInto CC
     W.Refresh
-    thisOpacity = (Val(PzGOpacity) / 100) * 0.75
+    someOpacity = (Val(mThisOpacity) / 100) * 0.75
     
     txtCPUPercent = CStr(Int(cpuPercent))
     txtNoOfCores = CStr(noOfProcessors)
@@ -394,8 +473,8 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                  Case "secondshadow", "secondhand"
                     
                      ' draw the date and day in the windows just once to retain opacity
-                    CC.DrawText 265, 103, 200, 200, txtCPUPercent, , , 2, True, , thisOpacity
-                    CC.DrawText 461, 298, 200, 200, txtNoOfCores, , , 2, True, , thisOpacity
+                    CC.DrawText 265, 103, 200, 200, txtCPUPercent, , , 2, True, , someOpacity
+                    CC.DrawText 461, 298, 200, 200, txtNoOfCores, , , 2, True, , someOpacity
                     textDrawn = True
                     
                     Set Pat.Matrix = Pat.Matrix.TranslateCoords(11, 246) 'shift to the "rotation-point" within the Pattern
@@ -451,13 +530,14 @@ Private Sub tmrClock_Timer()
     
     On Error GoTo tmrClock_Timer_Error
     
-    tmrClock.Interval = Val(PzGSamplingInterval) * 1000
+    tmrClock.Interval = Val(mSamplingInterval) * 1000
 
 '    If mSmoothSecondHand = True Then
 
 '    Else
-        cpuPercent = CPU_Usage_Percent
-        SDeg = (cpuPercent * 3) + 30
+    
+        Call obtainCPU
+        
         
 '    End If
     
@@ -471,6 +551,28 @@ tmrClock_Timer_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrClock_Timer of Class Module cwOverlay"
 End Sub
 
+' ----------------------------------------------------------------
+' Procedure Name: obtainCPU
+' Purpose:
+' Procedure Kind: Sub
+' Procedure Access: Private
+' Author: beededea
+' Date: 13/01/2024
+' ----------------------------------------------------------------
+Private Sub obtainCPU()
+    On Error GoTo obtainCPU_Error
+        
+        cpuPercent = CPU_Usage_Percent
+        SDeg = (cpuPercent * 3) + 30
+    
+    On Error GoTo 0
+    Exit Sub
+
+obtainCPU_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure obtainCPU, line " & Erl & "."
+
+End Sub
 ' ----------------------------------------------------------------
 ' Procedure Name: CPU_Usage_Percent
 ' Purpose:

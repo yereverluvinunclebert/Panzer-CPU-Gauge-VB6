@@ -1799,7 +1799,7 @@ Begin VB.Form panzerPrefs
       Caption         =   "The main menu"
       Visible         =   0   'False
       Begin VB.Menu mnuAbout 
-         Caption         =   "About Panzer Earth Widget"
+         Caption         =   "About Panzer CPU Widget"
       End
       Begin VB.Menu blank 
          Caption         =   "-"
@@ -4165,7 +4165,7 @@ Private Sub sliSamplingInterval_Click()
  
     If prefsStartupFlg = False Then
         PzGSamplingInterval = LTrim$(Str$(sliSamplingInterval.Value))
-    
+        overlayWidget.samplingInterval = sliSamplingInterval.Value
         sPutINISetting "Software\PzCPUGauge", "samplingInterval", PzGSamplingInterval, PzGSettingsFile
         
     End If
@@ -4332,7 +4332,8 @@ Private Sub sliOpacity_Click()
 
     If prefsStartupFlg = False Then
         PzGOpacity = LTrim$(Str$(sliOpacity.Value))
-    
+        overlayWidget.thisOpacity = sliOpacity.Value
+        
         sPutINISetting "Software\PzCPUGauge", "opacity", PzGOpacity, PzGSettingsFile
         
         'Call setOpacity(sliOpacity.Value) ' this works but reveals the background form itself

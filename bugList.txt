@@ -28,9 +28,9 @@ DONE
 TODO
 
 ' smooth pointer - flick/smooth
-' sampling interval vars
-' sampling interval var validation
-' sampling interval var reading/writing
+' sampling interval vars - done
+' sampling interval var validation - done
+' sampling interval var reading/writing - done
 
 ' add second monitor - wip find cable!
 

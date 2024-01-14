@@ -521,9 +521,9 @@ Public Sub adjustMainControls()
         fAlpha.gaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
     End If
 
-    ' determine the time bias
-    'Call obtainDaylightSavings
-               
+    overlayWidget.thisOpacity = Val(PzGOpacity)
+    overlayWidget.samplingInterval = Val(PzGSamplingInterval)
+    
     ' set the z-ordering of the window
     Call setAlphaFormZordering
     
