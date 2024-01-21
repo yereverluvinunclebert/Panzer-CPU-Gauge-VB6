@@ -75,7 +75,7 @@ Begin VB.Form menuForm
          Caption         =   "Edit Widget using..."
       End
       Begin VB.Menu mnuSwitchOff 
-         Caption         =   "Switch off my functions (Ticking hands)"
+         Caption         =   "Switch off my functions (Pointer && Digital Display)"
       End
       Begin VB.Menu mnuTurnFunctionsOn 
          Caption         =   "Turn all functions ON"

@@ -50,9 +50,11 @@ Private SDeg As Double
 Private cpuPercent As Currency
 Private noOfProcessors As Currency
 
+
 '------------------------------------------------------ ENDS
 
 Private mTicking As Boolean ' property Ticking
+Private mThisCPUDetail As String ' property
 Private mSmoothSecondHand As Boolean ' property SmoothSecondHand
 Private mLocked As Boolean ' property Locked
 Private mHidden As Boolean ' property Hidden
@@ -87,9 +89,13 @@ Private Sub Class_Initialize()
     GetSystemInfo SInfo
     noOfProcessors = SInfo.dwNumberOrfProcessors
     
-'    "Processor:" + Str$(SInfo.dwProcessorType) & vbCrLf & _
-'    "Low memory address:" + Str$(SInfo.lpMinimumApplicationAddress) & vbCrLf & _
-'    "High memory address:" + Str$(SInfo.lpMaximumApplicationAddress)
+    mThisCPUDetail = obtainCPUDetails
+    
+'    Dim processorType As String
+'    processorType = _
+'        "Processor:" + Str$(SInfo.dwProcessorType) & vbCrLf & _
+'        "Low memory address:" + Str$(SInfo.lpMinimumApplicationAddress) & vbCrLf & _
+'        "High memory address:" + Str$(SInfo.lpMaximumApplicationAddress)
     
    On Error GoTo 0
    Exit Sub
@@ -189,7 +195,47 @@ Public Property Let Ticking(ByVal newValue As Boolean)
 TickingLet_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Ticking of Class Module cwOverlay"
-End Property ' the earth Ticking flag
+End Property
+
+'---------------------------------------------------------------------------------------
+' Property : thisCPUDetail
+' Author    : beededea
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get thisCPUDetail() As String
+   On Error GoTo thisCPUDetailGet_Error
+
+    thisCPUDetail = mThisCPUDetail
+
+   On Error GoTo 0
+   Exit Property
+
+thisCPUDetailGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisCPUDetail of Class Module cwOverlay"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : thisCPUDetail
+' Author    :
+' Date      : 09/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let thisCPUDetail(ByVal newValue As String)
+    On Error GoTo thisCPUDetailLet_Error
+
+    If mThisCPUDetail <> newValue Then mThisCPUDetail = newValue Else Exit Property
+        
+    On Error GoTo 0
+    Exit Property
+
+thisCPUDetailLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisCPUDetail of Class Module cwOverlay"
+End Property
+
 '---------------------------------------------------------------------------------------
 ' Property : thisOpacity
 ' Author    : beededea
@@ -433,7 +479,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As Single, ByVal dx_Aligned As Single, ByVal dy_Aligned As Single, UserObj As Object)
-    Dim I As Long: I = 0
+    Dim i As Long: i = 0
     Dim Arr As Variant
     Dim Key As String: Key = vbNullString
     Dim Pat As cCairoPattern
@@ -459,9 +505,9 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     txtCPUPercent = CStr(Int(cpuPercent))
     txtNoOfCores = CStr(noOfProcessors)
 
-    For I = 0 To cCollOverlayImages.Count - 1 ' this is the ExcludedPaths collection populated in cfAlpha by duplicating collPSDNonUIElements.
-      Arr = cCollOverlayImages.ItemByIndex(I)
-      Key = cCollOverlayImages.KeyByIndex(I)
+    For i = 0 To cCollOverlayImages.Count - 1 ' this is the ExcludedPaths collection populated in cfAlpha by duplicating collPSDNonUIElements.
+      Arr = cCollOverlayImages.ItemByIndex(i)
+      Key = cCollOverlayImages.KeyByIndex(i)
       
       If IsArray(Arr) Then
              CC.Save
@@ -565,6 +611,8 @@ Private Sub obtainCPU()
         
         cpuPercent = CPU_Usage_Percent
         SDeg = (cpuPercent * 3) + 30
+        
+        'Call obtainCoreCPUPercent
     
     On Error GoTo 0
     Exit Sub
@@ -611,4 +659,91 @@ CPU_Usage_Percent_Error:
 
 End Function
 
+
+
+
+' ----------------------------------------------------------------
+' Procedure Name: obtainCPUDetails
+' Purpose:
+' Procedure Kind: Function
+' Procedure Access: Public
+' Return Type: String
+' Author: beededea
+' Date: 21/01/2024
+' ----------------------------------------------------------------
+Function obtainCPUDetails() As String
+    Dim result As String
+    Dim objCPUItem As Object
+    Dim objCPU As Object
+    
+    On Error GoTo obtainCPUDetails_Error
+
+    Set objCPUItem = GetObject("winmgmts:").InstancesOf("Win32_Processor")
+
+    If Err.Number <> 0 Then
+        result = "Error getting Win32_Processor " & _
+        "information." & vbCrLf
+    Else
+        For Each objCPU In objCPUItem
+            result = result & "Description: " & Trim$(objCPU.Name) & vbCrLf
+            result = result & "Frequency (MHz): " & objCPU.MaxClockSpeed & vbCrLf
+            result = result & "CPU-ID: " & objCPU.ProcessorId & vbCrLf
+            result = result & vbCrLf
+            Debug.Print result
+        Next
+
+        Set objCPUItem = Nothing
+    End If
+
+    obtainCPUDetails = result
+    
+    On Error GoTo 0
+    Exit Function
+
+obtainCPUDetails_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure obtainCPUDetails, line " & Erl & "."
+
+End Function
+
+
+
+' ----------------------------------------------------------------
+' Procedure Name: obtainCoreCPUPercent
+' Purpose: not currently used
+' Procedure Kind: Sub
+' Procedure Access: Public
+' Author: beededea
+' Date: 21/01/2024
+' ----------------------------------------------------------------
+Sub obtainCoreCPUPercent()
+    Dim strComputer$
+    Dim i&
+    Dim objWMIService As Object, colItems As Object, objItem As Object
+    
+        On Error GoTo obtainCoreCPUPercent_Error
+
+    strComputer = "." 'Local machine, can be adjusted to access remote    workstations
+    Set objWMIService = GetObject("winmgmts:\\" & strComputer & "\root\cimv2")
+    Set colItems = objWMIService.ExecQuery( _
+    "SELECT * FROM Win32_PerfFormattedData_PerfOS_Processor", , 48)
+    For Each objItem In colItems
+        i = i + 1 '1=cpu all
+        Debug.Print "-----------------------------------"
+        Debug.Print "Processor " & i
+        'Debug.Print "-----------------------------------"
+        Debug.Print "usage: " & objItem.PercentProcessorTime
+    Next
+    Set objWMIService = Nothing
+    Set colItems = Nothing
+    Set objItem = Nothing
+    
+    On Error GoTo 0
+    Exit Sub
+
+obtainCoreCPUPercent_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure obtainCoreCPUPercent, line " & Erl & "."
+
+End Sub
 

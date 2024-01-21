@@ -31,7 +31,7 @@ Begin VB.Form panzerPrefs
          Top             =   300
          Width           =   6750
          Begin VB.CheckBox chkGaugeFunctions 
-            Caption         =   "Hand operation toggle *"
+            Caption         =   "Pointer operation toggle *"
             Height          =   225
             Left            =   1995
             TabIndex        =   52
@@ -50,7 +50,7 @@ Begin VB.Form panzerPrefs
             Width           =   3720
          End
          Begin VB.CheckBox chkGenStartup 
-            Caption         =   "Run the Just Clock Widget at Windows Startup "
+            Caption         =   "Run the CPU Widget at Windows Startup "
             Height          =   465
             Left            =   1995
             TabIndex        =   93
