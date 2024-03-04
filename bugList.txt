@@ -23,14 +23,14 @@ DONE
 ' initial github synch.
 ' readme.md created and updated with new images
 
-' -oOo-
-
-TODO
-
-' smooth pointer - flick/smooth
+' smooth pointer - flick/smooth - done
 ' sampling interval vars - done
 ' sampling interval var validation - done
 ' sampling interval var reading/writing - done
+
+' -oOo-
+
+TODO
 
 ' add second monitor - wip find cable!
 

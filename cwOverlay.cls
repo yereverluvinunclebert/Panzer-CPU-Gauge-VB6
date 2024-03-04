@@ -654,7 +654,7 @@ Private Sub tmrSampler_Timer()
                     animationDivisions = 24
             End Select
             
-            ' divide that by 25 (one second duration)
+            ' divide that by 24 (one second duration)
             animationQuanta = Abs(degDiff / animationDivisions)
             
             tmrAnimator.Enabled = True
