@@ -43,19 +43,25 @@ Public cyPerc As Single
 
 Private WithEvents W As cWidgetBase
 Attribute W.VB_VarHelpID = -1
-Private WithEvents tmrClock As cTimer
-Attribute tmrClock.VB_VarHelpID = -1
+Private WithEvents tmrSampler As cTimer
+Attribute tmrSampler.VB_VarHelpID = -1
+Private WithEvents tmrAnimator As cTimer
+Attribute tmrAnimator.VB_VarHelpID = -1
 
 Private SDeg As Double
 Private cpuPercent As Currency
 Private noOfProcessors As Currency
-
+Private oldSDeg As Double
+Private newSDeg As Double
+Private animationQuanta As Double
+Private animationAmount As Double
+Private animateCCW As Boolean
 
 '------------------------------------------------------ ENDS
 
 Private mTicking As Boolean ' property Ticking
 Private mThisCPUDetail As String ' property
-Private mSmoothSecondHand As Boolean ' property SmoothSecondHand
+Private mPointerAnimate As Boolean ' property PointerAnimate
 Private mLocked As Boolean ' property Locked
 Private mHidden As Boolean ' property Hidden
 Private mThisOpacity As String ' property ThisOpacity
@@ -71,7 +77,6 @@ Private mSamplingInterval As String ' property SamplingInterval
 '---------------------------------------------------------------------------------------
 '
 Private Sub Class_Initialize()
-    Dim intervalValue As Integer: intervalValue = 0
     Dim SInfo As SYSTEM_INFO
     
     On Error GoTo Class_Initialize_Error
@@ -80,10 +85,11 @@ Private Sub Class_Initialize()
         W.BackColor = -1  'we don't use any BackColor here, transparent
         W.ImplementsHitTest = True 'when at False, no HitTest-Event would be triggered
                     
-    intervalValue = 5000
+    Set tmrSampler = Nothing
+    Set tmrSampler = New_c.Timer(1000, mTicking)
 
-    Set tmrClock = Nothing
-    Set tmrClock = New_c.Timer(100, mTicking)
+    Set tmrAnimator = Nothing
+    Set tmrAnimator = New_c.Timer(20, False)
     
     'Get the system information
     GetSystemInfo SInfo
@@ -178,15 +184,9 @@ Public Property Let Ticking(ByVal newValue As Boolean)
     If mTicking <> newValue Then mTicking = newValue Else Exit Property
     
     If mTicking Then
-'        If mSmoothSecondHand Then
-'            'intervalValue = 100
-'        Else
-'            'intervalValue = 500
-'        End If
-
-        tmrClock.Enabled = True
+        tmrSampler.Enabled = True
     Else
-        tmrClock.Enabled = False
+        tmrSampler.Enabled = False
     End If
 
    On Error GoTo 0
@@ -275,52 +275,43 @@ thisOpacityLet_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisOpacity of Class Module cwOverlay"
 End Property
 '---------------------------------------------------------------------------------------
-' Property : SmoothSecondHand
+' Property : pointerAnimate
 ' Author    : beededea
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Property Get SmoothSecondHand() As Boolean
-   On Error GoTo SmoothSecondHandGet_Error
+Public Property Get pointerAnimate() As Boolean
+   On Error GoTo pointerAnimateGet_Error
 
-    SmoothSecondHand = mSmoothSecondHand
+    pointerAnimate = mPointerAnimate
 
    On Error GoTo 0
    Exit Property
 
-SmoothSecondHandGet_Error:
+pointerAnimateGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property SmoothSecondHand of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlay"
 End Property
 '---------------------------------------------------------------------------------------
-' Property  : SmoothSecondHand
+' Property  : PointerAnimate
 ' Author    :
 ' Date      : 09/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Property Let SmoothSecondHand(ByVal newValue As Boolean)
-    Dim intervalValue As Integer: intervalValue = 0
-    On Error GoTo SmoothSecondHandLet_Error
+Public Property Let pointerAnimate(ByVal newValue As Boolean)
+    On Error GoTo pointerAnimateLet_Error
 
-    If mSmoothSecondHand <> newValue Then mSmoothSecondHand = newValue Else Exit Property
-    
-    If mSmoothSecondHand Then
-        intervalValue = 100
-    Else
-        intervalValue = 500
-    End If
-            
-    tmrClock.Interval = intervalValue
-    
+    If mPointerAnimate <> newValue Then mPointerAnimate = newValue Else Exit Property
+        
    On Error GoTo 0
    Exit Property
 
-SmoothSecondHandLet_Error:
+pointerAnimateLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property SmoothSecondHand of Class Module cwOverlay"
-End Property ' the earth SmoothSecondHand flag
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlay"
+End Property ' the earth pointerAnimate flag
 
 '---------------------------------------------------------------------------------------
 ' Property : samplingInterval
@@ -353,7 +344,10 @@ Public Property Let samplingInterval(ByVal newValue As String)
 
     If mSamplingInterval <> newValue Then mSamplingInterval = newValue Else Exit Property
     
-    Call obtainCPU
+    tmrSampler.Interval = Val(mSamplingInterval) * 1000
+    If mPointerAnimate = True Then
+        If tmrSampler.Interval = 1000 Then tmrSampler.Interval = 1200 ' take into account the animator
+    End If
     
     On Error GoTo 0
     Exit Property
@@ -479,7 +473,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As Single, ByVal dx_Aligned As Single, ByVal dy_Aligned As Single, UserObj As Object)
-    Dim i As Long: i = 0
+    Dim I As Long: I = 0
     Dim Arr As Variant
     Dim Key As String: Key = vbNullString
     Dim Pat As cCairoPattern
@@ -505,9 +499,9 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     txtCPUPercent = CStr(Int(cpuPercent))
     txtNoOfCores = CStr(noOfProcessors)
 
-    For i = 0 To cCollOverlayImages.Count - 1 ' this is the ExcludedPaths collection populated in cfAlpha by duplicating collPSDNonUIElements.
-      Arr = cCollOverlayImages.ItemByIndex(i)
-      Key = cCollOverlayImages.KeyByIndex(i)
+    For I = 0 To cCollOverlayImages.Count - 1 ' this is the ExcludedPaths collection populated in cfAlpha by duplicating collPSDNonUIElements.
+      Arr = cCollOverlayImages.ItemByIndex(I)
+      Key = cCollOverlayImages.KeyByIndex(I)
       
       If IsArray(Arr) Then
              CC.Save
@@ -563,65 +557,132 @@ W_Paint_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_Paint of Class Module cwOverlay"
 End Sub
  
- 
+    
+'---------------------------------------------------------------------------------------
+' Procedure : tmrAnimator_Timer
+' Author    :
+' Date      : 30/07/2023
+' Purpose   : animate timer, once every 20ms
+'---------------------------------------------------------------------------------------
+'
+Private Sub tmrAnimator_Timer()
+    
+    On Error GoTo tmrAnimator_Timer_Error
+    '
+    ' move the pointer
+    '
+    animationAmount = animationAmount + animationQuanta
+
+    If animateCCW = True Then
+        If SDeg > newSDeg Then
+            SDeg = oldSDeg - animationAmount
+        Else
+            tmrAnimator.Enabled = False ' when the animation is complete then stop the animator
+            animationAmount = 0
+            Exit Sub
+        End If
+    Else
+
+        If SDeg < newSDeg Then
+            SDeg = oldSDeg + animationAmount
+        Else
+            tmrAnimator.Enabled = False
+            animationAmount = 0
+            Exit Sub
+        End If
+    End If
+
+    W.Parent.Refresh
+
+   On Error GoTo 0
+   Exit Sub
+
+tmrAnimator_Timer_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrAnimator_Timer of Class Module cwOverlay"
+End Sub
 
     
 '---------------------------------------------------------------------------------------
-' Procedure : tmrClock_Timer
+' Procedure : tmrSampler_Timer
 ' Author    :
 ' Date      : 30/07/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub tmrClock_Timer()
+Private Sub tmrSampler_Timer()
+    Dim degDiff As Double: degDiff = 0
     
-    On Error GoTo tmrClock_Timer_Error
-    
-    tmrClock.Interval = Val(mSamplingInterval) * 1000
+    On Error GoTo tmrSampler_Timer_Error
 
-'    If mSmoothSecondHand = True Then
-
-'    Else
-    
-        Call obtainCPU
+    If mPointerAnimate = True Then
+        If tmrAnimator.Enabled = False Then
         
-        
-'    End If
+            ' oldSDeg stored
+            oldSDeg = SDeg
+                
+            ' obtain the new cpu amount
+            cpuPercent = CPU_Usage_Percent
+            
+            ' calculate the new cpu amount in degrees
+            newSDeg = (cpuPercent * 3) + 30
+            
+            ' calculate the difference
+            degDiff = newSDeg - oldSDeg
+            
+            ' if the result is negative animate CCW
+            If degDiff < 0 Then
+                animateCCW = True
+            Else
+                animateCCW = False
+            End If
+            
+            ' divide that by 50 (one second duration)
+            animationQuanta = Abs(degDiff / 50)
+            
+            If degDiff <> 0 Then tmrAnimator.Enabled = True
+            ' oldSDeg , newSDeg,animationQuanta
+            
+        End If
+    Else
+        cpuPercent = CPU_Usage_Percent
+        SDeg = (cpuPercent * 3) + 30
+    End If
     
     W.Parent.Refresh
 
    On Error GoTo 0
    Exit Sub
 
-tmrClock_Timer_Error:
+tmrSampler_Timer_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrClock_Timer of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrSampler_Timer of Class Module cwOverlay"
 End Sub
-
-' ----------------------------------------------------------------
-' Procedure Name: obtainCPU
-' Purpose:
-' Procedure Kind: Sub
-' Procedure Access: Private
-' Author: beededea
-' Date: 13/01/2024
-' ----------------------------------------------------------------
-Private Sub obtainCPU()
-    On Error GoTo obtainCPU_Error
-        
-        cpuPercent = CPU_Usage_Percent
-        SDeg = (cpuPercent * 3) + 30
-        
-        'Call obtainCoreCPUPercent
-    
-    On Error GoTo 0
-    Exit Sub
-
-obtainCPU_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure obtainCPU, line " & Erl & "."
-
-End Sub
+'
+'' ----------------------------------------------------------------
+'' Procedure Name: obtainCPU
+'' Purpose:
+'' Procedure Kind: Sub
+'' Procedure Access: Private
+'' Author: beededea
+'' Date: 13/01/2024
+'' ----------------------------------------------------------------
+'Private Sub obtainCPU()
+'    On Error GoTo obtainCPU_Error
+'
+'        cpuPercent = CPU_Usage_Percent
+'        SDeg = (cpuPercent * 3) + 30
+'
+'        'Call obtainCoreCPUPercent
+'
+'    On Error GoTo 0
+'    Exit Sub
+'
+'obtainCPU_Error:
+'
+'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure obtainCPU, line " & Erl & "."
+'
+'End Sub
 ' ----------------------------------------------------------------
 ' Procedure Name: CPU_Usage_Percent
 ' Purpose:
@@ -718,7 +779,7 @@ End Function
 ' ----------------------------------------------------------------
 Sub obtainCoreCPUPercent()
     Dim strComputer$
-    Dim i&
+    Dim I&
     Dim objWMIService As Object, colItems As Object, objItem As Object
     
         On Error GoTo obtainCoreCPUPercent_Error
@@ -728,9 +789,9 @@ Sub obtainCoreCPUPercent()
     Set colItems = objWMIService.ExecQuery( _
     "SELECT * FROM Win32_PerfFormattedData_PerfOS_Processor", , 48)
     For Each objItem In colItems
-        i = i + 1 '1=cpu all
+        I = I + 1 ' 1 = cpu all
         Debug.Print "-----------------------------------"
-        Debug.Print "Processor " & i
+        Debug.Print "Processor " & I
         'Debug.Print "-----------------------------------"
         Debug.Print "usage: " & objItem.PercentProcessorTime
     Next

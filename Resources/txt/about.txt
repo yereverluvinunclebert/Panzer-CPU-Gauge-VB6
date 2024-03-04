@@ -6,7 +6,7 @@ This VB6 version of the CPU Gauge widget replaces the Yahoo widget version that 
 
 This widget's UI functionality is 'complex' as I am using my complex template for this widget and widgets yet to come, it allows the user to interact with the graphical elements of the widget.
 
-You can change the timezones with the preferences. It can also be increased in size, opacity/transparency may be set as to the users discretion. The widget can also be made to hide for a pre-determined period.
+You can change a variety of characteristics with the preferences. It can also be increased in size, opacity/transparency may be set as to the users discretion. The widget can also be made to hide for a pre-determined period.
 
 Right-click on the widget to display the function menu, mouse hover over the widget and press CTRL+mousewheel up/down to resize. It works well on Windows XP to Windows 11 as well as Linux and Mac os x with Wine.
 
