@@ -55,6 +55,8 @@ Private oldSDeg As Double
 Private newSDeg As Double
 Private animationQuanta As Double
 Private animationAmount As Double
+Private animationDivisions As Integer
+Private animationInterval As Integer
 Private animateCCW As Boolean
 
 '------------------------------------------------------ ENDS
@@ -87,9 +89,12 @@ Private Sub Class_Initialize()
                     
     Set tmrSampler = Nothing
     Set tmrSampler = New_c.Timer(1000, mTicking)
-
+    
+    animationDivisions = 12
+    animationInterval = 40
+    
     Set tmrAnimator = Nothing
-    Set tmrAnimator = New_c.Timer(20, False)
+    Set tmrAnimator = New_c.Timer(animationInterval, False)
     
     'Get the system information
     GetSystemInfo SInfo
@@ -562,14 +567,14 @@ End Sub
 ' Procedure : tmrAnimator_Timer
 ' Author    :
 ' Date      : 30/07/2023
-' Purpose   : animate timer, once every 20ms
+' Purpose   : animate timer, once every few (40) milliseconds
 '---------------------------------------------------------------------------------------
 '
 Private Sub tmrAnimator_Timer()
     
     On Error GoTo tmrAnimator_Timer_Error
     '
-    ' move the pointer
+    ' move the pointer using SDeg
     '
     animationAmount = animationAmount + animationQuanta
 
@@ -582,7 +587,6 @@ Private Sub tmrAnimator_Timer()
             Exit Sub
         End If
     Else
-
         If SDeg < newSDeg Then
             SDeg = oldSDeg + animationAmount
         Else
@@ -627,6 +631,8 @@ Private Sub tmrSampler_Timer()
             ' calculate the new cpu amount in degrees
             newSDeg = (cpuPercent * 3) + 30
             
+            If oldSDeg = newSDeg Then Exit Sub
+            
             ' calculate the difference
             degDiff = newSDeg - oldSDeg
             
@@ -637,11 +643,21 @@ Private Sub tmrSampler_Timer()
                 animateCCW = False
             End If
             
-            ' divide that by 50 (one second duration)
-            animationQuanta = Abs(degDiff / 50)
+            Select Case degDiff
+                Case Is <= 5
+                    animationDivisions = 4
+                Case Is <= 10
+                    animationDivisions = 8
+                Case Is > 10
+                    animationDivisions = 16
+                Case Is > 20
+                    animationDivisions = 24
+            End Select
             
-            If degDiff <> 0 Then tmrAnimator.Enabled = True
-            ' oldSDeg , newSDeg,animationQuanta
+            ' divide that by 25 (one second duration)
+            animationQuanta = Abs(degDiff / animationDivisions)
+            
+            tmrAnimator.Enabled = True
             
         End If
     Else
@@ -658,31 +674,7 @@ tmrSampler_Timer_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrSampler_Timer of Class Module cwOverlay"
 End Sub
-'
-'' ----------------------------------------------------------------
-'' Procedure Name: obtainCPU
-'' Purpose:
-'' Procedure Kind: Sub
-'' Procedure Access: Private
-'' Author: beededea
-'' Date: 13/01/2024
-'' ----------------------------------------------------------------
-'Private Sub obtainCPU()
-'    On Error GoTo obtainCPU_Error
-'
-'        cpuPercent = CPU_Usage_Percent
-'        SDeg = (cpuPercent * 3) + 30
-'
-'        'Call obtainCoreCPUPercent
-'
-'    On Error GoTo 0
-'    Exit Sub
-'
-'obtainCPU_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure obtainCPU, line " & Erl & "."
-'
-'End Sub
+
 ' ----------------------------------------------------------------
 ' Procedure Name: CPU_Usage_Percent
 ' Purpose:
@@ -693,23 +685,26 @@ End Sub
 ' Date: 09/01/2024
 ' ----------------------------------------------------------------
 Private Function CPU_Usage_Percent() As Currency
-    Dim it As Currency: it = 0
-    Dim kt As Currency: kt = 0
-    Dim ut As Currency: ut = 0
-    Static it1 As Currency
-    Static kt1 As Currency
-    Static ut1 As Currency
+    Dim idleTimeLive As Currency: idleTimeLive = 0
+    Dim kernelTimeLive As Currency: kernelTimeLive = 0
+    Dim usermodeTimeLive As Currency: usermodeTimeLive = 0
+    Static idleTimeStored As Currency
+    Static kernelTimeStored As Currency
+    Static usermodeTimeStored As Currency
     
     On Error GoTo CPU_Usage_Percent_Error
 
-    GetSystemTimes it, kt, ut
-    it1 = it - it1
-    kt1 = kt - kt1
-    ut1 = ut - ut1
-    CPU_Usage_Percent = ((kt1 + ut1 - it1) / (kt1 + ut1)) * 100
-    it1 = it
-    kt1 = kt
-    ut1 = ut
+    GetSystemTimes idleTimeLive, kernelTimeLive, usermodeTimeLive
+    
+    idleTimeStored = idleTimeLive - idleTimeStored
+    kernelTimeStored = kernelTimeLive - kernelTimeStored
+    usermodeTimeStored = usermodeTimeLive - usermodeTimeStored
+    
+    CPU_Usage_Percent = ((kernelTimeStored + usermodeTimeStored - idleTimeStored) / (kernelTimeStored + usermodeTimeStored)) * 100
+    
+    idleTimeStored = idleTimeLive
+    kernelTimeStored = kernelTimeLive
+    usermodeTimeStored = usermodeTimeLive
     
     On Error GoTo 0
     Exit Function
