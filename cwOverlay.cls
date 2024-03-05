@@ -316,7 +316,7 @@ Public Property Let pointerAnimate(ByVal newValue As Boolean)
 pointerAnimateLet_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlay"
-End Property ' the earth pointerAnimate flag
+End Property ' the gauge pointerAnimate flag
 
 '---------------------------------------------------------------------------------------
 ' Property : samplingInterval
