@@ -2043,11 +2043,6 @@ Private gblAllowSizeChangeFlg As Boolean
 
 
 
-
-
-
-
-
 ' ----------------------------------------------------------------
 ' Procedure Name: Form_Initialize
 ' Purpose:

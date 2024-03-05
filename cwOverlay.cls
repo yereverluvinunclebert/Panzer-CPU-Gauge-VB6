@@ -48,9 +48,6 @@ Attribute tmrSampler.VB_VarHelpID = -1
 Private WithEvents tmrAnimator As cTimer
 Attribute tmrAnimator.VB_VarHelpID = -1
 
-Private SDeg As Double
-Private cpuPercent As Currency
-Private noOfProcessors As Currency
 Private oldSDeg As Double
 Private newSDeg As Double
 Private animationQuanta As Double
@@ -58,6 +55,10 @@ Private animationAmount As Double
 Private animationDivisions As Integer
 Private animationInterval As Integer
 Private animateCCW As Boolean
+
+Private SDeg As Double
+Private cpuPercent As Currency
+Private noOfProcessors As Currency
 
 '------------------------------------------------------ ENDS
 
