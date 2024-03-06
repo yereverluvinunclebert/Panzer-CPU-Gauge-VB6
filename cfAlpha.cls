@@ -149,7 +149,7 @@ Private Sub gaugeForm_BubblingEvent(ByRef Sender As Object, ByRef EventName As S
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip gaugeForm.hwnd, "Click me to open the preferences utility. The configuration of the widget is performed using the preference utility.", _
                      TTIconInfo, widgetName & " Prefs Button Help", , , , True
             Case "housing/tickbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip gaugeForm.hwnd, "Click here to toggle the pointer movement from once per second to a more fluid, continuous movement.", _
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip gaugeForm.hwnd, "Click here to toggle the pointer movement from once per interval to a more fluid, continuous movement.", _
                      TTIconInfo, widgetName & " Tick Button Help", , , , True
             Case "housing/switchfacesbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip gaugeForm.hwnd, "This button is not allocated a function in this particular widget.", _
