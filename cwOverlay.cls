@@ -731,7 +731,7 @@ End Function
 ' Date: 21/01/2024
 ' ----------------------------------------------------------------
 Function obtainCPUDetails() As String
-    Dim result As String
+    Dim result As String: result = vbNullString
     Dim objCPUItem As Object
     Dim objCPU As Object
     
@@ -744,10 +744,11 @@ Function obtainCPUDetails() As String
         "information." & vbCrLf
     Else
         For Each objCPU In objCPUItem
-            result = result & "Description: " & Trim$(objCPU.Name) & vbCrLf
+            result = result & "Description: " & Trim$(objCPU.Name)
+            result = result & " with " & noOfProcessors & " Processor Cores." & vbCrLf
             result = result & "Frequency (MHz): " & objCPU.MaxClockSpeed & vbCrLf
             result = result & "CPU-ID: " & objCPU.ProcessorId & vbCrLf
-            result = result & vbCrLf
+
             Debug.Print result
         Next
 
