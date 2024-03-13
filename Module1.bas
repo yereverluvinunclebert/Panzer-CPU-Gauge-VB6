@@ -2270,14 +2270,6 @@ End Sub
 '
 Public Sub makeProgramPreferencesAvailable()
     On Error GoTo makeProgramPreferencesAvailable_Error
-'    Dim debugFlg As Integer: debugFlg = 1
-    
-'    If debugFlg = 1 Then
-'
-'        MsgBox "panzerPrefs.Visible " & panzerPrefs.Visible
-'        MsgBox "panzerPrefs.WindowState " & panzerPrefs.WindowState
-'
-'    End If
     
     If panzerPrefs.IsVisible = False Then
         panzerPrefs.Visible = True
@@ -2292,6 +2284,8 @@ Public Sub makeProgramPreferencesAvailable()
         
         Call readPrefsPosition
         Call panzerPrefs.positionPrefsMonitor
+    Else
+        panzerPrefs.SetFocus
     End If
     
 
