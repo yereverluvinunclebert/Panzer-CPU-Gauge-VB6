@@ -213,6 +213,7 @@ End Property
 Public Property Get thisCPUDetail() As String
    On Error GoTo thisCPUDetailGet_Error
 
+    mThisCPUDetail = obtainCPUDetails
     thisCPUDetail = mThisCPUDetail
 
    On Error GoTo 0
@@ -748,6 +749,7 @@ Function obtainCPUDetails() As String
             result = result & " with " & noOfProcessors & " Processor Cores." & vbCrLf
             result = result & "Frequency (MHz): " & objCPU.MaxClockSpeed & vbCrLf
             result = result & "CPU-ID: " & objCPU.ProcessorId & vbCrLf
+            result = result & "CPU Usage: " & Int(cpuPercent) & "%" & vbCrLf
 
             Debug.Print result
         Next
@@ -770,7 +772,7 @@ End Function
 
 ' ----------------------------------------------------------------
 ' Procedure Name: obtainCoreCPUPercent
-' Purpose: not currently used
+' Purpose: NOT currently used
 ' Procedure Kind: Sub
 ' Procedure Access: Public
 ' Author: beededea
@@ -781,7 +783,7 @@ Sub obtainCoreCPUPercent()
     Dim I&
     Dim objWMIService As Object, colItems As Object, objItem As Object
     
-        On Error GoTo obtainCoreCPUPercent_Error
+    On Error GoTo obtainCoreCPUPercent_Error
 
     strComputer = "." 'Local machine, can be adjusted to access remote    workstations
     Set objWMIService = GetObject("winmgmts:\\" & strComputer & "\root\cimv2")

@@ -32,6 +32,8 @@ DONE
 
 TODO
 
+' usage balloon tooltip % needs to be dynamically updated, currently only seems to show an older percentage
+
 ' add second monitor - wip find cable!
 
 ' test usage of RC6 for monitor awareness - wip
