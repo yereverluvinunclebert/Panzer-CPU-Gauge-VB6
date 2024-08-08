@@ -152,7 +152,7 @@ o Krool's replacement for the Microsoft Windows Common Controls found in
 mscomctl.ocx (slider) are replicated by the addition of one
 dedicated OCX file that are shipped with this package.
 
-During development these should be copied to C:\windows\syswow64 and should be registered.
+During development only, this must be copied to C:\windows\syswow64 and should be registered.
 
 - CCRSlider.ocx
 
@@ -160,7 +160,7 @@ Register this using regsvr32, ie. in a CMD window with administrator privileges.
 	
 	c:                          ! set device to boot drive with Windows
 	cd \windows\syswow64s	    ! change default folder to syswow64
-	regsvr32 CCRImageList.ocx	! register the ocx
+	regsvr32 CCRSlider.ocx	! register the ocx
 
 This will allow the custom controls to be accessible to the VB6 IDE
 at design time and the sliders will function as intended (if this ocx is
