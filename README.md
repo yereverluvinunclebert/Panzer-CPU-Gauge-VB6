@@ -35,11 +35,7 @@ The program uses WMI to extract CPU usage values over a certain interval, extrap
         idleTimeStored = idleTimeLive
         kernelTimeStored = kernelTimeLive
         usermodeTimeStored = usermodeTimeLive
-        
-    
-    End Function
-    
-    
+    End Function    
     
     Function obtainCPUDetails() As String
         Dim result As String: result = vbNullString
@@ -58,15 +54,10 @@ The program uses WMI to extract CPU usage values over a certain interval, extrap
                 result = result & "Frequency (MHz): " & objCPU.MaxClockSpeed & vbCrLf
                 result = result & "CPU-ID: " & objCPU.ProcessorId & vbCrLf
                 result = result & "CPU Usage: " & Int(cpuPercent) & "%" & vbCrLf
-    
-                Debug.Print result
-            Next
-    
+            Next    
             Set objCPUItem = Nothing
-        End If
-    
-        obtainCPUDetails = result
-    
+        End If    
+        obtainCPUDetails = result    
     End Function
     
     
@@ -74,8 +65,7 @@ The program uses WMI to extract CPU usage values over a certain interval, extrap
         Dim strComputer$
         Dim I&
         Dim objWMIService As Object, colItems As Object, objItem As Object
-    
-    
+      
         strComputer = "." 'Local machine, can be adjusted to access remote    workstations
         Set objWMIService = GetObject("winmgmts:\\" & strComputer & "\root\cimv2")
         Set colItems = objWMIService.ExecQuery( _
@@ -90,7 +80,6 @@ The program uses WMI to extract CPU usage values over a certain interval, extrap
         Set objWMIService = Nothing
         Set colItems = Nothing
         Set objItem = Nothing
-    
     End Sub
 
  
