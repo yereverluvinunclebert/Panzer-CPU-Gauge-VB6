@@ -13,6 +13,86 @@
  Functional and gorgeous at the same time. The graphics are my own, I took original inspiration from a clock face by Italo Fortana combining it with an aircraft gauge. It is all my code with some help from the chaps at VBForums (credits given). 
   
 The Panzer CPU Gauge VB6  is a useful utility displaying the CPU usage of all cores combined in a dieselpunk fashion on your desktop. This Widget is a moveable widget that you can move anywhere around the desktop as you require.
+
+The program uses WMI to extract CPU usage values over a certain interval, extrapolating the percentage usage over a given time period. The pertinents bits of code are:
+
+    Private Function CPU_Usage_Percent() As Currency
+        Dim idleTimeLive As Currency: idleTimeLive = 0
+        Dim kernelTimeLive As Currency: kernelTimeLive = 0
+        Dim usermodeTimeLive As Currency: usermodeTimeLive = 0
+        Static idleTimeStored As Currency
+        Static kernelTimeStored As Currency
+        Static usermodeTimeStored As Currency
+    
+        GetSystemTimes idleTimeLive, kernelTimeLive, usermodeTimeLive
+        
+        idleTimeStored = idleTimeLive - idleTimeStored
+        kernelTimeStored = kernelTimeLive - kernelTimeStored
+        usermodeTimeStored = usermodeTimeLive - usermodeTimeStored
+        
+        CPU_Usage_Percent = ((kernelTimeStored + usermodeTimeStored - idleTimeStored) / (kernelTimeStored + usermodeTimeStored)) * 100
+        
+        idleTimeStored = idleTimeLive
+        kernelTimeStored = kernelTimeLive
+        usermodeTimeStored = usermodeTimeLive
+        
+    
+    End Function
+    
+    
+    
+    Function obtainCPUDetails() As String
+        Dim result As String: result = vbNullString
+        Dim objCPUItem As Object
+        Dim objCPU As Object
+    
+        Set objCPUItem = GetObject("winmgmts:").InstancesOf("Win32_Processor")
+    
+        If Err.Number <> 0 Then
+            result = "Error getting Win32_Processor " & _
+            "information." & vbCrLf
+        Else
+            For Each objCPU In objCPUItem
+                result = result & "Description: " & Trim$(objCPU.Name)
+                result = result & " with " & noOfProcessors & " Processor Cores." & vbCrLf
+                result = result & "Frequency (MHz): " & objCPU.MaxClockSpeed & vbCrLf
+                result = result & "CPU-ID: " & objCPU.ProcessorId & vbCrLf
+                result = result & "CPU Usage: " & Int(cpuPercent) & "%" & vbCrLf
+    
+                Debug.Print result
+            Next
+    
+            Set objCPUItem = Nothing
+        End If
+    
+        obtainCPUDetails = result
+    
+    End Function
+    
+    
+    Sub obtainCoreCPUPercent()
+        Dim strComputer$
+        Dim I&
+        Dim objWMIService As Object, colItems As Object, objItem As Object
+    
+    
+        strComputer = "." 'Local machine, can be adjusted to access remote    workstations
+        Set objWMIService = GetObject("winmgmts:\\" & strComputer & "\root\cimv2")
+        Set colItems = objWMIService.ExecQuery( _
+        "SELECT * FROM Win32_PerfFormattedData_PerfOS_Processor", , 48)
+        For Each objItem In colItems
+            I = I + 1 ' 1 = cpu all
+            Debug.Print "-----------------------------------"
+            Debug.Print "Processor " & I
+            'Debug.Print "-----------------------------------"
+            Debug.Print "usage: " & objItem.PercentProcessorTime
+        Next
+        Set objWMIService = Nothing
+        Set colItems = Nothing
+        Set objItem = Nothing
+    
+    End Sub
+
  
 ![panzer-cpuphoto-1440x900](https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-VB6/assets/2788342/b9b4ef35-d007-48f7-9440-135a3f3ca092)
 
