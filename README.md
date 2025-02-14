@@ -83,6 +83,7 @@ The program uses WMI to extract CPU usage values over a certain interval, extrap
     End Sub
 
 If you dig into the code a little deeper you can see how the above has been implemented, the code is entirely FOSS, so help yourself.
+Hope the code is useful to anyone else building system metric utilities using VB6/VBS/VBA/TwinBasic.
  
 ![panzer-cpuphoto-1440x900](https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-VB6/assets/2788342/b9b4ef35-d007-48f7-9440-135a3f3ca092)
 
