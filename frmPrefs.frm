@@ -17,7 +17,7 @@ Begin VB.Form panzerPrefs
    Begin VB.Frame fraGeneral 
       Caption         =   "General"
       ForeColor       =   &H80000008&
-      Height          =   5130
+      Height          =   5325
       Left            =   75
       TabIndex        =   50
       Top             =   1200
@@ -25,15 +25,24 @@ Begin VB.Form panzerPrefs
       Width           =   7995
       Begin VB.Frame fraGeneralInner 
          BorderStyle     =   0  'None
-         Height          =   4080
+         Height          =   4545
          Left            =   465
          TabIndex        =   51
          Top             =   300
          Width           =   6750
+         Begin VB.CheckBox chkMultiCoreEnable 
+            Caption         =   "Enable multi-core display *"
+            Height          =   225
+            Left            =   1995
+            TabIndex        =   161
+            ToolTipText     =   "When checked this box enables the pointer. That's it!"
+            Top             =   975
+            Width           =   3405
+         End
          Begin VB.CheckBox chkGaugeFunctions 
             Caption         =   "Pointer operation toggle *"
             Height          =   225
-            Left            =   1995
+            Left            =   2010
             TabIndex        =   52
             ToolTipText     =   "When checked this box enables the pointer. That's it!"
             Top             =   180
@@ -46,7 +55,7 @@ Begin VB.Form panzerPrefs
             List            =   "frmPrefs.frx":10CC
             Style           =   2  'Dropdown List
             TabIndex        =   145
-            Top             =   975
+            Top             =   1560
             Width           =   3720
          End
          Begin VB.CheckBox chkGenStartup 
@@ -55,7 +64,7 @@ Begin VB.Form panzerPrefs
             Left            =   1995
             TabIndex        =   93
             ToolTipText     =   "Check this box to enable the automatic start of the program when Windows is started."
-            Top             =   3390
+            Top             =   3975
             Width           =   4020
          End
          Begin vb6projectCCRSlider.Slider sliSamplingInterval 
@@ -63,7 +72,7 @@ Begin VB.Form panzerPrefs
             Left            =   1890
             TabIndex        =   155
             ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
-            Top             =   2025
+            Top             =   2610
             Width           =   3870
             _ExtentX        =   6826
             _ExtentY        =   688
@@ -72,13 +81,22 @@ Begin VB.Form panzerPrefs
             Value           =   20
             SelStart        =   20
          End
+         Begin VB.Label lblGeneral 
+            Caption         =   "MultiCore :"
+            Height          =   315
+            Index           =   1
+            Left            =   1050
+            TabIndex        =   162
+            Top             =   960
+            Width           =   1320
+         End
          Begin VB.Label lblWindowLevel 
             Caption         =   "Adjust to determine gauge sampling frequency (seconds). *"
             Height          =   600
             Index           =   14
             Left            =   2025
             TabIndex        =   160
-            Top             =   2805
+            Top             =   3390
             Width           =   3810
          End
          Begin VB.Label lblWindowLevel 
@@ -87,7 +105,7 @@ Begin VB.Form panzerPrefs
             Index           =   13
             Left            =   495
             TabIndex        =   159
-            Top             =   2085
+            Top             =   2670
             Width           =   1410
          End
          Begin VB.Label lblWindowLevel 
@@ -96,7 +114,7 @@ Begin VB.Form panzerPrefs
             Index           =   12
             Left            =   3615
             TabIndex        =   158
-            Top             =   2490
+            Top             =   3075
             Width           =   840
          End
          Begin VB.Label lblWindowLevel 
@@ -105,7 +123,7 @@ Begin VB.Form panzerPrefs
             Index           =   11
             Left            =   5385
             TabIndex        =   157
-            Top             =   2490
+            Top             =   3075
             Width           =   405
          End
          Begin VB.Label lblWindowLevel 
@@ -114,7 +132,7 @@ Begin VB.Form panzerPrefs
             Index           =   10
             Left            =   2070
             TabIndex        =   156
-            Top             =   2490
+            Top             =   3075
             Width           =   345
          End
          Begin VB.Label lblGeneral 
@@ -123,7 +141,7 @@ Begin VB.Form panzerPrefs
             Index           =   9
             Left            =   2025
             TabIndex        =   147
-            Top             =   1410
+            Top             =   1995
             Width           =   3810
          End
          Begin VB.Label lblGeneral 
@@ -132,7 +150,7 @@ Begin VB.Form panzerPrefs
             Index           =   3
             Left            =   375
             TabIndex        =   146
-            Top             =   1035
+            Top             =   1620
             Width           =   1605
          End
          Begin VB.Label lblGeneral 
@@ -151,7 +169,7 @@ Begin VB.Form panzerPrefs
             Left            =   960
             TabIndex        =   94
             Tag             =   "lblRefreshInterval"
-            Top             =   3510
+            Top             =   4095
             Width           =   1740
          End
          Begin VB.Label lblGeneral 
@@ -2043,6 +2061,32 @@ Private gblAllowSizeChangeFlg As Boolean
 
 
 
+'---------------------------------------------------------------------------------------
+' Procedure : chkMultiCoreEnable_Click
+' Author    : beededea
+' Date      : 30/09/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub chkMultiCoreEnable_Click()
+    On Error GoTo chkMultiCoreEnable_Click_Error
+
+    btnSave.Enabled = True ' enable the save button
+    
+    If chkMultiCoreEnable.Value = 1 Then
+        frmMultiCore.Show
+    Else
+        frmMultiCore.Hide
+    End If
+
+    On Error GoTo 0
+    Exit Sub
+
+chkMultiCoreEnable_Click_Error:
+
+     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure chkMultiCoreEnable_Click of Form panzerPrefs"
+End Sub
+
 ' ----------------------------------------------------------------
 ' Procedure Name: Form_Initialize
 ' Purpose:
@@ -3196,6 +3240,8 @@ Private Sub btnSave_Click()
     
     PzGPointerAnimate = cmbTickSwitchPref.ListIndex
     PzGSamplingInterval = LTrim$(Str$(sliSamplingInterval.Value))
+    gblMultiCoreEnable = LTrim$(Str$(chkMultiCoreEnable.Value))
+    
     
     'PzGSecondaryGaugeTimeZone = cmbSecondaryGaugeTimeZone.List(cmbSecondaryGaugeTimeZone.ListIndex)
     'PzGSecondaryDaylightSaving = cmbSecondaryDaylightSaving.List(cmbSecondaryDaylightSaving.ListIndex)
@@ -3272,7 +3318,7 @@ Private Sub btnSave_Click()
         sPutINISetting "Software\PzCPUGauge", "gaugeFunctions", PzGGaugeFunctions, PzGSettingsFile
         sPutINISetting "Software\PzCPUGauge", "pointerAnimate", PzGPointerAnimate, PzGSettingsFile
         sPutINISetting "Software\PzCPUGauge", "samplingInterval", PzGSamplingInterval, PzGSettingsFile
-        
+        sPutINISetting "Software\PzCPUGauge", "multiCoreEnable", gblMultiCoreEnable, PzGSettingsFile
         
         'sPutINISetting "Software\PzCPUGauge", "clockFaceSwitchPref", PzGClockFaceSwitchPref, PzGSettingsFile
 '        sPutINISetting "Software\PzCPUGauge", "mainGaugeTimeZone", PzGMainGaugeTimeZone, PzGSettingsFile
@@ -3520,7 +3566,8 @@ Private Sub adjustPrefsControls()
 
     cmbTickSwitchPref.ListIndex = Val(PzGPointerAnimate)
     
-    sliSamplingInterval = Val(PzGSamplingInterval)
+    sliSamplingInterval.Value = Val(PzGSamplingInterval)
+    chkMultiCoreEnable.Value = Val(gblMultiCoreEnable)
     
     ' configuration tab
    
@@ -5364,7 +5411,7 @@ Private Sub setframeHeights()
             Call SaveSizes(panzerPrefs, prefsControlPositions(), prefsCurrentWidth, prefsCurrentHeight)
         'End If
     Else
-        fraGeneral.Height = 5202
+        fraGeneral.Height = 5400
         fraConfig.Height = 6632
         fraSounds.Height = 1992
         fraPosition.Height = 7544

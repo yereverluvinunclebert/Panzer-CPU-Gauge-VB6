@@ -171,6 +171,11 @@ Public Sub mainRoutine(ByVal restart As Boolean)
  
     ' configure any global timers here
     Call configureTimers
+    
+    ' show the multi core form
+    If gblMultiCoreEnable = "1" Then
+        frmMultiCore.Show
+    End If
         
     ' RC message pump will auto-exit when Cairo Forms > 0 so we run it only when 0, this prevents message interruption
     ' when running twice on reload.
@@ -229,7 +234,7 @@ Private Sub initialiseGlobalVars()
     PzGGaugeFunctions = vbNullString
     PzGPointerAnimate = vbNullString
     PzGSamplingInterval = vbNullString
-    
+    gblMultiCoreEnable = vbNullString
         
 
 '    PzGClockFaceSwitchPref = vbNullString
@@ -524,6 +529,8 @@ Public Sub adjustMainControls()
     overlayWidget.thisOpacity = Val(PzGOpacity)
     overlayWidget.samplingInterval = Val(PzGSamplingInterval)
     
+    ' gblMultiCoreEnable
+    
     ' set the z-ordering of the window
     Call setAlphaFormZordering
     
@@ -588,6 +595,8 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGGaugeFunctions = fGetINISetting(location, "gaugeFunctions", PzGSettingsFile)
         PzGPointerAnimate = fGetINISetting(location, "pointerAnimate", PzGSettingsFile)
         PzGSamplingInterval = fGetINISetting(location, "samplingInterval", PzGSettingsFile)
+        gblMultiCoreEnable = fGetINISetting(location, "multiCoreEnable", PzGSettingsFile)
+        
         
 '        PzGClockFaceSwitchPref = fGetINISetting(location, "clockFaceSwitchPref", PzGSettingsFile)
 '        PzGMainGaugeTimeZone = fGetINISetting(location, "mainGaugeTimeZone", PzGSettingsFile)
@@ -692,9 +701,7 @@ Public Sub validateInputs()
         If PzGStartup = vbNullString Then PzGStartup = "1"
         If PzGPointerAnimate = vbNullString Then PzGPointerAnimate = "0"
         If PzGSamplingInterval = vbNullString Then PzGSamplingInterval = "3"
-        
-        
- 
+        If gblMultiCoreEnable = vbNullString Then gblMultiCoreEnable = "0"
  
         'If PzGClockFaceSwitchPref = vbNullString Then PzGClockFaceSwitchPref = "0"
 '        If PzGMainGaugeTimeZone = vbNullString Then PzGMainGaugeTimeZone = "0"

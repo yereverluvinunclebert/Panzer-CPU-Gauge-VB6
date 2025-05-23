@@ -292,8 +292,7 @@ Public PzGGaugeFunctions As String
 'Public PzGAnimationInterval As String
 Public PzGPointerAnimate As String
 Public PzGSamplingInterval As String
-
-
+Public gblMultiCoreEnable As String
 
 'Public PzGClockFaceSwitchPref As String
 'Public PzGMainGaugeTimeZone As String
@@ -373,6 +372,7 @@ Public PzGFormHighDpiYPosTwips As String
 
 Public PzGFormLowDpiXPosTwips As String
 Public PzGFormLowDpiYPosTwips As String
+
 
 
 '------------------------------------------------------ ENDS
@@ -2766,9 +2766,9 @@ Public Function ArrayString(ParamArray tokens()) As String()
     On Error GoTo ArrayString_Error
 
     ReDim Arr(UBound(tokens)) As String
-    Dim I As Long
-    For I = 0 To UBound(tokens)
-        Arr(I) = tokens(I)
+    Dim i As Long
+    For i = 0 To UBound(tokens)
+        Arr(i) = tokens(i)
     Next
     ArrayString = Arr
 
