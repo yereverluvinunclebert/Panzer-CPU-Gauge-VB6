@@ -2123,6 +2123,8 @@ End Sub
 Public Sub thisForm_Unload() ' name follows VB6 standard naming convention
     On Error GoTo Form_Unload_Error
     
+    
+    
     Call savePosition
     
     Call unloadAllForms(True)
@@ -2150,6 +2152,26 @@ End Sub
 Public Sub unloadAllForms(ByVal endItAll As Boolean)
     
    On Error GoTo unloadAllForms_Error
+   
+    ' stop all VB6 timers in the timer form
+    frmTimer.revealWidgetTimer.Enabled = False
+    frmTimer.rotationTimer.Enabled = False
+    frmTimer.settingsTimer.Enabled = False
+    frmTimer.sleepTimer.Enabled = False
+    
+    ' stop all VB6 timers in the prefs form
+    
+    panzerPrefs.themeTimer.Enabled = False
+    panzerPrefs.positionTimer.Enabled = False
+    
+    ' stop all VB6 timers in the frmMultiCore form
+    
+    frmMultiCore.Timer1.Enabled = False
+    
+    ' stop all RC6 timers
+    
+    overlayWidget.tmrSampler.Enabled = False
+    overlayWidget.tmrAnimator.Enabled = False
 
     'unload the RC6 widgets on the RC6 forms first
     
@@ -2163,8 +2185,11 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     Unload frmMessage
     Unload frmTimer
     Unload menuForm
+    Unload frmMultiCore
 
-    fMain.aboutForm.Unload  ' RC6's own method for killing forms
+    ' RC6's own method for killing forms
+    
+    fMain.aboutForm.Unload
     fMain.helpForm.Unload
     fAlpha.gaugeForm.Unload
     fMain.licenceForm.Unload
@@ -2175,12 +2200,16 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     Set frmMessage = Nothing
     Set frmTimer = Nothing
     Set menuForm = Nothing
+    Set frmMultiCore = Nothing
         
+    ' remove all variable references to each VB6 form in turn
+    
     Set fMain.aboutForm = Nothing
     Set fMain.helpForm = Nothing
     Set fAlpha.gaugeForm = Nothing
     Set fMain.licenceForm = Nothing
     
+    On Error Resume Next
 
     If endItAll = True Then End
 

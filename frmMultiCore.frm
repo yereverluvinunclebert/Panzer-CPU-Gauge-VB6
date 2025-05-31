@@ -12,7 +12,6 @@ Begin VB.Form frmMultiCore
    ScaleHeight     =   2085
    ScaleWidth      =   3900
    ShowInTaskbar   =   0   'False
-   StartUpPosition =   3  'Windows Default
    Begin MSComctlLib.ProgressBar ProgBar 
       Height          =   225
       Index           =   0
@@ -105,6 +104,8 @@ Private Sub Form_Load()
             ProgBar(i).Visible = True
             lblProg(i).Visible = True
         Next i
+        
+        frmMultiCore.Height = ProgBar(i - 1).Top + 800
         
         ' initalize cpu usage
         Update_Cpu_Usage dblCpuUsage()

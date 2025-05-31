@@ -20,7 +20,7 @@ Begin VB.Form frmTimer
    Begin VB.Timer settingsTimer 
       Enabled         =   0   'False
       Interval        =   6000
-      Left            =   90
+      Left            =   105
       Tag             =   "settingsTimer for reading external changes to prefs"
       Top             =   1095
    End

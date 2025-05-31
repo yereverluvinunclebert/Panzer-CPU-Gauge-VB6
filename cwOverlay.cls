@@ -43,9 +43,9 @@ Public cyPerc As Single
 
 Private WithEvents W As cWidgetBase
 Attribute W.VB_VarHelpID = -1
-Private WithEvents tmrSampler As cTimer
+Public WithEvents tmrSampler As cTimer
 Attribute tmrSampler.VB_VarHelpID = -1
-Private WithEvents tmrAnimator As cTimer
+Public WithEvents tmrAnimator As cTimer
 Attribute tmrAnimator.VB_VarHelpID = -1
 
 Private oldSDeg As Double
