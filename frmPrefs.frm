@@ -2071,6 +2071,8 @@ Private gblAllowSizeChangeFlg As Boolean
 Private Sub chkMultiCoreEnable_Click()
     On Error GoTo chkMultiCoreEnable_Click_Error
 
+    If prefsStartupFlg = True Then Exit Sub
+    
     btnSave.Enabled = True ' enable the save button
     
     If chkMultiCoreEnable.Value = 1 Then
@@ -3210,6 +3212,9 @@ End Sub
 ' Author    : beededea
 ' Date      : 02/05/2023
 ' Purpose   : save the values from all the tabs
+'             NOTE: the boolean values for check boxes are locale sensitive and true converted by CStr will return local language result
+'             stick with LTrim$(Str$()) for the moment
+'             It is OK to convert checkboxes usibng cstr() as the boolean values are stored as 0 and -1
 '---------------------------------------------------------------------------------------
 '
 Private Sub btnSave_Click()
@@ -4209,6 +4214,7 @@ Private Sub sliSamplingInterval_Click()
     If prefsStartupFlg = False Then
         PzGSamplingInterval = LTrim$(Str$(sliSamplingInterval.Value))
         overlayWidget.samplingInterval = sliSamplingInterval.Value
+        frmMultiCore.Timer1.Interval = Val(PzGSamplingInterval) * 1000
         sPutINISetting "Software\PzCPUGauge", "samplingInterval", PzGSamplingInterval, PzGSettingsFile
         
     End If

@@ -3,12 +3,16 @@ Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Begin VB.Form frmMultiCore 
    Caption         =   "CPU Usage Per Core"
    ClientHeight    =   2085
-   ClientLeft      =   1395
-   ClientTop       =   2175
-   ClientWidth     =   3960
+   ClientLeft      =   60
+   ClientTop       =   405
+   ClientWidth     =   3900
    LinkTopic       =   "Form1"
+   MaxButton       =   0   'False
+   MinButton       =   0   'False
    ScaleHeight     =   2085
-   ScaleWidth      =   3960
+   ScaleWidth      =   3900
+   ShowInTaskbar   =   0   'False
+   StartUpPosition =   3  'Windows Default
    Begin MSComctlLib.ProgressBar ProgBar 
       Height          =   225
       Index           =   0
@@ -26,8 +30,8 @@ Begin VB.Form frmMultiCore
    Begin VB.Timer Timer1 
       Enabled         =   0   'False
       Interval        =   2000
-      Left            =   3930
-      Top             =   30
+      Left            =   2715
+      Top             =   885
    End
    Begin VB.Label lblProg 
       Appearance      =   0  'Flat
@@ -57,30 +61,35 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'//////////////////////////////////////////
-' Get CPU Usage Per Core v1.3            //
-' Edgemeal - http://edgemeal.110mb.com   //
-'//////////////////////////////////////////
+'---------------------------------------------------------------------------------------
+' Module    : frmMultiCore
+' Author    : EdgeMeal http://edgemeal.110mb.com
+' Date      : 31/05/2025
+' Purpose   : Get CPU Usage Per Core v1.3
+'---------------------------------------------------------------------------------------
 
 'Notes: Run as Administrator!
 Option Explicit
 
 '  array to hold CPU usage value for each CPU core
-Dim dblCpuUsage() As Double
+Private dblCpuUsage() As Double
 
 
 
+'---------------------------------------------------------------------------------------
+' Procedure : Form_Load
+' Author    : EdgeMeal
+' Date      : 31/05/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
 Private Sub Form_Load()
     
     Dim i As Integer
-    
-    If App.PrevInstance = True Then
-        MsgBox " A copy of CPU Usage Test is already loaded!", vbInformation
-        Unload Me
-        Exit Sub
-    End If
-        
+         
     ' setup CPU usage quary
+   On Error GoTo Form_Load_Error
+
     If InitializeCPU = True Then
        
         ' redimension cpu usage value array to number of CPU cores
@@ -108,15 +117,45 @@ Private Sub Form_Load()
         Unload Me
         Exit Sub
     End If
+
+   On Error GoTo 0
+   Exit Sub
+
+Form_Load_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Form_Load of Form frmMultiCore"
     
 End Sub
 
+'---------------------------------------------------------------------------------------
+' Procedure : Form_Unload
+' Author    : EdgeMeal
+' Date      : 31/05/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
 Private Sub Form_Unload(Cancel As Integer)
+   On Error GoTo Form_Unload_Error
+
     Timer1.Enabled = False ' stop updating
     Close_CPU_Usage ' close PDH if used
     Set frmMultiCore = Nothing
+
+   On Error GoTo 0
+   Exit Sub
+
+Form_Unload_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Form_Unload of Form frmMultiCore"
 End Sub
 
+'---------------------------------------------------------------------------------------
+' Procedure : Timer1_Timer
+' Author    : EdgeMeal
+' Date      : 31/05/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
 Private Sub Timer1_Timer()
     ' // update display//
     
@@ -124,6 +163,8 @@ Private Sub Timer1_Timer()
     Dim TotalUsage As Double
     
     'quary current cpu usage / store in array
+   On Error GoTo Timer1_Timer_Error
+
     Update_Cpu_Usage dblCpuUsage()
     
     ' display usage per core
@@ -135,4 +176,11 @@ Private Sub Timer1_Timer()
     
     ' display total (usage per core divided by number of cores)
     Me.Caption = "CPU Usage: " & Format(TotalUsage / (NumCores + 1), "0.0") & "%"
+
+   On Error GoTo 0
+   Exit Sub
+
+Timer1_Timer_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Timer1_Timer of Form frmMultiCore"
 End Sub

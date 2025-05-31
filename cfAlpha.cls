@@ -66,7 +66,7 @@ Public Sub InitFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
     Const AlphaWithTaskbarEntry As Integer = 6
     Const AlphaNoTaskbarEntry As Integer = 7
   
-    Dim I As Long: I = 0
+    Dim i As Long: i = 0
     Dim W As cWidgetBase
    
     On Error GoTo InitFromPSD_Error
@@ -79,19 +79,19 @@ Public Sub InitFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
         PSDWidth = .Width
         PSDHeight = .Height       'store the original Psd-Pixel-Width/Height in Private vars (as the base from which we calculate the zoomed Form-Width/Height)
     
-        For I = 0 To .LayersCount - 1 ' loop through each of the Layers in the PSD
-            If .LayerByteSize(I) Then  ' this is a true Alpha-Surface-Layer and not just a PSD layer 'group'
-                If .LayerAlphaPercent(I) > 0 Then ' only handles layers that have an opacity greater than 0 - need to note this for the future, this will cause a problem!
+        For i = 0 To .LayersCount - 1 ' loop through each of the Layers in the PSD
+            If .LayerByteSize(i) Then  ' this is a true Alpha-Surface-Layer and not just a PSD layer 'group'
+                If .LayerAlphaPercent(i) > 0 Then ' only handles layers that have an opacity greater than 0 - need to note this for the future, this will cause a problem!
                     'add each current Layer path and surface object into the global ImageList collection (using LayerPath as the ImageKey)
-                    Cairo.ImageList.AddSurface .LayerPath(I), .LayerSurface(I)
+                    Cairo.ImageList.AddSurface .LayerPath(i), .LayerSurface(i)
                     
-                    If collPSDNonUIElements.Exists(.LayerPath(I)) Then ' we do not create Widgets for those in this exclude list.
+                    If collPSDNonUIElements.Exists(.LayerPath(i)) Then ' we do not create Widgets for those in this exclude list.
                         
                         'we add layer info. (used in cwOverlay) to the "excluded paths" previously defined in Sub Main,
-                        collPSDNonUIElements(.LayerPath(I)) = Array(.LayerX(I), .LayerY(I), Val(PzGOpacity) / 100)  'here we update the so far empty slots with the PSD-offsets
+                        collPSDNonUIElements(.LayerPath(i)) = Array(.LayerX(i), .LayerY(i), Val(PzGOpacity) / 100)  'here we update the so far empty slots with the PSD-offsets
                 
                     Else 'everything not in the exclude-list will get its own Widget-instance
-                        Set W = gaugeForm.Widgets.Add(New cwAlphaImg, LCase$(.LayerPath(I)), .LayerX(I), .LayerY(I), .LayerWidth(I), .LayerHeight(I)).Widget
+                        Set W = gaugeForm.Widgets.Add(New cwAlphaImg, LCase$(.LayerPath(i)), .LayerX(i), .LayerY(i), .LayerWidth(i), .LayerHeight(i)).Widget
                             W.ImageKey = W.Key 'W.Key equals ImageList-Key, set above - and LayerPath(i) at this point ... set it also as the ImageKey of our new created Widget
                         If PzGOpacity < 1 Then
                             W.Alpha = Val(PzGOpacity) / 100
@@ -112,7 +112,7 @@ Public Sub InitFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                     End If
                 End If
             End If
-        Next I
+        Next i
     End With '<-- the Parser-instance will be destroyed here (freeing the Memory, the internal PSD-Layers have occupied)
     
     Set overlayWidget = gaugeForm.Widgets.Add(New cwOverlay, "Overlay", 0, 0, PSDWidth, PSDHeight)
@@ -151,9 +151,9 @@ Private Sub gaugeForm_BubblingEvent(ByRef Sender As Object, ByRef EventName As S
             Case "housing/tickbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip gaugeForm.hwnd, "Click here to toggle the pointer movement from once per interval to a more fluid, continuous movement.", _
                      TTIconInfo, widgetName & " Tick Button Help", , , , True
-            Case "housing/switchfacesbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip gaugeForm.hwnd, "This button is not allocated a function in this particular widget.", _
-                     TTIconInfo, widgetName & " Switch Faces Button Help", , , , True
+            Case "housing/middlebutton"
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip gaugeForm.hwnd, "This button switches on the mutli-core display. If your CPU has more than one core a bar will be shown, displaying the CPU for each core.", _
+                     TTIconInfo, widgetName & " Multi-Core Button Help", , , , True
             Case "housing/stopbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip gaugeForm.hwnd, "This button stops all animated gauge functions for this widget, hand movements &c .", _
                      TTIconInfo, widgetName & " Stop Button Help", , , , True
@@ -178,8 +178,8 @@ Private Sub gaugeForm_BubblingEvent(ByRef Sender As Object, ByRef EventName As S
                 Call prefsbutton_mouseDown(Sender)
             Case "housing/tickbutton"
                 Call tickbutton_mouseDown(Sender)
-            Case "housing/switchfacesbutton"
-                 Call switchfacesbutton_mouseDown(Sender)
+            Case "housing/middlebutton"
+                 Call middlebutton_mouseDown(Sender)
             Case "housing/stopbutton"
                 Call stopbutton_mouseDown(Sender)
             Case Else
@@ -192,8 +192,8 @@ Private Sub gaugeForm_BubblingEvent(ByRef Sender As Object, ByRef EventName As S
             Case "housing/prefsbutton"
                 Sender.Widget.Alpha = Val(PzGOpacity) / 100
                 Sender.Widget.Refresh
-            Case "housing/switchfacesbutton"
-                Call switchfacesbutton_mouseUp(Sender)
+            Case "housing/middlebutton"
+                Call middlebutton_mouseUp(Sender)
             Case "housing/stopbutton"
                 Call stopbutton_mouseUp(Sender)
             Case Else
@@ -322,36 +322,46 @@ stopbutton_mouseDown_Error:
 
 End Sub
 '---------------------------------------------------------------------------------------
-' Procedure : switchfacesbutton_mouseDown
+' Procedure : middlebutton_mouseDown
 ' Author    : beededea
 ' Date      : 03/08/2023
-' Purpose   :
+' Purpose   : toggles the display of the multi-core VB6 form
 '---------------------------------------------------------------------------------------
 '
-Private Sub switchfacesbutton_mouseDown(ByRef Sender As Object)
-    On Error GoTo switchfacesbutton_mouseDown_Error
+Private Sub middlebutton_mouseDown(ByRef Sender As Object)
+    On Error GoTo middlebutton_mouseDown_Error
 
     Sender.Widget.Alpha = 0
     Sender.Widget.Refresh
     
+    If gblMultiCoreEnable = "0" Then
+        gblMultiCoreEnable = "1"
+        frmMultiCore.Show
+    Else
+        gblMultiCoreEnable = "0"
+        frmMultiCore.Hide
+    End If
+    
+    panzerPrefs.chkMultiCoreEnable.Value = Val(gblMultiCoreEnable)
+    
    On Error GoTo 0
    Exit Sub
 
-switchfacesbutton_mouseDown_Error:
+middlebutton_mouseDown_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure switchfacesbutton_mouseDown of Class Module cfAlpha"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure middlebutton_mouseDown of Class Module cfAlpha"
 
 End Sub
 '---------------------------------------------------------------------------------------
-' Procedure : switchfacesbutton_mouseUp
+' Procedure : middlebutton_mouseUp
 ' Author    : beededea
 ' Date      : 03/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub switchfacesbutton_mouseUp(ByRef Sender As Object)
+Private Sub middlebutton_mouseUp(ByRef Sender As Object)
     Dim fileToPlay As String: fileToPlay = vbNullString
-    On Error GoTo switchfacesbutton_mouseUp_Error
+    On Error GoTo middlebutton_mouseUp_Error
 
     Sender.Widget.Alpha = Val(PzGOpacity) / 100
     Sender.Widget.Refresh
@@ -360,12 +370,14 @@ Private Sub switchfacesbutton_mouseUp(ByRef Sender As Object)
     If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
+    
+    
    On Error GoTo 0
    Exit Sub
 
-switchfacesbutton_mouseUp_Error:
+middlebutton_mouseUp_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure switchfacesbutton_mouseUp of Class Module cfAlpha"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure middlebutton_mouseUp of Class Module cfAlpha"
 
 End Sub
 '---------------------------------------------------------------------------------------

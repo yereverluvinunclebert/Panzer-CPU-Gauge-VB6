@@ -1,4 +1,11 @@
 Attribute VB_Name = "ModCpuUsage"
+'---------------------------------------------------------------------------------------
+' Module    : ModCpuUsage
+' Author    : EdgeMeal
+' Date      : 31/05/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+
 Option Explicit
 
 ' v1.3 demo - changed to public
@@ -44,10 +51,33 @@ Private Declare Function PdhCollectQueryData Lib "PDH.DLL" (ByVal QueryHandle As
 Private Declare Function PdhVbGetDoubleCounterValue Lib "PDH.DLL" (ByVal CounterHandle As Long, ByRef CounterStatus As Long) As Double
 Private Declare Sub PdhLookupPerfNameByIndex Lib "PDH.DLL" Alias "PdhLookupPerfNameByIndexA" (ByVal szMachineName As String, ByVal dwNameIndex As Long, ByVal szNameBuffer As String, ByRef pcchNameBufferSize As Long)
 
+'---------------------------------------------------------------------------------------
+' Procedure : Close_CPU_Usage
+' Author    : EdgeMeal
+' Date      : 31/05/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
 Public Sub Close_CPU_Usage()
+   On Error GoTo Close_CPU_Usage_Error
+
    If hQuery Then PdhCloseQuery (hQuery)  ' close
+
+   On Error GoTo 0
+   Exit Sub
+
+Close_CPU_Usage_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Close_CPU_Usage of Module ModCpuUsage"
 End Sub
 
+'---------------------------------------------------------------------------------------
+' Procedure : InitializeCPU
+' Author    : EdgeMeal
+' Date      : 31/05/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
 Public Function InitializeCPU() As Boolean
     ' Add CPU counters
     Dim pdhStatus As PDH_STATUS
@@ -57,6 +87,8 @@ Public Function InitializeCPU() As Boolean
     Dim i As Integer
     
     ' get # of cpus (cores)
+   On Error GoTo InitializeCPU_Error
+
     GetSystemInfo SysInfo
     NumCores = SysInfo.dwNumberOrfProcessors - 1
         
@@ -83,8 +115,22 @@ Public Function InitializeCPU() As Boolean
     ' return success
     InitializeCPU = True
 
+   On Error GoTo 0
+   Exit Function
+
+InitializeCPU_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure InitializeCPU of Module ModCpuUsage"
+
 End Function
 
+'---------------------------------------------------------------------------------------
+' Procedure : Update_Cpu_Usage
+' Author    : EdgeMeal
+' Date      : 31/05/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
 Public Sub Update_Cpu_Usage(ByRef dblArray() As Double)
     
     ' // quary counters  //
@@ -92,6 +138,8 @@ Public Sub Update_Cpu_Usage(ByRef dblArray() As Double)
     Dim i As Integer
         
     ' Query Data
+   On Error GoTo Update_Cpu_Usage_Error
+
     PdhCollectQueryData (hQuery)
     
     ' get cpu usage per core, store in passed array
@@ -99,14 +147,30 @@ Public Sub Update_Cpu_Usage(ByRef dblArray() As Double)
         dblArray(i) = PdhVbGetDoubleCounterValue(Counters(i).hCounter, pdhStatus)
     Next
 
+   On Error GoTo 0
+   Exit Sub
+
+Update_Cpu_Usage_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Update_Cpu_Usage of Module ModCpuUsage"
+
 End Sub
 
+'---------------------------------------------------------------------------------------
+' Procedure : GetCPUCounter
+' Author    : EdgeMeal
+' Date      : 31/05/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
 Private Function GetCPUCounter(strInstance As String) As String
     ' // get Object & Counter names for CPU Usage //
     ' / Different languages of windows use different string names so we need a look-up! /
     Dim NameLen As Long
     Dim ObjectName As String, CounterName As String
     
+   On Error GoTo GetCPUCounter_Error
+
     NameLen = MAX_PATH
     ObjectName = Space$(NameLen)
     PdhLookupPerfNameByIndex ByVal vbNullString, COUNTERPERF_PROCESSOR, ObjectName, NameLen
@@ -118,5 +182,12 @@ Private Function GetCPUCounter(strInstance As String) As String
     PdhLookupPerfNameByIndex ByVal vbNullString, COUNTERPERF_PERCENTPROCESSORTIME, CounterName, NameLen
     CounterName = Left$(CounterName, NameLen - 1)
     GetCPUCounter = "\" & ObjectName & "(" & strInstance & ")\" & CounterName
+
+   On Error GoTo 0
+   Exit Function
+
+GetCPUCounter_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure GetCPUCounter of Module ModCpuUsage"
     
 End Function

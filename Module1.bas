@@ -1768,7 +1768,7 @@ Public Sub setMainTooltips()
         fAlpha.gaugeForm.Widgets("housing/helpbutton").Widget.ToolTip = "Press for a little help"
         fAlpha.gaugeForm.Widgets("housing/startbutton").Widget.ToolTip = "Press to restart (when stopped)"
         fAlpha.gaugeForm.Widgets("housing/stopbutton").Widget.ToolTip = "Press to stop clock operation."
-        fAlpha.gaugeForm.Widgets("housing/switchfacesbutton").Widget.ToolTip = "Press to do nothing at all."
+        fAlpha.gaugeForm.Widgets("housing/middlebutton").Widget.ToolTip = "Press to do nothing at all."
         fAlpha.gaugeForm.Widgets("housing/lockbutton").Widget.ToolTip = "Press to lock the widget in place"
         fAlpha.gaugeForm.Widgets("housing/prefsbutton").Widget.ToolTip = "Press to open the widget preferences"
         fAlpha.gaugeForm.Widgets("housing/surround").Widget.ToolTip = "Ctrl + mouse scrollwheel up/down to resize, you can also drag me to a new position."
@@ -1782,7 +1782,7 @@ Public Sub setMainTooltips()
         fAlpha.gaugeForm.Widgets("housing/helpbutton").Widget.ToolTip = vbNullString
         fAlpha.gaugeForm.Widgets("housing/startbutton").Widget.ToolTip = vbNullString
         fAlpha.gaugeForm.Widgets("housing/stopbutton").Widget.ToolTip = vbNullString
-        fAlpha.gaugeForm.Widgets("housing/switchfacesbutton").Widget.ToolTip = vbNullString
+        fAlpha.gaugeForm.Widgets("housing/middlebutton").Widget.ToolTip = vbNullString
         fAlpha.gaugeForm.Widgets("housing/lockbutton").Widget.ToolTip = vbNullString
         fAlpha.gaugeForm.Widgets("housing/prefsbutton").Widget.ToolTip = vbNullString
         fAlpha.gaugeForm.Widgets("housing/surround").Widget.ToolTip = vbNullString

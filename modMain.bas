@@ -479,7 +479,7 @@ Public Sub adjustMainControls()
         .Tag = 0.25
     End With
       
-    With fAlpha.gaugeForm.Widgets("housing/switchfacesbutton").Widget
+    With fAlpha.gaugeForm.Widgets("housing/middlebutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(PzGOpacity) / 100
@@ -528,6 +528,7 @@ Public Sub adjustMainControls()
 
     overlayWidget.thisOpacity = Val(PzGOpacity)
     overlayWidget.samplingInterval = Val(PzGSamplingInterval)
+    frmMultiCore.Timer1.Interval = Val(PzGSamplingInterval) * 1000
     
     ' gblMultiCoreEnable
     

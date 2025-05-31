@@ -482,7 +482,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As Single, ByVal dx_Aligned As Single, ByVal dy_Aligned As Single, UserObj As Object)
-    Dim I As Long: I = 0
+    Dim i As Long: i = 0
     Dim Arr As Variant
     Dim Key As String: Key = vbNullString
     Dim Pat As cCairoPattern
@@ -508,9 +508,9 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     txtCPUPercent = CStr(Int(cpuPercent))
     txtNoOfCores = CStr(noOfProcessors)
 
-    For I = 0 To cCollOverlayImages.Count - 1 ' this is the ExcludedPaths collection populated in cfAlpha by duplicating collPSDNonUIElements.
-      Arr = cCollOverlayImages.ItemByIndex(I)
-      Key = cCollOverlayImages.KeyByIndex(I)
+    For i = 0 To cCollOverlayImages.Count - 1 ' this is the ExcludedPaths collection populated in cfAlpha by duplicating collPSDNonUIElements.
+      Arr = cCollOverlayImages.ItemByIndex(i)
+      Key = cCollOverlayImages.KeyByIndex(i)
       
       If IsArray(Arr) Then
              CC.Save
@@ -780,7 +780,7 @@ End Function
 ' ----------------------------------------------------------------
 Sub obtainCoreCPUPercent()
     Dim strComputer$
-    Dim I&
+    Dim i&
     Dim objWMIService As Object, colItems As Object, objItem As Object
     
     On Error GoTo obtainCoreCPUPercent_Error
@@ -790,9 +790,9 @@ Sub obtainCoreCPUPercent()
     Set colItems = objWMIService.ExecQuery( _
     "SELECT * FROM Win32_PerfFormattedData_PerfOS_Processor", , 48)
     For Each objItem In colItems
-        I = I + 1 ' 1 = cpu all
+        i = i + 1 ' 1 = cpu all
         Debug.Print "-----------------------------------"
-        Debug.Print "Processor " & I
+        Debug.Print "Processor " & i
         'Debug.Print "-----------------------------------"
         Debug.Print "usage: " & objItem.PercentProcessorTime
     Next
