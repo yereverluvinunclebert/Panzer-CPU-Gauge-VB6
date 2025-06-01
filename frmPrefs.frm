@@ -121,7 +121,7 @@ Begin VB.Form panzerPrefs
             Caption         =   "30"
             Height          =   315
             Index           =   11
-            Left            =   5385
+            Left            =   5445
             TabIndex        =   157
             Top             =   3075
             Width           =   405
@@ -130,7 +130,7 @@ Begin VB.Form panzerPrefs
             Caption         =   "1"
             Height          =   315
             Index           =   10
-            Left            =   2070
+            Left            =   2010
             TabIndex        =   156
             Top             =   3075
             Width           =   345
@@ -2218,7 +2218,7 @@ End Sub
 ' Procedure : positionPrefsMonitor
 ' Author    : beededea
 ' Date      : 06/10/2023
-' Purpose   : position the prefs on the curent monitor
+' Purpose   : position the prefs on the current monitor
 '---------------------------------------------------------------------------------------
 '
 Public Sub positionPrefsMonitor()
@@ -2257,7 +2257,7 @@ Public Sub positionPrefsMonitor()
     End If
     
     monitorCount = fGetMonitorCount
-    If monitorCount > 1 Then Call adjustFormPositionToCorrectMonitor(Me.hwnd, formLeftTwips, formTopTwips)
+    If monitorCount > 1 Then Call SetFormOnMonitor(Me.hwnd, formLeftTwips / fTwipsPerPixelX, formTopTwips / fTwipsPerPixelY)
     
     ' calculate the on-screen widget position
     If Me.Left < 0 Then
@@ -5320,14 +5320,14 @@ End Sub
 ' Procedure : positionTimer_Timer
 ' Author    : beededea
 ' Date      : 27/05/2023
-' Purpose   :
+' Purpose   : periodically read the prefs form position and store
 '---------------------------------------------------------------------------------------
 '
 Private Sub positionTimer_Timer()
     ' save the current X and y position of this form to allow repositioning when restarting
     On Error GoTo positionTimer_Timer_Error
    
-    Call writePrefsPosition
+    If panzerPrefs.IsVisible = True Then Call writePrefsPosition
 
    On Error GoTo 0
    Exit Sub

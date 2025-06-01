@@ -6,6 +6,7 @@ Begin VB.Form frmMultiCore
    ClientLeft      =   60
    ClientTop       =   405
    ClientWidth     =   3900
+   Icon            =   "frmMultiCore.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
@@ -137,6 +138,8 @@ End Sub
 '
 Private Sub Form_Unload(Cancel As Integer)
    On Error GoTo Form_Unload_Error
+   
+    gblMultiCoreEnable = "0"
 
     Timer1.Enabled = False ' stop updating
     Close_CPU_Usage ' close PDH if used
