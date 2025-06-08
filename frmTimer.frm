@@ -12,6 +12,7 @@ Begin VB.Form frmTimer
    StartUpPosition =   3  'Windows Default
    Visible         =   0   'False
    Begin VB.Timer sleepTimer 
+      Enabled         =   0   'False
       Interval        =   5000
       Left            =   105
       Tag             =   "stores and compares the last time to see if the PC has slept"

@@ -13,10 +13,16 @@ Begin VB.Form frmMultiCore
    ScaleHeight     =   2085
    ScaleWidth      =   3900
    ShowInTaskbar   =   0   'False
+   Begin VB.Timer multicorePositionTimer 
+      Enabled         =   0   'False
+      Interval        =   5000
+      Left            =   2730
+      Top             =   1425
+   End
    Begin MSComctlLib.ProgressBar ProgBar 
       Height          =   225
       Index           =   0
-      Left            =   135
+      Left            =   150
       TabIndex        =   0
       Top             =   180
       Width           =   2250
@@ -27,26 +33,26 @@ Begin VB.Form frmMultiCore
       Appearance      =   0
       Scrolling       =   1
    End
-   Begin VB.Timer Timer1 
+   Begin VB.Timer tmrMultiCore 
       Enabled         =   0   'False
-      Interval        =   2000
-      Left            =   2715
+      Interval        =   1000
+      Left            =   2730
       Top             =   885
+   End
+   Begin VB.Label lblGenericLabel 
+      Caption         =   "tmrMultiCore"
+      Height          =   240
+      Left            =   1665
+      TabIndex        =   2
+      Top             =   990
+      Visible         =   0   'False
+      Width           =   930
    End
    Begin VB.Label lblProg 
       Appearance      =   0  'Flat
       BackColor       =   &H80000005&
       BackStyle       =   0  'Transparent
       Caption         =   "00.0"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       ForeColor       =   &H80000008&
       Height          =   195
       Index           =   0
@@ -68,7 +74,6 @@ Attribute VB_Exposed = False
 ' Purpose   : Get CPU Usage Per Core v1.3
 '---------------------------------------------------------------------------------------
 
-'Notes: Run as Administrator!
 Option Explicit
 
 '  array to hold CPU usage value for each CPU core
@@ -85,34 +90,71 @@ Private dblCpuUsage() As Double
 '
 Private Sub Form_Load()
     
-    Dim i As Integer
-         
-    ' setup CPU usage quary
-   On Error GoTo Form_Load_Error
+    Dim I As Integer: I = 0
+    Dim leftPoint As Long:  leftPoint = 0
+    Dim topPoint  As Long:  topPoint = 0
+    
+    On Error GoTo Form_Load_Error
+    
+    ' set the initial small interval so that the sliders are displayed straight away, reset later
+    tmrMultiCore.Interval = 1000
+    
+    Call readMulticorePosition
 
-    If InitializeCPU = True Then
+    ' setup CPU usage query
+    If fInitializeCPU = True Then
+    
+        If Val(gblMulticoreXPosTwips) <> 0 Then
+                
+            Me.Top = Val(gblMulticoreYPosTwips)
+            Me.Left = Val(gblMulticoreXPosTwips)
+        Else
+    
+            leftPoint = fAlpha.gaugeForm.Widgets("housing/surround").Widget.Left
+            topPoint = fAlpha.gaugeForm.Widgets("housing/stopButton").Widget.Top
+        
+            Me.Top = ((topPoint) * screenTwipsPerPixelY) - 150
+            Me.Left = (fAlpha.gaugeForm.Left + leftPoint) * screenTwipsPerPixelX - 250
+            
+        End If
        
         ' redimension cpu usage value array to number of CPU cores
         ReDim dblCpuUsage(NumCores)
         
-        ' add additional prog bar and lable for each cpu core (if more then 1 cpu core).
-        For i = 1 To NumCores
-            Load ProgBar(i)
-            Load lblProg(i)
-            ProgBar(i).Max = 100
-            ProgBar(i).Top = ProgBar(i - 1).Top + ProgBar(i - 1).Height + 15
-            lblProg(i).Top = ProgBar(i).Top
-            ProgBar(i).Visible = True
-            lblProg(i).Visible = True
-        Next i
+        ' set the font characteristics of the master label
+        lblProg(0).Font.Name = PzGPrefsFont
+        lblProg(0).Font.Italic = CBool(PzGPrefsFontItalics)
+        lblProg(0).ForeColor = PzGPrefsFontColour
+        lblProg(0).Font.Size = Val(PzGPrefsFontSizeLowDPI)
         
-        frmMultiCore.Height = ProgBar(i - 1).Top + 800
+        ' add additional prog bar and lable for each cpu core (if more then 1 cpu core).
+        For I = 1 To NumCores
+            Load ProgBar(I)
+            Load lblProg(I)
+            
+            lblProg(I).Font.Name = PzGPrefsFont
+            lblProg(I).Font.Italic = CBool(PzGPrefsFontItalics)
+            lblProg(I).ForeColor = PzGPrefsFontColour
+            lblProg(I).Font.Size = Val(PzGPrefsFontSizeLowDPI)
+            
+            ProgBar(I).Max = 100
+            ProgBar(I).Top = ProgBar(I - 1).Top + ProgBar(I - 1).Height + 15
+            lblProg(I).Top = ProgBar(I).Top
+            ProgBar(I).Visible = True
+            lblProg(I).Visible = True
+        Next I
+        
+        frmMultiCore.Height = ProgBar(I - 1).Top + 800 + 250
         
         ' initalize cpu usage
         Update_Cpu_Usage dblCpuUsage()
         
-        ' update/display usage
-        Timer1.Enabled = True
+        ' start the main timer that displays cpu usage
+        tmrMultiCore.Enabled = True
+        
+        ' start the position timer
+        multicorePositionTimer.Enabled = True
+        
     Else
         ' failed...
         MsgBox "Sorry, Unable to initialize CPU usage.", vbApplicationModal + vbInformation
@@ -140,8 +182,10 @@ Private Sub Form_Unload(Cancel As Integer)
    On Error GoTo Form_Unload_Error
    
     gblMultiCoreEnable = "0"
+    
+    Call writeMulticorePosition
 
-    Timer1.Enabled = False ' stop updating
+    tmrMultiCore.Enabled = False ' stop updating
     Close_CPU_Usage ' close PDH if used
     Set frmMultiCore = Nothing
 
@@ -154,29 +198,50 @@ Form_Unload_Error:
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Procedure : Timer1_Timer
+' Procedure : tmrMultiCore_Timer
 ' Author    : EdgeMeal
 ' Date      : 31/05/2025
+' Purpose   : update display
+'---------------------------------------------------------------------------------------
+'
+Private Sub tmrMultiCore_Timer()
+
+    On Error GoTo tmrMultiCore_Timer_Error
+    
+    Call updateCoreDisplay
+
+   On Error GoTo 0
+   Exit Sub
+
+tmrMultiCore_Timer_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrMultiCore_Timer of Form frmMultiCore"
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : updateCoreDisplay
+' Author    : beededea
+' Date      : 02/06/2025
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub Timer1_Timer()
-    ' // update display//
+Private Sub updateCoreDisplay()
+    Dim I As Integer: I = 0
+    Dim TotalUsage As Double: TotalUsage = 0
     
-    Dim i As Integer
-    Dim TotalUsage As Double
+    'query current cpu usage / store in array
+    On Error GoTo updateCoreDisplay_Error
     
-    'quary current cpu usage / store in array
-   On Error GoTo Timer1_Timer_Error
+    tmrMultiCore.Interval = Val(PzGSamplingInterval) * 1000
 
     Update_Cpu_Usage dblCpuUsage()
     
     ' display usage per core
-    For i = 0 To NumCores
-        TotalUsage = TotalUsage + dblCpuUsage(i)
-        ProgBar(i).Value = CInt(dblCpuUsage(i))
-        lblProg(i).Caption = "CPU " & i & ": " & Format(dblCpuUsage(i), "0.0") & "%"
-    Next i
+    For I = 0 To NumCores
+        TotalUsage = TotalUsage + dblCpuUsage(I)
+        ProgBar(I).Value = CInt(dblCpuUsage(I))
+        lblProg(I).Caption = "CPU " & I & ": " & Format(dblCpuUsage(I), "0.0") & "%"
+    Next I
     
     ' display total (usage per core divided by number of cores)
     Me.Caption = "CPU Usage: " & Format(TotalUsage / (NumCores + 1), "0.0") & "%"
@@ -184,7 +249,115 @@ Private Sub Timer1_Timer()
    On Error GoTo 0
    Exit Sub
 
-Timer1_Timer_Error:
+updateCoreDisplay_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Timer1_Timer of Form frmMultiCore"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure updateCoreDisplay of Form frmMultiCore"
 End Sub
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : multicorePositionTimer_Timer
+' Author    : beededea
+' Date      : 27/05/2023
+' Purpose   : periodically read the prefs form position and store
+'---------------------------------------------------------------------------------------
+'
+Private Sub multicorePositionTimer_Timer()
+    ' save the current X and y position of this form to allow repositioning when restarting
+    On Error GoTo multicorePositionTimer_Timer_Error
+   
+    If frmMultiCore.IsVisible = True Then Call writeMulticorePosition
+
+   On Error GoTo 0
+   Exit Sub
+
+multicorePositionTimer_Timer_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure multicorePositionTimer_Timer of Form frmMultiCore"
+
+End Sub
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : writeMulticorePosition
+' Author    : beededea
+' Date      : 28/05/2023
+' Purpose   : save the current X and y position of this form to allow repositioning when restarting
+'---------------------------------------------------------------------------------------
+'
+Private Sub writeMulticorePosition()
+        
+   On Error GoTo writeMulticorePosition_Error
+
+    If frmMultiCore.WindowState = vbNormal Then ' when vbMinimised the value = -48000  !
+        gblMulticoreXPosTwips = CStr(frmMultiCore.Left)
+        gblMulticoreYPosTwips = CStr(frmMultiCore.Top)
+        
+        ' now write those params to the toolSettings.ini
+        sPutINISetting "Software\PzCPUGauge", "multicoreXPosTwips", gblMulticoreXPosTwips, PzGSettingsFile
+        sPutINISetting "Software\PzCPUGauge", "multicoreYPosTwips", gblMulticoreYPosTwips, PzGSettingsFile
+    End If
+    
+    On Error GoTo 0
+   Exit Sub
+
+writeMulticorePosition_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure writeMulticorePosition of Form frmMultiCore"
+End Sub
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : readMulticorePosition
+' Author    : beededea
+' Date      : 28/05/2023
+' Purpose   : save the current X and y position of this form to allow repositioning when restarting
+'---------------------------------------------------------------------------------------
+'
+Private Sub readMulticorePosition()
+        
+   On Error GoTo readMulticorePosition_Error
+   
+    gblMulticoreXPosTwips = fGetINISetting("Software\PzCPUGauge", "multicoreXPosTwips", PzGSettingsFile)
+    gblMulticoreYPosTwips = fGetINISetting("Software\PzCPUGauge", "multicoreYPosTwips", PzGSettingsFile)
+    
+    On Error GoTo 0
+   Exit Sub
+
+readMulticorePosition_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure readMulticorePosition of Form frmMultiCore"
+End Sub
+
+
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : IsVisible
+' Author    : beededea
+' Date      : 08/05/2023
+' Purpose   : calling a manual property to a form allows external checks to the form to
+'             determine whether it is loaded, without also activating the form automatically.
+'---------------------------------------------------------------------------------------
+'
+Public Property Get IsVisible() As Boolean
+    On Error GoTo IsVisible_Error
+
+    If Me.WindowState = vbNormal Then
+        IsVisible = Me.Visible
+    Else
+        IsVisible = False
+    End If
+
+    On Error GoTo 0
+    Exit Property
+
+IsVisible_Error:
+
+    With Err
+         If .Number <> 0 Then
+            MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure IsVisible of Form frmMultiCore"
+            Resume Next
+          End If
+    End With
+End Property

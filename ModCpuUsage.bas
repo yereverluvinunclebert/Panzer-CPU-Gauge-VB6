@@ -72,22 +72,22 @@ Close_CPU_Usage_Error:
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Procedure : InitializeCPU
+' Procedure : fInitializeCPU
 ' Author    : EdgeMeal
 ' Date      : 31/05/2025
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Function InitializeCPU() As Boolean
+Public Function fInitializeCPU() As Boolean
     ' Add CPU counters
     Dim pdhStatus As PDH_STATUS
     Dim SysInfo As SYSTEM_INFO
     Dim CPU_Obj As String
     Dim hCounter As Long
-    Dim i As Integer
+    Dim I As Integer
     
     ' get # of cpus (cores)
-   On Error GoTo InitializeCPU_Error
+   On Error GoTo fInitializeCPU_Error
 
     GetSystemInfo SysInfo
     NumCores = SysInfo.dwNumberOrfProcessors - 1
@@ -102,25 +102,25 @@ Public Function InitializeCPU() As Boolean
     pdhStatus = PdhOpenQuery(0, 1, hQuery)
     If pdhStatus <> PDH_CSTATUS_VALID_DATA Then Exit Function ' Query failed
     
-    For i = 0 To NumCores ' add counter for each cpu core
-        CPU_Obj = GetCPUCounter(CStr(i)) ' get CPU Process Object and Instance names for next cpu core
+    For I = 0 To NumCores ' add counter for each cpu core
+        CPU_Obj = GetCPUCounter(CStr(I)) ' get CPU Process Object and Instance names for next cpu core
         pdhStatus = PdhVbAddCounter(hQuery, CPU_Obj, hCounter) ' add counter
         If pdhStatus = PDH_CSTATUS_VALID_DATA Then
-            Counters(i).hCounter = hCounter
+            Counters(I).hCounter = hCounter
         Else ' add counter failed
             Exit Function
         End If
-    Next i
+    Next I
     
     ' return success
-    InitializeCPU = True
+    fInitializeCPU = True
 
    On Error GoTo 0
    Exit Function
 
-InitializeCPU_Error:
+fInitializeCPU_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure InitializeCPU of Module ModCpuUsage"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure fInitializeCPU of Module ModCpuUsage"
 
 End Function
 
@@ -135,16 +135,16 @@ Public Sub Update_Cpu_Usage(ByRef dblArray() As Double)
     
     ' // quary counters  //
     Dim pdhStatus As PDH_STATUS
-    Dim i As Integer
+    Dim I As Integer
         
     ' Query Data
-   On Error GoTo Update_Cpu_Usage_Error
+    On Error GoTo Update_Cpu_Usage_Error
 
     PdhCollectQueryData (hQuery)
     
     ' get cpu usage per core, store in passed array
-    For i = 0 To NumCores
-        dblArray(i) = PdhVbGetDoubleCounterValue(Counters(i).hCounter, pdhStatus)
+    For I = 0 To NumCores
+        dblArray(I) = PdhVbGetDoubleCounterValue(Counters(I).hCounter, pdhStatus)
     Next
 
    On Error GoTo 0

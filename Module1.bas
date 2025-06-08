@@ -373,7 +373,8 @@ Public PzGFormHighDpiYPosTwips As String
 Public PzGFormLowDpiXPosTwips As String
 Public PzGFormLowDpiYPosTwips As String
 
-
+Public gblMulticoreXPosTwips As String
+Public gblMulticoreYPosTwips As String
 
 '------------------------------------------------------ ENDS
 
@@ -2149,7 +2150,7 @@ End Sub
 '
 Public Sub unloadAllForms(ByVal endItAll As Boolean)
     
-   On Error GoTo unloadAllForms_Error
+    On Error GoTo unloadAllForms_Error
    
     ' stop all VB6 timers in the timer form
     frmTimer.revealWidgetTimer.Enabled = False
@@ -2164,7 +2165,7 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     
     ' stop all VB6 timers in the frmMultiCore form
     
-    frmMultiCore.Timer1.Enabled = False
+    frmMultiCore.tmrMultiCore.Enabled = False
     
     ' stop all RC6 timers
     
@@ -2793,9 +2794,9 @@ Public Function ArrayString(ParamArray tokens()) As String()
     On Error GoTo ArrayString_Error
 
     ReDim Arr(UBound(tokens)) As String
-    Dim i As Long
-    For i = 0 To UBound(tokens)
-        Arr(i) = tokens(i)
+    Dim I As Long
+    For I = 0 To UBound(tokens)
+        Arr(I) = tokens(I)
     Next
     ArrayString = Arr
 

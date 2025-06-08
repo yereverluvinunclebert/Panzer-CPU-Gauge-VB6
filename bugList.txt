@@ -28,11 +28,38 @@ DONE
 ' sampling interval var validation - done
 ' sampling interval var reading/writing - done
 
-' add sleep timer
+' add sleep timer  - done
+
+' closing via menu - done
+' save position correctly - done
 
 ' -oOo-
 
 TODO
+
+All occurrences of PzG switched to gbl
+DPI switch moved to subroutine to tidy up
+preference load moved to subroutine to tidy up
+form resize event created for modification when subclassing in the future
+twinbasic message loop changes for TwinBasic
+glbcoding environment changes throughout for TwinBasic
+editor globals definition and usage throughout for TwinBasic
+addTargetFile source path empty then uses current app.path
+All TwinBasic changes implemented as per clock/calendar
+Tidy mainRoutine in modMain
+
+Secondary, not necessary changes
+
+prefs subclassing for resize on WM_EXITMOVED
+form_resize
+
+prefs balloon tooltips on all controls
+resizing using subclassing
+github home menu link
+
+Really not necessary changes
+
+dual automatic monitor sizing changes
 
 ' usage balloon tooltip % needs to be dynamically updated, currently only seems to show an older percentage
 

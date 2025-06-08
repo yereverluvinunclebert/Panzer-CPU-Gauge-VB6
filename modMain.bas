@@ -528,9 +528,6 @@ Public Sub adjustMainControls()
 
     overlayWidget.thisOpacity = Val(PzGOpacity)
     overlayWidget.samplingInterval = Val(PzGSamplingInterval)
-    frmMultiCore.Timer1.Interval = Val(PzGSamplingInterval) * 1000
-    
-    ' gblMultiCoreEnable
     
     ' set the z-ordering of the window
     Call setAlphaFormZordering
