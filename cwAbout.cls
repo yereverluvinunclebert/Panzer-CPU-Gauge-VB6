@@ -154,13 +154,13 @@ End Property
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub W_MouseDown(Button As Integer, Shift As Integer, ByVal x As Single, ByVal y As Single)
+Private Sub W_MouseDown(Button As Integer, Shift As Integer, ByVal x As Single, ByVal Y As Single)
    Dim fileToPlay As String: fileToPlay = vbNullString
    On Error GoTo W_MouseDown_Error
     
     ' works better here
     fileToPlay = "till.wav"
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+    If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
     
@@ -355,11 +355,11 @@ Private Sub Draw(ByRef CC As cCairoContext, ByVal dx As Single, ByVal dy As Sing
         
     'set some Font- and ForeColor-Properties and draw some Text on the Widget
     W.FontItalic = True
-    W.FontName = PzGClockFont
+    W.FontName = gblClockFont
     W.ForeColor = vbBlack
     W.SelectFontSettingsInto CC
    
-    If PzGDpiAwareness = "0" Then
+    If gblDpiAwareness = "0" Then
         CC.DrawText 350, 0, dx, dy - 275, "version " & App.Major & "." & App.Minor & "." & App.Revision & " Alpha", , , 2, True, , mMyOpacity
     Else
         CC.DrawText 350, 0, dx, dy - 1020, "version " & App.Major & "." & App.Minor & "." & App.Revision & " Alpha", , , 2, True, , mMyOpacity

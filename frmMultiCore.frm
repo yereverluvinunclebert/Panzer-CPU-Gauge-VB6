@@ -122,20 +122,20 @@ Private Sub Form_Load()
         ReDim dblCpuUsage(NumCores)
         
         ' set the font characteristics of the master label
-        lblProg(0).Font.Name = PzGPrefsFont
-        lblProg(0).Font.Italic = CBool(PzGPrefsFontItalics)
-        lblProg(0).ForeColor = PzGPrefsFontColour
-        lblProg(0).Font.Size = Val(PzGPrefsFontSizeLowDPI)
+        lblProg(0).Font.Name = gblPrefsFont
+        lblProg(0).Font.Italic = CBool(gblPrefsFontItalics)
+        lblProg(0).ForeColor = gblPrefsFontColour
+        lblProg(0).Font.Size = Val(gblPrefsFontSizeLowDPI)
         
         ' add additional prog bar and lable for each cpu core (if more then 1 cpu core).
         For I = 1 To NumCores
             Load ProgBar(I)
             Load lblProg(I)
             
-            lblProg(I).Font.Name = PzGPrefsFont
-            lblProg(I).Font.Italic = CBool(PzGPrefsFontItalics)
-            lblProg(I).ForeColor = PzGPrefsFontColour
-            lblProg(I).Font.Size = Val(PzGPrefsFontSizeLowDPI)
+            lblProg(I).Font.Name = gblPrefsFont
+            lblProg(I).Font.Italic = CBool(gblPrefsFontItalics)
+            lblProg(I).ForeColor = gblPrefsFontColour
+            lblProg(I).Font.Size = Val(gblPrefsFontSizeLowDPI)
             
             ProgBar(I).Max = 100
             ProgBar(I).Top = ProgBar(I - 1).Top + ProgBar(I - 1).Height + 15
@@ -232,7 +232,7 @@ Private Sub updateCoreDisplay()
     'query current cpu usage / store in array
     On Error GoTo updateCoreDisplay_Error
     
-    tmrMultiCore.Interval = Val(PzGSamplingInterval) * 1000
+    tmrMultiCore.Interval = Val(gblSamplingInterval) * 1000
 
     Update_Cpu_Usage dblCpuUsage()
     
@@ -294,8 +294,8 @@ Private Sub writeMulticorePosition()
         gblMulticoreYPosTwips = CStr(frmMultiCore.Top)
         
         ' now write those params to the toolSettings.ini
-        sPutINISetting "Software\PzCPUGauge", "multicoreXPosTwips", gblMulticoreXPosTwips, PzGSettingsFile
-        sPutINISetting "Software\PzCPUGauge", "multicoreYPosTwips", gblMulticoreYPosTwips, PzGSettingsFile
+        sPutINISetting "Software\PzCPUGauge", "multicoreXPosTwips", gblMulticoreXPosTwips, gblSettingsFile
+        sPutINISetting "Software\PzCPUGauge", "multicoreYPosTwips", gblMulticoreYPosTwips, gblSettingsFile
     End If
     
     On Error GoTo 0
@@ -318,8 +318,8 @@ Private Sub readMulticorePosition()
         
    On Error GoTo readMulticorePosition_Error
    
-    gblMulticoreXPosTwips = fGetINISetting("Software\PzCPUGauge", "multicoreXPosTwips", PzGSettingsFile)
-    gblMulticoreYPosTwips = fGetINISetting("Software\PzCPUGauge", "multicoreYPosTwips", PzGSettingsFile)
+    gblMulticoreXPosTwips = fGetINISetting("Software\PzCPUGauge", "multicoreXPosTwips", gblSettingsFile)
+    gblMulticoreYPosTwips = fGetINISetting("Software\PzCPUGauge", "multicoreYPosTwips", gblSettingsFile)
     
     On Error GoTo 0
    Exit Sub
