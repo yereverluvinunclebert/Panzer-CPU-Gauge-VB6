@@ -347,9 +347,8 @@ Public PzGOpacity  As String
 Public PzGWidgetHidden  As String
 Public PzGHidingTime  As String
 Public PzGIgnoreMouse  As String
+Public gblMenuOccurred As Boolean ' bool
 Public PzGFirstTimeRun  As String
-
-
 
 ' General storage variables declared
 Public PzGSettingsDir As String
@@ -2178,7 +2177,7 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     helpWidget.Widgets.RemoveAll
     fAlpha.gaugeForm.Widgets.RemoveAll
     
-    ' unload the native VB6 and RC6 forms
+    ' unload the native VB6 forms
     
     Unload panzerPrefs
     Unload frmMessage

@@ -291,6 +291,7 @@ Private Sub initialiseGlobalVars()
     PzGWidgetHidden = vbNullString
     PzGHidingTime = vbNullString
     PzGIgnoreMouse = vbNullString
+    gblMenuOccurred = False ' bool
     PzGFirstTimeRun = vbNullString
     
     ' general storage variables declared
