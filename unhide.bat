@@ -1,1 +1,1 @@
-start "" "Panzer CPU Gauge.exe" unhide
+start "" "Diesel Volume Control.exe" unhide

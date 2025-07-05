@@ -1,12 +1,19 @@
 Attribute VB_Name = "modMain"
+'---------------------------------------------------------------------------------------
+' Module    : modMain
+' Author    : beededea
+' Date      : 22/01/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+
 '@IgnoreModule IntegerDataType, ModuleWithoutFolder
-' gaugeForm_BubblingEvent ' leaving that here so I can copy/paste to find it
+
 
 Option Explicit
 
 '------------------------------------------------------ STARTS
 ' for SetWindowPos z-ordering
-Public Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+Public Declare Function SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 
 Public Const HWND_TOP As Long = 0 ' for SetWindowPos z-ordering
 Public Const HWND_TOPMOST As Long = -1
@@ -19,9 +26,9 @@ Public Const OnTopFlags  As Long = SWP_NOMOVE Or SWP_NOSIZE
 
 '------------------------------------------------------ STARTS
 ' to set the full window Opacity
-Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
-Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long) As Long
-Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hWnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
+Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long) As Long
+Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 
 Private Const WS_EX_LAYERED  As Long = &H80000
 Private Const GWL_EXSTYLE  As Long = (-20)
@@ -29,18 +36,16 @@ Private Const LWA_COLORKEY  As Long = &H1       'to transparent
 Private Const LWA_ALPHA  As Long = &H2          'to semi transparent
 '------------------------------------------------------ ENDS
 
+' class objects instantiated
 Public fMain As New cfMain
 Public aboutWidget As cwAbout
 Public helpWidget As cwHelp
 Public licenceWidget As cwLicence
-
-Public revealWidgetTimerCount As Integer
- 
-Public fAlpha As New cfAlpha
+Public fGauge As New cfGauge
 Public overlayWidget As cwOverlay
-Public widgetName As String
 
-
+' any other private vars
+Public gblWidgetName As String
 
 
 
@@ -48,7 +53,7 @@ Public widgetName As String
 ' Procedure : Main
 ' Author    : beededea
 ' Date      : 27/04/2023
-' Purpose   :
+' Purpose   : Program's entry point
 '---------------------------------------------------------------------------------------
 '
 Private Sub Main()
@@ -74,76 +79,76 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Sub mainRoutine(ByVal restart As Boolean)
+
     Dim extractCommand As String: extractCommand = vbNullString
     Dim thisPSDFullPath As String: thisPSDFullPath = vbNullString
     Dim licenceState As Integer: licenceState = 0
 
     On Error GoTo main_routine_Error
     
-    widgetName = "Panzer CPU Gauge"
-    thisPSDFullPath = App.path & "\Res\Panzer CPU gauge VB6.psd"
-    fAlpha.FX = 222 'init position- and zoom-values (directly set on Public-Props of the Form-hosting Class)
-    fAlpha.FY = 111
-    fAlpha.FZ = 0.4
+    ' initialise global vars
+    Call initialiseGlobalVars
     
-    prefsCurrentWidth = 9075
-    prefsCurrentHeight = 16450
-    
-    tzDelta = 0
-    tzDelta1 = 0
+    ' = "none"
+    gblStartupFlg = True
+    gblWidgetName = "Panzer CPU Gauge"
+    thisPSDFullPath = App.Path & "\Res\Panzer CPU Gauge VB6.psd"
     
     extractCommand = Command$ ' capture any parameter passed, remove if a soft reload
     If restart = True Then extractCommand = vbNullString
     
-    ' initialise global vars
-    Call initialiseGlobalVars
+    #If TWINBASIC Then
+        gblCodingEnvironment = "TwinBasic"
+    #Else
+        gblCodingEnvironment = "VB6"
+    #End If
+        
+    menuForm.mnuAbout.Caption = "About Panzer CPU Gauge Cairo " & gblCodingEnvironment & " widget"
+       
+    ' Load the sounds into numbered buffers ready for playing
+    Call loadAsynchSoundFiles
     
+    ' resolve VB6 sizing width bug
+    Call determineScreenDimensions
+
     'add Resources to the global ImageList
     Call addImagesToImageList
     
     ' check the Windows version
-    classicThemeCapable = fTestClassicThemeCapable
+    gblClassicThemeCapable = fTestClassicThemeCapable
   
     ' get this tool's entry in the trinkets settings file and assign the app.path
     Call getTrinketsFile
-  
+    
     ' get the location of this tool's settings file (appdata)
     Call getToolSettingsFile
     
-    ' read the dock settings from the new configuration file
+    ' read the gauge settings from the new configuration file
     Call readSettingsFile("Software\PzCPUGauge", gblSettingsFile)
     
     ' validate the inputs of any data from the input settings file
     Call validateInputs
     
+    ' Set the opacity of the gauge, passing just this one global variable to a public property within the class
+    fGauge.Opacity = gblOpacity
+    
     ' check first usage via licence acceptance value and then set initial DPI awareness
-    licenceState = fLicenceState()
-    If licenceState = 0 Then
-        Call testDPIAndSetInitialAwareness ' determine High DPI awareness or not by default on first run
-    Else
-        Call setDPIaware ' determine the user settings for DPI awareness, for this program and all its forms.
-    End If
+    Call setAutomaticDPIState(licenceState)
 
     'load the collection for storing the overlay surfaces with its relevant keys direct from the PSD
     If restart = False Then Call loadExcludePathCollection ' no need to reload the collPSDNonUIElements layer name keys on a reload
     
     ' start the load of the PSD file using the RC6 PSD-Parser.instance
-    Call fAlpha.InitFromPSD(thisPSDFullPath)  ' no optional close layer as 3rd param
-
-    ' resolve VB6 sizing width bug
-    Call determineScreenDimensions
+    Call fGauge.InitFromPSD(thisPSDFullPath)  ' no optional close layer as 3rd param
             
-    ' initialise and create the three main RC forms on the current display
+    ' initialise and create the three main RC forms (gauge, about and licence) on the current display
     Call createRCFormsOnCurrentDisplay
     
-    ' check the selected monitor properties
-    Call monitorProperties(fAlpha.gaugeForm)  ' might use RC6 for this?
-    
-    ' place the form at the saved location
+    ' place the form at the saved location and configure all the form elements
     Call makeVisibleFormElements
-    
+                
     ' run the functions that are also called at reload time.
-    Call adjustMainControls ' this needs to be here after the initialisation of the Cairo forms and widgets
+    Call adjustMainControls(licenceState) ' this needs to be here after the initialisation of the Cairo forms and widgets
     
     ' move/hide onto/from the main screen
     Call mainScreen
@@ -151,15 +156,12 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     ' if the program is run in unhide mode, write the settings and exit
     Call handleUnhideMode(extractCommand)
     
-    ' if the parameter states re-open prefs then shows the prefs
-    If extractCommand = "prefs" Then
-        Call makeProgramPreferencesAvailable
-        extractCommand = vbNullString
-    End If
-    
     'load the preferences form but don't yet show it, speeds up access to the prefs via the menu
-    Load widgetPrefs
+    Call loadPreferenceForm
     
+    ' if the parameter states re-open prefs then shows the prefs
+    If extractCommand = "prefs" Then Call makeProgramPreferencesAvailable
+
     'load the message form but don't yet show it, speeds up access to the message form when needed.
     Load frmMessage
     
@@ -176,10 +178,28 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     If gblMultiCoreEnable = "1" Then
         frmMultiCore.Show
     End If
+    
+    ' note the monitor primary at the preferences form_load and store as gblOldgaugeFormMonitorPrimary
+    Call identifyPrimaryMonitor
+    
+    ' make the busy sand timer invisible
+    Call hideBusyTimer
+    
+    ' start the main gauge timer passing the desired status to a public property within the class
+    'overlayWidget.TmrGaugeTicking = True
+    
+    ' end the startup by un-setting the start global flag
+    gblStartupFlg = False
         
     ' RC message pump will auto-exit when Cairo Forms > 0 so we run it only when 0, this prevents message interruption
-    ' when running twice on reload.
-    If Cairo.WidgetForms.Count = 0 Then Cairo.WidgetForms.EnterMessageLoop
+    ' when running twice on reload. Do not move this line.
+    #If TWINBASIC Then
+        Cairo.WidgetForms.EnterMessageLoop
+    #Else
+        If restart = False Then Cairo.WidgetForms.EnterMessageLoop
+    #End If
+        
+    ' note: the final act in startup is the form_resize_event that is triggered by the subclassed WM_EXITSIZEMOVE when the form is finally revealed
      
    On Error GoTo 0
    Exit Sub
@@ -190,6 +210,85 @@ main_routine_Error:
     
 End Sub
  
+
+'---------------------------------------------------------------------------------------
+' Procedure : loadPreferenceForm
+' Author    : beededea
+' Date      : 20/02/2025
+' Purpose   : load the preferences form but don't yet show it, speeds up access to the prefs via the menu
+'---------------------------------------------------------------------------------------
+'
+Private Sub loadPreferenceForm()
+        
+   On Error GoTo loadPreferenceForm_Error
+
+    If widgetPrefs.IsLoaded = False Then
+        Load widgetPrefs
+        gblPrefsFormResizedInCode = True
+        Call widgetPrefs.PrefsForm_Resize_Event
+    End If
+
+   On Error GoTo 0
+   Exit Sub
+
+loadPreferenceForm_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure loadPreferenceForm of Module modMain"
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : setAutomaticDPIState
+' Author    : beededea
+' Date      : 20/02/2025
+' Purpose   : check first usage via licence acceptance value and then set initial DPI awareness
+'---------------------------------------------------------------------------------------
+'
+Private Sub setAutomaticDPIState(ByRef licenceState As Integer)
+   On Error GoTo setAutomaticDPIState_Error
+
+    licenceState = fLicenceState()
+    If licenceState = 0 Then
+        Call testDPIAndSetInitialAwareness ' determine High DPI awareness or not by default on first run
+    Else
+        Call setDPIaware ' determine the user settings for DPI awareness, for this program and all its forms.
+    End If
+
+   On Error GoTo 0
+   Exit Sub
+
+setAutomaticDPIState_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure setAutomaticDPIState of Module modMain"
+End Sub
+ 
+'
+'---------------------------------------------------------------------------------------
+' Procedure : identifyPrimaryMonitor
+' Author    : beededea
+' Date      : 20/02/2025
+' Purpose   : note the monitor primary at the main form_load and store as gblOldgaugeFormMonitorPrimary - will be resampled regularly later and compared
+'---------------------------------------------------------------------------------------
+'
+Private Sub identifyPrimaryMonitor()
+    Dim gaugeFormMonitorID As Long: gaugeFormMonitorID = 0
+    
+    On Error GoTo identifyPrimaryMonitor_Error
+
+    gaugeMonitorStruct = cWidgetFormScreenProperties(fGauge.gaugeForm, gaugeFormMonitorID)
+    gblOldgaugeFormMonitorPrimary = gaugeMonitorStruct.IsPrimary
+
+    On Error GoTo 0
+    Exit Sub
+
+identifyPrimaryMonitor_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure identifyPrimaryMonitor of Module modMain"
+End Sub
+ 
+
+ 
+
+
 '---------------------------------------------------------------------------------------
 ' Procedure : checkFirstTime
 ' Author    : beededea
@@ -202,8 +301,6 @@ Private Sub checkFirstTime()
    On Error GoTo checkFirstTime_Error
 
     If gblFirstTimeRun = "true" Then
-        'MsgBox "checkFirstTime"
-
         Call makeProgramPreferencesAvailable
         gblFirstTimeRun = "false"
         sPutINISetting "Software\PzCPUGauge", "firstTimeRun", gblFirstTimeRun, gblSettingsFile
@@ -228,30 +325,31 @@ End Sub
 Private Sub initialiseGlobalVars()
       
     On Error GoTo initialiseGlobalVars_Error
+    
+    gblMonitorCount = 0
 
     ' general
     gblStartup = vbNullString
     gblGaugeFunctions = vbNullString
     gblPointerAnimate = vbNullString
-    gblSamplingInterval = vbNullString
     gblMultiCoreEnable = vbNullString
-        
-
-'    gblClockFaceSwitchPref = vbNullString
-'    gblMainGaugeTimeZone = vbNullString
-'    gblMainDaylightSaving = vbNullString
-    'gblSecondaryGaugeTimeZone = vbNullString
-'    gblSecondaryDaylightSaving = vbNullString
+    gblSamplingInterval = vbNullString
 
     ' config
-    gblEnableTooltips = vbNullString
-    gblEnablePrefsTooltips = vbNullString
-    gblEnableBalloonTooltips = vbNullString
+    gblGaugeTooltips = vbNullString
+    gblPrefsTooltips = vbNullString
+    'gblEnablePrefsTooltips = vbNullString
+    
     gblShowTaskbar = vbNullString
+    gblShowHelp = vbNullString
+'    gblTogglePendulum = vbNullString
+'    gbl24HourGaugeMode = vbNullString
+    
     gblDpiAwareness = vbNullString
     
     gblGaugeSize = vbNullString
     gblScrollWheelDirection = vbNullString
+'    gblNumericDisplayRotation = vbNullString
     
     ' position
     gblAspectHidden = vbNullString
@@ -267,76 +365,100 @@ Private Sub initialiseGlobalVars()
     
     ' sounds
     gblEnableSounds = vbNullString
+'    gblEnableTicks = vbNullString
+'    gblEnableChimes = vbNullString
+'    gblEnableAlarms = vbNullString
+'    gblVolumeBoost = vbNullString
     
     ' development
     gblDebug = vbNullString
     gblDblClickCommand = vbNullString
     gblOpenFile = vbNullString
-    gblDefaultEditor = vbNullString
+    gblDefaultVB6Editor = vbNullString
+    gblDefaultTBEditor = vbNullString
          
     ' font
     gblClockFont = vbNullString
+    gblGaugeFont = vbNullString
     gblPrefsFont = vbNullString
     gblPrefsFontSizeHighDPI = vbNullString
     gblPrefsFontSizeLowDPI = vbNullString
     gblPrefsFontItalics = vbNullString
     gblPrefsFontColour = vbNullString
     
+    gblDisplayScreenFont = vbNullString
+    gblDisplayScreenFontSize = vbNullString
+    gblDisplayScreenFontItalics = vbNullString
+    gblDisplayScreenFontColour = vbNullString
+    
     ' window
     gblWindowLevel = vbNullString
     gblPreventDragging = vbNullString
     gblOpacity = vbNullString
-
-    
     gblWidgetHidden = vbNullString
     gblHidingTime = vbNullString
     gblIgnoreMouse = vbNullString
     gblMenuOccurred = False ' bool
     gblFirstTimeRun = vbNullString
+    gblMultiMonitorResize = vbNullString
     
-    ' general storage variables declared
+    ' general CPU variables declared
     gblSettingsDir = vbNullString
     gblSettingsFile = vbNullString
     
     gblTrinketsDir = vbNullString
     gblTrinketsFile = vbNullString
     
-    gblClockHighDpiXPos = vbNullString
-    gblClockHighDpiYPos = vbNullString
+    gblGaugeHighDpiXPos = vbNullString
+    gblGaugeHighDpiYPos = vbNullString
     
-    gblClockLowDpiXPos = vbNullString
-    gblClockLowDpiYPos = vbNullString
+    gblGaugeLowDpiXPos = vbNullString
+    gblGaugeLowDpiYPos = vbNullString
     
     gblLastSelectedTab = vbNullString
     gblSkinTheme = vbNullString
     
     ' general variables declared
     'toolSettingsFile = vbNullString
-    classicThemeCapable = False
-    storeThemeColour = 0
-    windowsVer = vbNullString
+    gblClassicThemeCapable = False
+    gblStoreThemeColour = 0
+    'windowsVer = vbNullString
     
     ' vars to obtain correct screen width (to correct VB6 bug) STARTS
     gblScreenTwipsPerPixelX = 0
     gblScreenTwipsPerPixelY = 0
-    screenWidthTwips = 0
-    screenHeightTwips = 0
-    screenHeightPixels = 0
-    screenWidthPixels = 0
-    oldScreenHeightPixels = 0
-    oldScreenWidthPixels = 0
+    gblPhysicalScreenWidthTwips = 0
+    gblPhysicalScreenHeightTwips = 0
+    gblPhysicalScreenHeightPixels = 0
+    gblPhysicalScreenWidthPixels = 0
+    
+    gblVirtualScreenHeightPixels = 0
+    gblVirtualScreenWidthPixels = 0
+    
+    gblOldPhysicalScreenHeightPixels = 0
+    gblOldPhysicalScreenWidthPixels = 0
+    
+    gblPrefsPrimaryHeightTwips = vbNullString
+    gblPrefsSecondaryHeightTwips = vbNullString
+    gblGaugePrimaryHeightRatio = vbNullString
+    gblGaugeSecondaryHeightRatio = vbNullString
+    
+    gblMessageAHeightTwips = vbNullString
+    gblMessageAWidthTwips = vbNullString
     
     ' key presses
-    CTRL_1 = False
-    SHIFT_1 = False
+    gblCTRL_1 = False
+    gblSHIFT_1 = False
     
     ' other globals
-    debugFlg = 0
-    minutesToHide = 0
-    aspectRatio = vbNullString
-    revealWidgetTimerCount = 0
-    oldgblSettingsModificationTime = #1/1/2000 12:00:00 PM#
+    gblDebugFlg = 0
+    gblMinutesToHide = 0
+    gblAspectRatio = vbNullString
+    gblOldSettingsModificationTime = #1/1/2000 12:00:00 PM#
+    gblCodingEnvironment = vbNullString
 
+    'gblTimeAreaClicked = vbNullString
+    
    On Error GoTo 0
    Exit Sub
 
@@ -351,7 +473,7 @@ End Sub
 ' Procedure : addImagesToImageList
 ' Author    : beededea
 ' Date      : 27/04/2023
-' Purpose   : add Resources to the global ImageList
+' Purpose   : add image Resources to the global ImageList
 '---------------------------------------------------------------------------------------
 '
 Private Sub addImagesToImageList()
@@ -361,53 +483,55 @@ Private Sub addImagesToImageList()
 
 '    add Resources to the global ImageList that are not being pulled from the PSD directly
     
-    Cairo.ImageList.AddImage "about", App.path & "\Resources\images\about.png"
-    Cairo.ImageList.AddImage "help", App.path & "\Resources\images\panzergauge-help.png"
-    Cairo.ImageList.AddImage "licence", App.path & "\Resources\images\frame.png"
+    Cairo.ImageList.AddImage "about", App.Path & "\Resources\images\about.png"
+    Cairo.ImageList.AddImage "licence", App.Path & "\Resources\images\frame.png"
+    Cairo.ImageList.AddImage "help", App.Path & "\Resources\images\panzergauge-help.png"
+    Cairo.ImageList.AddImage "frmIcon", App.Path & "\Resources\images\Icon.png"
     
     ' prefs icons
     
-    Cairo.ImageList.AddImage "about-icon-dark", App.path & "\Resources\images\about-icon-dark-1010.jpg"
-    Cairo.ImageList.AddImage "about-icon-light", App.path & "\Resources\images\about-icon-light-1010.jpg"
-    Cairo.ImageList.AddImage "config-icon-dark", App.path & "\Resources\images\config-icon-dark-1010.jpg"
-    Cairo.ImageList.AddImage "config-icon-light", App.path & "\Resources\images\config-icon-light-1010.jpg"
-    Cairo.ImageList.AddImage "development-icon-light", App.path & "\Resources\images\development-icon-light-1010.jpg"
-    Cairo.ImageList.AddImage "development-icon-dark", App.path & "\Resources\images\development-icon-dark-1010.jpg"
-    Cairo.ImageList.AddImage "general-icon-dark", App.path & "\Resources\images\general-icon-dark-1010.jpg"
-    Cairo.ImageList.AddImage "general-icon-light", App.path & "\Resources\images\general-icon-light-1010.jpg"
-    Cairo.ImageList.AddImage "sounds-icon-light", App.path & "\Resources\images\sounds-icon-light-1010.jpg"
-    Cairo.ImageList.AddImage "sounds-icon-dark", App.path & "\Resources\images\sounds-icon-dark-1010.jpg"
-    Cairo.ImageList.AddImage "windows-icon-light", App.path & "\Resources\images\windows-icon-light-1010.jpg"
-    Cairo.ImageList.AddImage "windows-icon-dark", App.path & "\Resources\images\windows-icon-dark-1010.jpg"
-    Cairo.ImageList.AddImage "font-icon-dark", App.path & "\Resources\images\font-icon-dark-1010.jpg"
-    Cairo.ImageList.AddImage "font-icon-light", App.path & "\Resources\images\font-icon-light-1010.jpg"
-    Cairo.ImageList.AddImage "position-icon-light", App.path & "\Resources\images\position-icon-light-1010.jpg"
-    Cairo.ImageList.AddImage "position-icon-dark", App.path & "\Resources\images\position-icon-dark-1010.jpg"
+    Cairo.ImageList.AddImage "about-icon-dark", App.Path & "\Resources\images\about-icon-dark-1010.jpg"
+    Cairo.ImageList.AddImage "about-icon-light", App.Path & "\Resources\images\about-icon-light-1010.jpg"
+    Cairo.ImageList.AddImage "config-icon-dark", App.Path & "\Resources\images\config-icon-dark-1010.jpg"
+    Cairo.ImageList.AddImage "config-icon-light", App.Path & "\Resources\images\config-icon-light-1010.jpg"
+    Cairo.ImageList.AddImage "development-icon-light", App.Path & "\Resources\images\development-icon-light-1010.jpg"
+    Cairo.ImageList.AddImage "development-icon-dark", App.Path & "\Resources\images\development-icon-dark-1010.jpg"
+    Cairo.ImageList.AddImage "general-icon-dark", App.Path & "\Resources\images\general-icon-dark-1010.jpg"
+    Cairo.ImageList.AddImage "general-icon-light", App.Path & "\Resources\images\general-icon-light-1010.jpg"
+    Cairo.ImageList.AddImage "sounds-icon-light", App.Path & "\Resources\images\sounds-icon-light-1010.jpg"
+    Cairo.ImageList.AddImage "sounds-icon-dark", App.Path & "\Resources\images\sounds-icon-dark-1010.jpg"
+    Cairo.ImageList.AddImage "windows-icon-light", App.Path & "\Resources\images\windows-icon-light-1010.jpg"
+    Cairo.ImageList.AddImage "windows-icon-dark", App.Path & "\Resources\images\windows-icon-dark-1010.jpg"
+    Cairo.ImageList.AddImage "font-icon-dark", App.Path & "\Resources\images\font-icon-dark-1010.jpg"
+    Cairo.ImageList.AddImage "font-icon-light", App.Path & "\Resources\images\font-icon-light-1010.jpg"
+    Cairo.ImageList.AddImage "position-icon-light", App.Path & "\Resources\images\position-icon-light-1010.jpg"
+    Cairo.ImageList.AddImage "position-icon-dark", App.Path & "\Resources\images\position-icon-dark-1010.jpg"
     
-    Cairo.ImageList.AddImage "general-icon-dark-clicked", App.path & "\Resources\images\general-icon-dark-600-clicked.jpg"
-    Cairo.ImageList.AddImage "config-icon-dark-clicked", App.path & "\Resources\images\config-icon-dark-600-clicked.jpg"
-    Cairo.ImageList.AddImage "font-icon-dark-clicked", App.path & "\Resources\images\font-icon-dark-600-clicked.jpg"
-    Cairo.ImageList.AddImage "sounds-icon-dark-clicked", App.path & "\Resources\images\sounds-icon-dark-600-clicked.jpg"
-    Cairo.ImageList.AddImage "position-icon-dark-clicked", App.path & "\Resources\images\position-icon-dark-600-clicked.jpg"
-    Cairo.ImageList.AddImage "development-icon-dark-clicked", App.path & "\Resources\images\development-icon-dark-600-clicked.jpg"
-    Cairo.ImageList.AddImage "windows-icon-dark-clicked", App.path & "\Resources\images\windows-icon-dark-600-clicked.jpg"
-    Cairo.ImageList.AddImage "about-icon-dark-clicked", App.path & "\Resources\images\about-icon-dark-600-clicked.jpg"
+    Cairo.ImageList.AddImage "general-icon-dark-clicked", App.Path & "\Resources\images\general-icon-dark-600-clicked.jpg"
+    Cairo.ImageList.AddImage "config-icon-dark-clicked", App.Path & "\Resources\images\config-icon-dark-600-clicked.jpg"
+    Cairo.ImageList.AddImage "font-icon-dark-clicked", App.Path & "\Resources\images\font-icon-dark-600-clicked.jpg"
+    Cairo.ImageList.AddImage "sounds-icon-dark-clicked", App.Path & "\Resources\images\sounds-icon-dark-600-clicked.jpg"
+    Cairo.ImageList.AddImage "position-icon-dark-clicked", App.Path & "\Resources\images\position-icon-dark-600-clicked.jpg"
+    Cairo.ImageList.AddImage "development-icon-dark-clicked", App.Path & "\Resources\images\development-icon-dark-600-clicked.jpg"
+    Cairo.ImageList.AddImage "windows-icon-dark-clicked", App.Path & "\Resources\images\windows-icon-dark-600-clicked.jpg"
+    Cairo.ImageList.AddImage "about-icon-dark-clicked", App.Path & "\Resources\images\about-icon-dark-600-clicked.jpg"
     
-    Cairo.ImageList.AddImage "general-icon-light-clicked", App.path & "\Resources\images\general-icon-light-600-clicked.jpg"
-    Cairo.ImageList.AddImage "config-icon-light-clicked", App.path & "\Resources\images\config-icon-light-600-clicked.jpg"
-    Cairo.ImageList.AddImage "font-icon-light-clicked", App.path & "\Resources\images\font-icon-light-600-clicked.jpg"
-    Cairo.ImageList.AddImage "sounds-icon-light-clicked", App.path & "\Resources\images\sounds-icon-light-600-clicked.jpg"
-    Cairo.ImageList.AddImage "position-icon-light-clicked", App.path & "\Resources\images\position-icon-light-600-clicked.jpg"
-    Cairo.ImageList.AddImage "development-icon-light-clicked", App.path & "\Resources\images\development-icon-light-600-clicked.jpg"
-    Cairo.ImageList.AddImage "windows-icon-light-clicked", App.path & "\Resources\images\windows-icon-light-600-clicked.jpg"
-    Cairo.ImageList.AddImage "about-icon-light-clicked", App.path & "\Resources\images\about-icon-light-600-clicked.jpg"
+    Cairo.ImageList.AddImage "general-icon-light-clicked", App.Path & "\Resources\images\general-icon-light-600-clicked.jpg"
+    Cairo.ImageList.AddImage "config-icon-light-clicked", App.Path & "\Resources\images\config-icon-light-600-clicked.jpg"
+    Cairo.ImageList.AddImage "font-icon-light-clicked", App.Path & "\Resources\images\font-icon-light-600-clicked.jpg"
+    Cairo.ImageList.AddImage "sounds-icon-light-clicked", App.Path & "\Resources\images\sounds-icon-light-600-clicked.jpg"
+    Cairo.ImageList.AddImage "position-icon-light-clicked", App.Path & "\Resources\images\position-icon-light-600-clicked.jpg"
+    Cairo.ImageList.AddImage "development-icon-light-clicked", App.Path & "\Resources\images\development-icon-light-600-clicked.jpg"
+    Cairo.ImageList.AddImage "windows-icon-light-clicked", App.Path & "\Resources\images\windows-icon-light-600-clicked.jpg"
+    Cairo.ImageList.AddImage "about-icon-light-clicked", App.Path & "\Resources\images\about-icon-light-600-clicked.jpg"
     
+ 
    On Error GoTo 0
    Exit Sub
 
 addImagesToImageList_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure addImagesToImageList of Module modMain"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure addImagesToImageList of Module modMain, an image has probably been accidentally deleted from the resources/images folder."
 
 End Sub
 '---------------------------------------------------------------------------------------
@@ -417,23 +541,67 @@ End Sub
 ' Purpose   : called at runtime and on restart, sets the characteristics of the gauge, individual controls and menus
 '---------------------------------------------------------------------------------------
 '
-Public Sub adjustMainControls()
+Public Sub adjustMainControls(Optional ByVal licenceState As Integer)
+   Dim thisEditor As String: thisEditor = vbNullString
+   Dim bigScreen As Long: bigScreen = 3840
    
    On Error GoTo adjustMainControls_Error
 
     ' validate the inputs of any data from the input settings file
     Call validateInputs
     
-    fAlpha.AdjustZoom Val(gblGaugeSize) / 100
+    ' initial call just to obtain initial physical screen monitor ID
+    Call positionRCFormByMonitorSize
+        
+    ' if the licenstate is 0 then the program is running for the first time, so pre-size the form to fit larger screens
+    If licenceState = 0 Then
+        ' the widget displays at 100% at a screen width of 3840 pixels
+        If gblPhysicalScreenWidthPixels >= bigScreen Then
+            gblGaugeSize = CStr((gblPhysicalScreenWidthPixels / bigScreen) * 100)
+        End If
+    End If
     
-'    overlayWidget.ZoomDirection = gblScrollWheelDirection
-
-'gblClockFaceSwitchPref
-'gblMainGaugeTimeZone
-'gblMainDaylightSaving
-'gblSecondaryGaugeTimeZone
-'gblSecondaryDaylightSaving
+    ' set the initial size
+    If gblMonitorCount > 1 And (LTrim$(gblMultiMonitorResize) = "1" Or LTrim$(gblMultiMonitorResize) = "2") Then
+        If gaugeMonitorStruct.IsPrimary = True Then
+            Call fGauge.AdjustZoom(Val(gblGaugePrimaryHeightRatio))
+        Else
+            Call fGauge.AdjustZoom(Val(gblGaugeSecondaryHeightRatio))
+        End If
+    Else
+        fGauge.AdjustZoom Val(gblGaugeSize) / 100
+    End If
     
+    If gblGaugeFunctions = "1" Then
+        menuForm.mnuSwitchOff.Checked = False
+        menuForm.mnuTurnFunctionsOn.Checked = True
+    Else
+        menuForm.mnuSwitchOff.Checked = True
+        menuForm.mnuTurnFunctionsOn.Checked = False
+    End If
+    
+    If gblDebug = "1" Then
+        #If TWINBASIC Then
+            If gblDefaultTBEditor <> vbNullString Then thisEditor = gblDefaultTBEditor
+        #Else
+            If gblDefaultVB6Editor <> vbNullString Then thisEditor = gblDefaultVB6Editor
+        #End If
+        
+        menuForm.mnuEditWidget.Caption = "Edit Widget using " & thisEditor
+        menuForm.mnuEditWidget.Visible = True
+    Else
+        menuForm.mnuEditWidget.Visible = False
+    End If
+    
+    If gblShowTaskbar = "0" Then
+        fGauge.gaugeForm.ShowInTaskbar = False
+    Else
+        fGauge.gaugeForm.ShowInTaskbar = True
+    End If
+    
+    ' set the visibility and characteristics of the interactive areas
+    ' the alpha is already set to zero for all layers found in the PSD, we now turn them back on as we require
+        
     If gblGaugeFunctions = "1" Then
         overlayWidget.Ticking = True
         menuForm.mnuSwitchOff.Checked = False
@@ -444,109 +612,126 @@ Public Sub adjustMainControls()
         menuForm.mnuTurnFunctionsOn.Checked = False
     End If
     
-    If gblDefaultEditor <> vbNullString And gblDebug = "1" Then
-        menuForm.mnuEditWidget.Caption = "Edit Widget using " & gblDefaultEditor
+    If gblDebug = "1" Then
+        #If TWINBASIC Then
+            If gblDefaultTBEditor <> vbNullString Then thisEditor = gblDefaultTBEditor
+        #Else
+            If gblDefaultVB6Editor <> vbNullString Then thisEditor = gblDefaultVB6Editor
+        #End If
+        
+        menuForm.mnuEditWidget.Caption = "Edit Widget using " & thisEditor
         menuForm.mnuEditWidget.Visible = True
     Else
         menuForm.mnuEditWidget.Visible = False
     End If
     
-    
     If gblShowTaskbar = "0" Then
-        fAlpha.gaugeForm.ShowInTaskbar = False
+        fGauge.gaugeForm.ShowInTaskbar = False
     Else
-        fAlpha.gaugeForm.ShowInTaskbar = True
+        fGauge.gaugeForm.ShowInTaskbar = True
     End If
     
     ' set the characteristics of the interactive areas
     ' Note: set the Hover colour close to the original layer to avoid too much intrusion, 0 being grey
-    With fAlpha.gaugeForm.Widgets("housing/helpbutton").Widget
+    With fGauge.gaugeForm.Widgets("housing/helpbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(gblOpacity) / 100
     End With
      
-    With fAlpha.gaugeForm.Widgets("housing/startbutton").Widget
+    With fGauge.gaugeForm.Widgets("housing/startbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(gblOpacity) / 100
         .Tag = 0.25
     End With
       
-    With fAlpha.gaugeForm.Widgets("housing/stopbutton").Widget
+    With fGauge.gaugeForm.Widgets("housing/stopbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(gblOpacity) / 100
         .Tag = 0.25
     End With
       
-    With fAlpha.gaugeForm.Widgets("housing/middlebutton").Widget
+    With fGauge.gaugeForm.Widgets("housing/middlebutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(gblOpacity) / 100
     End With
           
-    With fAlpha.gaugeForm.Widgets("housing/lockbutton").Widget
+    With fGauge.gaugeForm.Widgets("housing/lockbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
     End With
           
-    With fAlpha.gaugeForm.Widgets("housing/prefsbutton").Widget
+    With fGauge.gaugeForm.Widgets("housing/prefsbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(gblOpacity) / 100
     End With
           
-    With fAlpha.gaugeForm.Widgets("housing/tickbutton").Widget
+    With fGauge.gaugeForm.Widgets("housing/tickbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
     End With
     
-    With fAlpha.gaugeForm.Widgets("housing/surround").Widget
+    With fGauge.gaugeForm.Widgets("housing/surround").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_SIZEALL
         .Alpha = Val(gblOpacity) / 100
-
     End With
     
     If gblPointerAnimate = "0" Then
-        overlayWidget.pointerAnimate = False
-        fAlpha.gaugeForm.Widgets("housing/tickbutton").Widget.Alpha = Val(gblOpacity) / 100
+        overlayWidget.PointerAnimate = False
+        fGauge.gaugeForm.Widgets("housing/tickbutton").Widget.Alpha = Val(gblOpacity) / 100
     Else
-        overlayWidget.pointerAnimate = True
-        fAlpha.gaugeForm.Widgets("housing/tickbutton").Widget.Alpha = 0
+        overlayWidget.PointerAnimate = True
+        fGauge.gaugeForm.Widgets("housing/tickbutton").Widget.Alpha = 0
     End If
+    
+'    If gblSmoothSecondHand = "0" Then
+'        overlayWidget.SmoothSecondHand = False
+'        fGauge.gaugeForm.Widgets("housing/tickbutton").Widget.Alpha = Val(gblOpacity) / 100
+'    Else
+'        overlayWidget.SmoothSecondHand = True
+'        fGauge.gaugeForm.Widgets("housing/tickbutton").Widget.Alpha = 0
+'    End If
         
-    If gblPreventDragging = "0" Then
+   ' set the lock state of the gauge
+   If gblPreventDragging = "0" Then
         menuForm.mnuLockWidget.Checked = False
         overlayWidget.Locked = False
-        fAlpha.gaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(gblOpacity) / 100
+        fGauge.gaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(gblOpacity) / 100
     Else
         menuForm.mnuLockWidget.Checked = True
         overlayWidget.Locked = True ' this is just here for continuity's sake, it is also set at the time the control is selected
-        fAlpha.gaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
+        fGauge.gaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
     End If
-
+    
     overlayWidget.thisOpacity = Val(gblOpacity)
     overlayWidget.samplingInterval = Val(gblSamplingInterval)
-    
+
     ' set the z-ordering of the window
     Call setAlphaFormZordering
     
     ' set the tooltips on the main screen
-    Call setMainTooltips
+    Call setRichClientTooltips
     
     ' set the hiding time for the hiding timer, can't read the minutes from comboxbox as the prefs isn't yet open
     Call setHidingTime
 
-    If minutesToHide > 0 Then menuForm.mnuHideWidget.Caption = "Hide Widget for " & minutesToHide & " min."
+    If gblMinutesToHide > 0 Then menuForm.mnuHideWidget.Caption = "Hide Widget for " & gblMinutesToHide & " min."
     
+    ' refresh the form in order to show the above changes immediately
+    fGauge.gaugeForm.Refresh
+
    On Error GoTo 0
    Exit Sub
 
 adjustMainControls_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure adjustMainControls of Module modMain"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure adjustMainControls of Module modMain " _
+        & " Most likely one of the layers above is named incorrectly."
 
 End Sub
 
@@ -562,11 +747,11 @@ Public Sub setAlphaFormZordering()
    On Error GoTo setAlphaFormZordering_Error
 
     If Val(gblWindowLevel) = 0 Then
-        Call SetWindowPos(fAlpha.gaugeForm.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fGauge.gaugeForm.hWnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
     ElseIf Val(gblWindowLevel) = 1 Then
-        Call SetWindowPos(fAlpha.gaugeForm.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fGauge.gaugeForm.hWnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
     ElseIf Val(gblWindowLevel) = 2 Then
-        Call SetWindowPos(fAlpha.gaugeForm.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fGauge.gaugeForm.hWnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
     End If
 
    On Error GoTo 0
@@ -584,91 +769,98 @@ End Sub
 ' Purpose   : read the application's setting file and assign values to public vars
 '---------------------------------------------------------------------------------------
 '
-Public Sub readSettingsFile(ByVal location As String, ByVal gblSettingsFile As String)
+Public Sub readSettingsFile(ByVal Location As String, ByVal gblSettingsFile As String)
     On Error GoTo readSettingsFile_Error
 
     If fFExists(gblSettingsFile) Then
         
         ' general
-        gblStartup = fGetINISetting(location, "startup", gblSettingsFile)
-        gblGaugeFunctions = fGetINISetting(location, "gaugeFunctions", gblSettingsFile)
-        gblPointerAnimate = fGetINISetting(location, "pointerAnimate", gblSettingsFile)
-        gblSamplingInterval = fGetINISetting(location, "samplingInterval", gblSettingsFile)
-        gblMultiCoreEnable = fGetINISetting(location, "multiCoreEnable", gblSettingsFile)
+        gblStartup = fGetINISetting(Location, "startup", gblSettingsFile)
+        gblGaugeFunctions = fGetINISetting(Location, "widgetFunctions", gblSettingsFile)
+        gblPointerAnimate = fGetINISetting(Location, "pointerAnimate", gblSettingsFile)
+        gblMultiCoreEnable = fGetINISetting(Location, "multiCoreEnable", gblSettingsFile)
+        gblSamplingInterval = fGetINISetting(Location, "samplingInterval", gblSettingsFile)
         
-        
-'        gblClockFaceSwitchPref = fGetINISetting(location, "clockFaceSwitchPref", gblSettingsFile)
-'        gblMainGaugeTimeZone = fGetINISetting(location, "mainGaugeTimeZone", gblSettingsFile)
-'        gblMainDaylightSaving = fGetINISetting(location, "mainDaylightSaving", gblSettingsFile)
-        'gblSecondaryGaugeTimeZone = fGetINISetting(location, "secondaryGaugeTimeZone", gblSettingsFile)
-        'gblSecondaryDaylightSaving = fGetINISetting(location, "secondaryDaylightSaving", gblSettingsFile)
-
         ' configuration
-        gblEnableTooltips = fGetINISetting(location, "enableTooltips", gblSettingsFile)
-        gblEnablePrefsTooltips = fGetINISetting(location, "enablePrefsTooltips", gblSettingsFile)
-        gblEnableBalloonTooltips = fGetINISetting(location, "enableBalloonTooltips", gblSettingsFile)
-        gblShowTaskbar = fGetINISetting(location, "showTaskbar", gblSettingsFile)
-        gblDpiAwareness = fGetINISetting(location, "dpiAwareness", gblSettingsFile)
+        gblGaugeTooltips = fGetINISetting(Location, "gaugeTooltips", gblSettingsFile)
+        gblPrefsTooltips = fGetINISetting(Location, "prefsTooltips", gblSettingsFile)
         
-        
-        gblGaugeSize = fGetINISetting(location, "gaugeSize", gblSettingsFile)
-        gblScrollWheelDirection = fGetINISetting(location, "scrollWheelDirection", gblSettingsFile)
+        gblShowTaskbar = fGetINISetting(Location, "showTaskbar", gblSettingsFile)
+        gblShowHelp = fGetINISetting(Location, "showHelp", gblSettingsFile)
+'        gblTogglePendulum = fGetINISetting(Location, "togglePendulum", gblSettingsFile)
+'        gbl24HourGaugeMode = fGetINISetting(Location, "24HourGaugeMode", gblSettingsFile)
+        gblDpiAwareness = fGetINISetting(Location, "dpiAwareness", gblSettingsFile)
+        gblGaugeSize = fGetINISetting(Location, "gaugeSize", gblSettingsFile)
+        gblScrollWheelDirection = fGetINISetting(Location, "scrollWheelDirection", gblSettingsFile)
+'        gblNumericDisplayRotation = fGetINISetting(Location, "numericDisplayRotation", gblSettingsFile)
         
         ' position
-        gblAspectHidden = fGetINISetting(location, "aspectHidden", gblSettingsFile)
-        gblWidgetPosition = fGetINISetting(location, "widgetPosition", gblSettingsFile)
-        gblWidgetLandscape = fGetINISetting(location, "widgetLandscape", gblSettingsFile)
-        gblWidgetPortrait = fGetINISetting(location, "widgetPortrait", gblSettingsFile)
-        gblLandscapeFormHoffset = fGetINISetting(location, "landscapeHoffset", gblSettingsFile)
-        gblLandscapeFormVoffset = fGetINISetting(location, "landscapeYoffset", gblSettingsFile)
-        gblPortraitHoffset = fGetINISetting(location, "portraitHoffset", gblSettingsFile)
-        gblPortraitYoffset = fGetINISetting(location, "portraitYoffset", gblSettingsFile)
-        gblvLocationPercPrefValue = fGetINISetting(location, "vLocationPercPrefValue", gblSettingsFile)
-        gblhLocationPercPrefValue = fGetINISetting(location, "hLocationPercPrefValue", gblSettingsFile)
+        gblAspectHidden = fGetINISetting(Location, "aspectHidden", gblSettingsFile)
+        gblWidgetPosition = fGetINISetting(Location, "widgetPosition", gblSettingsFile)
+        gblWidgetLandscape = fGetINISetting(Location, "widgetLandscape", gblSettingsFile)
+        gblWidgetPortrait = fGetINISetting(Location, "widgetPortrait", gblSettingsFile)
+        gblLandscapeFormHoffset = fGetINISetting(Location, "landscapeHoffset", gblSettingsFile)
+        gblLandscapeFormVoffset = fGetINISetting(Location, "landscapeYoffset", gblSettingsFile)
+        gblPortraitHoffset = fGetINISetting(Location, "portraitHoffset", gblSettingsFile)
+        gblPortraitYoffset = fGetINISetting(Location, "portraitYoffset", gblSettingsFile)
+        gblvLocationPercPrefValue = fGetINISetting(Location, "vLocationPercPrefValue", gblSettingsFile)
+        gblhLocationPercPrefValue = fGetINISetting(Location, "hLocationPercPrefValue", gblSettingsFile)
 
         ' font
-        gblClockFont = fGetINISetting(location, "clockFont", gblSettingsFile)
-        gblPrefsFont = fGetINISetting(location, "prefsFont", gblSettingsFile)
-        gblPrefsFontSizeHighDPI = fGetINISetting(location, "prefsFontSizeHighDPI", gblSettingsFile)
-        gblPrefsFontSizeLowDPI = fGetINISetting(location, "prefsFontSizeLowDPI", gblSettingsFile)
-        gblPrefsFontItalics = fGetINISetting(location, "prefsFontItalics", gblSettingsFile)
-        gblPrefsFontColour = fGetINISetting(location, "prefsFontColour", gblSettingsFile)
-        
+        gblClockFont = fGetINISetting(Location, "clockFont", gblSettingsFile)
+        gblGaugeFont = fGetINISetting(Location, "gaugeFont", gblSettingsFile)
+        gblPrefsFont = fGetINISetting(Location, "prefsFont", gblSettingsFile)
+        gblPrefsFontSizeHighDPI = fGetINISetting(Location, "prefsFontSizeHighDPI", gblSettingsFile)
+        gblPrefsFontSizeLowDPI = fGetINISetting(Location, "prefsFontSizeLowDPI", gblSettingsFile)
+        gblPrefsFontItalics = fGetINISetting(Location, "prefsFontItalics", gblSettingsFile)
+        gblPrefsFontColour = fGetINISetting(Location, "prefsFontColour", gblSettingsFile)
+    
+        gblDisplayScreenFont = fGetINISetting(Location, "displayScreenFont", gblSettingsFile)
+        gblDisplayScreenFontSize = fGetINISetting(Location, "displayScreenFontSize", gblSettingsFile)
+        gblDisplayScreenFontItalics = fGetINISetting(Location, "displayScreenFontItalics", gblSettingsFile)
+        gblDisplayScreenFontColour = fGetINISetting(Location, "displayScreenFontColour", gblSettingsFile)
+       
         ' sound
-        gblEnableSounds = fGetINISetting(location, "enableSounds", gblSettingsFile)
+'        gblEnableSounds = fGetINISetting(Location, "enableSounds", gblSettingsFile)
+'        gblEnableTicks = fGetINISetting(Location, "enableTicks", gblSettingsFile)
+'        gblEnableChimes = fGetINISetting(Location, "enableChimes", gblSettingsFile)
+'        gblEnableAlarms = fGetINISetting(Location, "enableAlarms", gblSettingsFile)
+'        gblVolumeBoost = fGetINISetting(Location, "volumeBoost", gblSettingsFile)
         
         ' development
-        gblDebug = fGetINISetting(location, "debug", gblSettingsFile)
-        gblDblClickCommand = fGetINISetting(location, "dblClickCommand", gblSettingsFile)
-        gblOpenFile = fGetINISetting(location, "openFile", gblSettingsFile)
-        gblDefaultEditor = fGetINISetting(location, "defaultEditor", gblSettingsFile)
+        gblDebug = fGetINISetting(Location, "debug", gblSettingsFile)
+        gblDblClickCommand = fGetINISetting(Location, "dblClickCommand", gblSettingsFile)
+        gblOpenFile = fGetINISetting(Location, "openFile", gblSettingsFile)
+        gblDefaultVB6Editor = fGetINISetting(Location, "defaultVB6Editor", gblSettingsFile)
+        gblDefaultTBEditor = fGetINISetting(Location, "defaultTBEditor", gblSettingsFile)
         
         ' other
-        gblClockHighDpiXPos = fGetINISetting("Software\PzCPUGauge", "clockHighDpiXPos", gblSettingsFile)
-        gblClockHighDpiYPos = fGetINISetting("Software\PzCPUGauge", "clockHighDpiYPos", gblSettingsFile)
-        
-        gblClockLowDpiXPos = fGetINISetting("Software\PzCPUGauge", "clockLowDpiXPos", gblSettingsFile)
-        gblClockLowDpiYPos = fGetINISetting("Software\PzCPUGauge", "clockLowDpiYPos", gblSettingsFile)
-        
-        gblLastSelectedTab = fGetINISetting(location, "lastSelectedTab", gblSettingsFile)
-        gblSkinTheme = fGetINISetting(location, "skinTheme", gblSettingsFile)
+        gblGaugeHighDpiXPos = fGetINISetting("Software\PzCPUGauge", "gaugeHighDpiXPos", gblSettingsFile)
+        gblGaugeHighDpiYPos = fGetINISetting("Software\PzCPUGauge", "gaugeHighDpiYPos", gblSettingsFile)
+        gblGaugeLowDpiXPos = fGetINISetting("Software\PzCPUGauge", "gaugeLowDpiXPos", gblSettingsFile)
+        gblGaugeLowDpiYPos = fGetINISetting("Software\PzCPUGauge", "gaugeLowDpiYPos", gblSettingsFile)
+        gblLastSelectedTab = fGetINISetting(Location, "lastSelectedTab", gblSettingsFile)
+        gblSkinTheme = fGetINISetting(Location, "skinTheme", gblSettingsFile)
         
         ' window
-        gblWindowLevel = fGetINISetting(location, "windowLevel", gblSettingsFile)
-        gblPreventDragging = fGetINISetting(location, "preventDragging", gblSettingsFile)
-        gblOpacity = fGetINISetting(location, "opacity", gblSettingsFile)
-        
-        
-
+        gblWindowLevel = fGetINISetting(Location, "windowLevel", gblSettingsFile)
+        gblPreventDragging = fGetINISetting(Location, "preventDragging", gblSettingsFile)
+        gblOpacity = fGetINISetting(Location, "opacity", gblSettingsFile)
         
         ' we do not want the widget to hide at startup
-        'gblWidgetHidden = fGetINISetting(location, "widgetHidden", gblSettingsFile)
         gblWidgetHidden = "0"
         
-        gblHidingTime = fGetINISetting(location, "hidingTime", gblSettingsFile)
-        gblIgnoreMouse = fGetINISetting(location, "ignoreMouse", gblSettingsFile)
-         
-        gblFirstTimeRun = fGetINISetting(location, "firstTimeRun", gblSettingsFile)
+        gblHidingTime = fGetINISetting(Location, "hidingTime", gblSettingsFile)
+        gblIgnoreMouse = fGetINISetting(Location, "ignoreMouse", gblSettingsFile)
+        gblMultiMonitorResize = fGetINISetting(Location, "multiMonitorResize", gblSettingsFile)
+        gblFirstTimeRun = fGetINISetting(Location, "firstTimeRun", gblSettingsFile)
+
+                           
+        gblGaugeSecondaryHeightRatio = fGetINISetting(Location, "gaugeSecondaryHeightRatio", gblSettingsFile)
+        gblGaugePrimaryHeightRatio = fGetINISetting(Location, "gaugePrimaryHeightRatio", gblSettingsFile)
+        
+        gblMessageAHeightTwips = fGetINISetting(Location, "messageAHeightTwips", gblSettingsFile)
+        gblMessageAWidthTwips = fGetINISetting(Location, "messageAWidthTwips ", gblSettingsFile)
         
     End If
 
@@ -698,25 +890,29 @@ Public Sub validateInputs()
         If gblGaugeFunctions = vbNullString Then gblGaugeFunctions = "1" ' always turn
 '        If gblAnimationInterval = vbNullString Then gblAnimationInterval = "130"
         If gblStartup = vbNullString Then gblStartup = "1"
+        
         If gblPointerAnimate = vbNullString Then gblPointerAnimate = "0"
-        If gblSamplingInterval = vbNullString Then gblSamplingInterval = "3"
         If gblMultiCoreEnable = vbNullString Then gblMultiCoreEnable = "0"
- 
-        'If gblClockFaceSwitchPref = vbNullString Then gblClockFaceSwitchPref = "0"
-'        If gblMainGaugeTimeZone = vbNullString Then gblMainGaugeTimeZone = "0"
-'        If gblMainDaylightSaving = vbNullString Then gblMainDaylightSaving = "0"
-
-        'If gblSecondaryGaugeTimeZone = vbNullString Then gblSecondaryGaugeTimeZone = "1"
-        'If gblSecondaryDaylightSaving = vbNullString Then gblSecondaryDaylightSaving = "1"
-
+        If gblSamplingInterval = vbNullString Then gblSamplingInterval = "3"
+                
         ' Configuration
-        If gblEnableTooltips = vbNullString Then gblEnableTooltips = "0"
-        If gblEnablePrefsTooltips = vbNullString Then gblEnablePrefsTooltips = "1"
-        If gblEnableBalloonTooltips = vbNullString Then gblEnableBalloonTooltips = "1"
+        If gblGaugeTooltips = "False" Then gblGaugeTooltips = "0"
+        If gblGaugeTooltips = vbNullString Then gblGaugeTooltips = "0"
+
+        
+        'If gblEnablePrefsTooltips = vbNullString Then gblEnablePrefsTooltips = "false"
+        If gblPrefsTooltips = "False" Then gblPrefsTooltips = "0"
+        If gblPrefsTooltips = vbNullString Then gblPrefsTooltips = "0"
+        
         If gblShowTaskbar = vbNullString Then gblShowTaskbar = "0"
+        If gblShowHelp = vbNullString Then gblShowHelp = "1"
+'        If gblTogglePendulum = vbNullString Then gblTogglePendulum = "0"
+'        If gbl24HourGaugeMode = vbNullString Then gbl24HourGaugeMode = "1"
+'
         If gblDpiAwareness = vbNullString Then gblDpiAwareness = "0"
-        If gblGaugeSize = vbNullString Then gblGaugeSize = "25"
+        If gblGaugeSize = vbNullString Then gblGaugeSize = "100"
         If gblScrollWheelDirection = vbNullString Then gblScrollWheelDirection = "1"
+'        If gblNumericDisplayRotation = vbNullString Then gblNumericDisplayRotation = "1"
                
         ' fonts
         If gblPrefsFont = vbNullString Then gblPrefsFont = "times new roman"
@@ -726,9 +922,23 @@ Public Sub validateInputs()
         If gblPrefsFontItalics = vbNullString Then gblPrefsFontItalics = "false"
         If gblPrefsFontColour = vbNullString Then gblPrefsFontColour = "0"
 
-        ' sounds
-        If gblEnableSounds = vbNullString Then gblEnableSounds = "1"
+        If gblGaugeFont = vbNullString Then gblGaugeFont = gblPrefsFont
 
+        If gblDisplayScreenFont = vbNullString Then gblDisplayScreenFont = "courier new"
+        If gblDisplayScreenFont = "Courier  New" Then gblDisplayScreenFont = "courier new"
+        If gblDisplayScreenFontSize = vbNullString Then gblDisplayScreenFontSize = "5"
+        If gblDisplayScreenFontItalics = vbNullString Then gblDisplayScreenFontItalics = "false"
+        If gblDisplayScreenFontColour = vbNullString Then gblDisplayScreenFontColour = "0"
+
+        ' sounds
+        
+        If gblEnableSounds = vbNullString Then gblEnableSounds = "1"
+'        If gblEnableTicks = vbNullString Then gblEnableTicks = "0"
+'        If gblEnableChimes = vbNullString Then gblEnableChimes = "0"
+'        If gblEnableAlarms = vbNullString Then gblEnableAlarms = "0"
+'        If gblVolumeBoost = vbNullString Then gblVolumeBoost = "0"
+        
+        
         ' position
         If gblAspectHidden = vbNullString Then gblAspectHidden = "0"
         If gblWidgetPosition = vbNullString Then gblWidgetPosition = "0"
@@ -743,9 +953,10 @@ Public Sub validateInputs()
                 
         ' development
         If gblDebug = vbNullString Then gblDebug = "0"
-        If gblDblClickCommand = vbNullString Then gblDblClickCommand = "%systemroot%\system32\timedate.cpl"
+        If gblDblClickCommand = vbNullString And gblFirstTimeRun = "True" Then gblDblClickCommand = "mmsys.cpl"
         If gblOpenFile = vbNullString Then gblOpenFile = vbNullString
-        If gblDefaultEditor = vbNullString Then gblDefaultEditor = vbNullString
+        If gblDefaultVB6Editor = vbNullString Then gblDefaultVB6Editor = vbNullString
+        If gblDefaultTBEditor = vbNullString Then gblDefaultTBEditor = vbNullString
         
         ' window
         If gblWindowLevel = vbNullString Then gblWindowLevel = "1" 'WindowLevel", gblSettingsFile)
@@ -754,13 +965,18 @@ Public Sub validateInputs()
         If gblHidingTime = vbNullString Then gblHidingTime = "0"
         If gblIgnoreMouse = vbNullString Then gblIgnoreMouse = "0"
         If gblPreventDragging = vbNullString Then gblPreventDragging = "0"
-        
+        If gblMultiMonitorResize = vbNullString Then gblMultiMonitorResize = "0"
         
         
         ' other
         If gblFirstTimeRun = vbNullString Then gblFirstTimeRun = "true"
         If gblLastSelectedTab = vbNullString Then gblLastSelectedTab = "general"
         If gblSkinTheme = vbNullString Then gblSkinTheme = "dark"
+    
+        
+        If gblGaugePrimaryHeightRatio = "" Then gblGaugePrimaryHeightRatio = "1"
+        If gblGaugeSecondaryHeightRatio = "" Then gblGaugeSecondaryHeightRatio = "1"
+        
         
    On Error GoTo 0
    Exit Sub
@@ -783,7 +999,7 @@ Private Sub getTrinketsFile()
     Dim iFileNo As Integer: iFileNo = 0
     
     gblTrinketsDir = fSpecialFolder(feUserAppData) & "\trinkets" ' just for this user alone
-    gblTrinketsFile = gblTrinketsDir & "\" & widgetName & ".ini"
+    gblTrinketsFile = gblTrinketsDir & "\" & gblWidgetName & ".ini"
         
     'if the folder does not exist then create the folder
     If Not fDirExists(gblTrinketsDir) Then
@@ -796,7 +1012,7 @@ Private Sub getTrinketsFile()
         iFileNo = FreeFile
         'open the file for writing
         Open gblTrinketsFile For Output As #iFileNo
-        Write #iFileNo, App.path & "\" & App.EXEName & ".exe"
+        Write #iFileNo, App.Path & "\" & App.EXEName & ".exe"
         Write #iFileNo,
         Close #iFileNo
     End If
@@ -809,7 +1025,6 @@ getTrinketsFile_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure getTrinketsFile of Form modMain"
 
 End Sub
-
 '---------------------------------------------------------------------------------------
 ' Procedure : getToolSettingsFile
 ' Author    : beededea
@@ -819,7 +1034,7 @@ End Sub
 '
 Private Sub getToolSettingsFile()
     On Error GoTo getToolSettingsFile_Error
-    ''If debugflg = 1  Then Debug.Print "%getToolSettingsFile"
+    ''If gblDebugFlg = 1  Then Debug.Print "%getToolSettingsFile"
     
     Dim iFileNo As Integer: iFileNo = 0
     
@@ -863,10 +1078,10 @@ Private Sub configureTimers()
 
     On Error GoTo configureTimers_Error
     
-    oldgblSettingsModificationTime = FileDateTime(gblSettingsFile)
+    gblOldSettingsModificationTime = FileDateTime(gblSettingsFile)
 
-    frmTimer.rotationTimer.Enabled = True
-    frmTimer.settingsTimer.Enabled = True
+    frmTimer.tmrScreenResolution.Enabled = True
+    frmTimer.unhideTimer.Enabled = True
 
     On Error GoTo 0
     Exit Sub
@@ -894,12 +1109,12 @@ Private Sub setHidingTime()
     
     On Error GoTo setHidingTime_Error
 
-    If gblHidingTime = "0" Then minutesToHide = 1
-    If gblHidingTime = "1" Then minutesToHide = 5
-    If gblHidingTime = "2" Then minutesToHide = 10
-    If gblHidingTime = "3" Then minutesToHide = 20
-    If gblHidingTime = "4" Then minutesToHide = 30
-    If gblHidingTime = "5" Then minutesToHide = 60
+    If gblHidingTime = "0" Then gblMinutesToHide = 1
+    If gblHidingTime = "1" Then gblMinutesToHide = 5
+    If gblHidingTime = "2" Then gblMinutesToHide = 10
+    If gblHidingTime = "3" Then gblMinutesToHide = 20
+    If gblHidingTime = "4" Then gblMinutesToHide = 30
+    If gblHidingTime = "5" Then gblMinutesToHide = 60
 
     On Error GoTo 0
     Exit Sub
@@ -926,15 +1141,15 @@ Private Sub createRCFormsOnCurrentDisplay()
     On Error GoTo createRCFormsOnCurrentDisplay_Error
 
     With New_c.Displays(1) 'get the current Display
-      Call fMain.initAndShowAboutForm(.WorkLeft, .WorkTop, 1000, 1000, widgetName)
+      Call fMain.initAndCreateAboutForm(.WorkLeft, .WorkTop, 1000, 1000, gblWidgetName)
     End With
     
     With New_c.Displays(1) 'get the current Display
-      Call fMain.initAndShowHelpForm(.WorkLeft, .WorkTop, 1000, 1000, widgetName)
+      Call fMain.initAndCreateHelpForm(.WorkLeft, .WorkTop, 1000, 1000, gblWidgetName)
     End With
 
     With New_c.Displays(1) 'get the current Display
-      Call fMain.initAndShowLicenceForm(.WorkLeft, .WorkTop, 1000, 1000, widgetName)
+      Call fMain.initAndCreateLicenceForm(.WorkLeft, .WorkTop, 1000, 1000, gblWidgetName)
     End With
     
         On Error GoTo 0
@@ -996,30 +1211,25 @@ Private Sub loadExcludePathCollection()
     'all of these will be rendered in cwOverlay in the same order as below
     On Error GoTo loadExcludePathCollection_Error
 
-    With fAlpha.collPSDNonUIElements ' the exclude list
+    With fGauge.collPSDNonUIElements ' the exclude list
+
+        .Add Empty, "fahrenheit"
         .Add Empty, "clockface"
         .Add Empty, "faceweathering"
-
-'        .Add Empty, "swsecondhand" 'arrow-hand-top
-'        .Add Empty, "swminutehand" 'arrow-hand-right
-'        .Add Empty, "swhourhand"   'arrow-hand-bottom
-        
-'        .Add Empty, "hourshadow"   'clock-hand-hours-shadow
-'        .Add Empty, "hourhand"     'clock-hand-hours
-        
-'        .Add Empty, "minuteshadow" 'clock-hand-minutes-shadow
-'        .Add Empty, "minutehand"   'clock-hand-minutes
-        
-        .Add Empty, "secondshadow" 'clock-hand-seconds-shadow
-        .Add Empty, "secondhand"   'clock-hand-seconds
-
-        .Add Empty, "bigreflection"     'all reflections
-        .Add Empty, "windowreflection"
 
         .Add Empty, "redlamptrue"
         .Add Empty, "redlampfalse"
 
+        .Add Empty, "greenlamptrue"
+        .Add Empty, "greenlampfalse"
+        
+        .Add Empty, "secondshadow" 'clock-hand-seconds-shadow
+        .Add Empty, "secondhand"   'clock-hand-seconds
+        
+        .Add Empty, "bigreflection"     'all reflections
+        .Add Empty, "windowreflection"
     End With
+        
 
    On Error GoTo 0
    Exit Sub
@@ -1029,45 +1239,6 @@ loadExcludePathCollection_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure loadExcludePathCollection of Module modMain"
 
 End Sub
-
-
-''---------------------------------------------------------------------------------------
-'' Procedure : ExportPngs
-'' Author    : Olaf
-'' Date      : 06/08/2023
-'' Purpose   :
-''---------------------------------------------------------------------------------------
-''
-'Sub exportPngs(PSD_FileNameOrByteArray, ByVal pngFolder As String)
-'   On Error GoTo ExportPngs_Error
-'
-'  New_c.FSO.EnsurePath pngFolder 'make sure the PngFolder-Path "materializes itself" in the FileSystem
-'  New_c.FSO.EnsurePathEndSep pngFolder 'add a backslash to the PngFolder-param (in case it was missing)
-'
-'  With New_c.SimplePSD(PSD_FileNameOrByteArray)  'create a new PSD-Parser.instance (and load the passed content)
-'    Dim i As Long
-'    For i = 0 To .LayersCount - 1 'loop over all the Layers in the PSD
-'      If .LayerByteSize(i) Then   'this is an Alpha-Surface-Layer with "meat" (and not a group-specification)
-'         .LayerSurface(i).WriteContentToPngFile pngFolder & Replace(.LayerPath(i), "/", "_") & ".png"
-'      End If
-'    Next
-'  End With
-'
-'   On Error GoTo 0
-'   Exit Sub
-'
-'ExportPngs_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure ExportPngs of Module modMain"
-'End Sub
-
-
-
-
-
-
-
-     
 
 
 
@@ -1110,5 +1281,177 @@ End Function
 
 
 
+'---------------------------------------------------------------------------------------
+' Procedure : loadAsynchSoundFiles
+' Author    : beededea
+' Date      : 27/01/2025
+' Purpose   : Load the sounds into numbered buffers ready for playing
+'---------------------------------------------------------------------------------------
+'
+Private Sub loadAsynchSoundFiles()
+
+   On Error GoTo loadAsynchSoundFiles_Error
+'
+'    LoadSoundFile 1, App.path & "\resources\sounds\belltoll-quiet.wav"
+'    LoadSoundFile 2, App.path & "\resources\sounds\belltoll.wav"
+'    LoadSoundFile 3, App.path & "\resources\sounds\belltollLong-quiet.wav"
+'    LoadSoundFile 4, App.path & "\resources\sounds\belltollLong.wav"
+'    LoadSoundFile 5, App.path & "\resources\sounds\fullchime-quiet.wav"
+'    LoadSoundFile 6, App.path & "\resources\sounds\fullchime.wav"
+'    LoadSoundFile 7, App.path & "\resources\sounds\halfchime-quiet.wav"
+'    LoadSoundFile 8, App.path & "\resources\sounds\halfchime.wav"
+'    LoadSoundFile 9, App.path & "\resources\sounds\quarterchime-quiet.wav"
+'    LoadSoundFile 10, App.path & "\resources\sounds\quarterchime.wav"
+'    LoadSoundFile 11, App.path & "\resources\sounds\threequarterchime-quiet.wav"
+'    LoadSoundFile 12, App.path & "\resources\sounds\threequarterchime.wav"
+'    LoadSoundFile 13, App.path & "\resources\sounds\ticktock-quiet.wav"
+'    LoadSoundFile 14, App.path & "\resources\sounds\ticktock.wav"
+'    LoadSoundFile 15, App.path & "\resources\sounds\zzzz-quiet.wav"
+'    LoadSoundFile 16, App.path & "\resources\sounds\zzzz.wav"
+'    LoadSoundFile 17, App.path & "\resources\sounds\till-quiet.wav"
+'    LoadSoundFile 18, App.path & "\resources\sounds\till.wav"
+
+   On Error GoTo 0
+   Exit Sub
+
+loadAsynchSoundFiles_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure loadAsynchSoundFiles of Module modMain"
+
+End Sub
 
 
+'---------------------------------------------------------------------------------------
+' Procedure : playAsynchSound
+' Author    : beededea
+' Date      : 27/01/2025
+' Purpose   : requires minimal changes to replace playSound code in the rest of the program
+'---------------------------------------------------------------------------------------
+'
+Public Sub playAsynchSound(ByVal SoundFile As String)
+
+     Dim soundindex As Long: soundindex = 0
+
+     On Error GoTo playAsynchSound_Error
+
+'     If SoundFile = App.path & "\resources\sounds\belltoll-quiet.wav" Then soundindex = 1
+'     If SoundFile = App.path & "\resources\sounds\belltoll.wav" Then soundindex = 2
+'     If SoundFile = App.path & "\resources\sounds\belltollLong-quiet.wav" Then soundindex = 3
+'     If SoundFile = App.path & "\resources\sounds\belltollLong.wav" Then soundindex = 4
+'     If SoundFile = App.path & "\resources\sounds\fullchime-quiet.wav" Then soundindex = 5
+'     If SoundFile = App.path & "\resources\sounds\fullchime.wav" Then soundindex = 6
+'     If SoundFile = App.path & "\resources\sounds\halfchime-quiet.wav" Then soundindex = 7
+'     If SoundFile = App.path & "\resources\sounds\halfchime.wav" Then soundindex = 8
+'     If SoundFile = App.path & "\resources\sounds\quarterchime-quiet.wav" Then soundindex = 9
+'     If SoundFile = App.path & "\resources\sounds\quarterchime.wav" Then soundindex = 10
+'     If SoundFile = App.path & "\resources\sounds\threequarterchime-quiet.wav" Then soundindex = 11
+'     If SoundFile = App.path & "\resources\sounds\threequarterchime.wav" Then soundindex = 12
+'     If SoundFile = App.path & "\resources\sounds\ticktock-quiet.wav" Then soundindex = 13
+'     If SoundFile = App.path & "\resources\sounds\ticktock.wav" Then soundindex = 14
+'     If SoundFile = App.path & "\resources\sounds\zzzz-quiet.wav" Then soundindex = 15
+'     If SoundFile = App.path & "\resources\sounds\zzzz.wav" Then soundindex = 16
+'     If SoundFile = App.path & "\resources\sounds\till-quiet.wav" Then soundindex = 17
+'     If SoundFile = App.path & "\resources\sounds\till.wav" Then soundindex = 18
+
+     Call playSounds(soundindex) ' writes the wav files (previously stored in a memory buffer) and feeds that buffer to the waveOutWrite API
+
+   On Error GoTo 0
+   Exit Sub
+
+playAsynchSound_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure playAsynchSound of Module modMain"
+
+End Sub
+
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : stopAsynchSound
+' Author    : beededea
+' Date      : 27/01/2025
+' Purpose   : requires minimal changes to previous playSound code
+'---------------------------------------------------------------------------------------
+'
+Public Sub stopAsynchSound(ByVal SoundFile As String)
+
+     Dim soundindex As Long: soundindex = 0
+
+     On Error GoTo stopAsynchSound_Error
+
+'     If SoundFile = App.path & "\resources\sounds\belltoll-quiet.wav" Then soundindex = 1
+'     If SoundFile = App.path & "\resources\sounds\belltoll.wav" Then soundindex = 2
+'     If SoundFile = App.path & "\resources\sounds\belltollLong-quiet.wav" Then soundindex = 3
+'     If SoundFile = App.path & "\resources\sounds\belltollLong.wav" Then soundindex = 4
+'     If SoundFile = App.path & "\resources\sounds\fullchime-quiet.wav" Then soundindex = 5
+'     If SoundFile = App.path & "\resources\sounds\fullchime.wav" Then soundindex = 6
+'     If SoundFile = App.path & "\resources\sounds\halfchime-quiet.wav" Then soundindex = 7
+'     If SoundFile = App.path & "\resources\sounds\halfchime.wav" Then soundindex = 8
+'     If SoundFile = App.path & "\resources\sounds\quarterchime-quiet.wav" Then soundindex = 9
+'     If SoundFile = App.path & "\resources\sounds\quarterchime.wav" Then soundindex = 10
+'     If SoundFile = App.path & "\resources\sounds\threequarterchime-quiet.wav" Then soundindex = 11
+'     If SoundFile = App.path & "\resources\sounds\threequarterchime.wav" Then soundindex = 12
+'     If SoundFile = App.path & "\resources\sounds\ticktock-quiet.wav" Then soundindex = 13
+'     If SoundFile = App.path & "\resources\sounds\ticktock.wav" Then soundindex = 14
+'     If SoundFile = App.path & "\resources\sounds\zzzz-quiet.wav" Then soundindex = 15
+'     If SoundFile = App.path & "\resources\sounds\zzzz.wav" Then soundindex = 16
+'     If SoundFile = App.path & "\resources\sounds\till-quiet.wav" Then soundindex = 17
+'     If SoundFile = App.path & "\resources\sounds\till.wav" Then soundindex = 18
+     
+     Call StopSound(soundindex)
+
+   On Error GoTo 0
+   Exit Sub
+
+stopAsynchSound_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure stopAsynchSound of Module modMain"
+
+End Sub
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : stopAllAsynchSounds
+' Author    : beededea
+' Date      : 04/02/2025
+' Purpose   : ONLY stops any WAV files currently playing in asynchronous mode.
+'---------------------------------------------------------------------------------------
+'
+Public Sub stopAllAsynchSounds()
+            
+   On Error GoTo stopAllAsynchSounds_Error
+
+'    Call StopSound(1)
+'    Call StopSound(2)
+'    Call StopSound(3)
+'    Call StopSound(4)
+'    Call StopSound(5)
+'    Call StopSound(6)
+'    Call StopSound(7)
+'    Call StopSound(8)
+'    Call StopSound(9)
+'    Call StopSound(10)
+'    Call StopSound(12)
+'    Call StopSound(13)
+'    Call StopSound(14)
+'    Call StopSound(15)
+'    Call StopSound(16)
+'    Call StopSound(17)
+'    Call StopSound(18)
+
+   On Error GoTo 0
+   Exit Sub
+
+stopAllAsynchSounds_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure stopAllAsynchSounds of Module modMain"
+
+End Sub
+
+
+
+' test open hardware monitor is running
+Private Sub checkMonitorIsRunning()
+
+
+End Sub

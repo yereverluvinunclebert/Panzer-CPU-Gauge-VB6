@@ -110,11 +110,11 @@ Private Sub Form_Load()
             Me.Left = Val(gblMulticoreXPosTwips)
         Else
     
-            leftPoint = fAlpha.gaugeForm.Widgets("housing/surround").Widget.Left
-            topPoint = fAlpha.gaugeForm.Widgets("housing/stopButton").Widget.Top
+            leftPoint = fGauge.gaugeForm.Widgets("housing/surround").Widget.Left
+            topPoint = fGauge.gaugeForm.Widgets("housing/stopButton").Widget.Top
         
             Me.Top = ((topPoint) * gblScreenTwipsPerPixelY) - 150
-            Me.Left = (fAlpha.gaugeForm.Left + leftPoint) * gblScreenTwipsPerPixelX - 250
+            Me.Left = (fGauge.gaugeForm.Left + leftPoint) * gblScreenTwipsPerPixelX - 250
             
         End If
        

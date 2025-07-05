@@ -1,1 +1,1 @@
-start "" "Panzer CPU Gauge.exe" prefs
+start "" "Diesel Volume Control.exe" prefs

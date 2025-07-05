@@ -1,7 +1,6 @@
 VERSION 5.00
 Object = "{BCE37951-37DF-4D69-A8A3-2CFABEE7B3CC}#1.0#0"; "CCRSlider.ocx"
 Begin VB.Form widgetPrefs 
-   AutoRedraw      =   -1  'True
    Caption         =   "Panzer CPU Gauge Preferences"
    ClientHeight    =   10545
    ClientLeft      =   60
@@ -12,27 +11,207 @@ Begin VB.Form widgetPrefs
    ScaleHeight     =   10693.53
    ScaleMode       =   0  'User
    ScaleWidth      =   8880
-   StartUpPosition =   3  'Windows Default
    Visible         =   0   'False
+   Begin VB.Frame fraGeneral 
+      Caption         =   "General"
+      ForeColor       =   &H80000008&
+      Height          =   5325
+      Left            =   240
+      TabIndex        =   162
+      Top             =   1155
+      Visible         =   0   'False
+      Width           =   7995
+      Begin VB.Frame fraGeneralInner 
+         BorderStyle     =   0  'None
+         Height          =   4545
+         Left            =   465
+         TabIndex        =   163
+         Top             =   300
+         Width           =   6750
+         Begin VB.CheckBox chkGenStartup 
+            Caption         =   "Run the CPU Widget at Windows Startup "
+            Height          =   465
+            Left            =   1995
+            TabIndex        =   167
+            ToolTipText     =   "Check this box to enable the automatic start of the program when Windows is started."
+            Top             =   3975
+            Width           =   4020
+         End
+         Begin VB.ComboBox cmbTickSwitchPref 
+            Height          =   315
+            ItemData        =   "frmPrefs.frx":25CA
+            Left            =   2010
+            List            =   "frmPrefs.frx":25CC
+            Style           =   2  'Dropdown List
+            TabIndex        =   166
+            Top             =   1560
+            Width           =   3720
+         End
+         Begin VB.CheckBox chkGaugeFunctions 
+            Caption         =   "Pointer operation toggle *"
+            Height          =   225
+            Left            =   2010
+            TabIndex        =   165
+            ToolTipText     =   "When checked this box enables the pointer. That's it!"
+            Top             =   180
+            Width           =   3405
+         End
+         Begin VB.CheckBox chkMultiCoreEnable 
+            Caption         =   "Enable multi-core display *"
+            Height          =   225
+            Left            =   1995
+            TabIndex        =   164
+            ToolTipText     =   "When checked this box enables the pointer. That's it!"
+            Top             =   975
+            Width           =   3405
+         End
+         Begin vb6projectCCRSlider.Slider sliSamplingInterval 
+            Height          =   390
+            Left            =   1890
+            TabIndex        =   168
+            ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
+            Top             =   2610
+            Width           =   3870
+            _ExtentX        =   6826
+            _ExtentY        =   688
+            Min             =   1
+            Max             =   30
+            Value           =   20
+            SelStart        =   20
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "When checked this box enables the pointer. *"
+            Height          =   660
+            Index           =   2
+            Left            =   2025
+            TabIndex        =   179
+            Tag             =   "lblEnableSoundsDesc"
+            Top             =   540
+            Width           =   3615
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "Auto Start :"
+            Height          =   375
+            Index           =   11
+            Left            =   960
+            TabIndex        =   178
+            Tag             =   "lblRefreshInterval"
+            Top             =   4095
+            Width           =   1740
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "Gauge Functions :"
+            Height          =   315
+            Index           =   6
+            Left            =   510
+            TabIndex        =   177
+            Top             =   165
+            Width           =   1320
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "Smooth Movement :"
+            Height          =   480
+            Index           =   3
+            Left            =   375
+            TabIndex        =   176
+            Top             =   1620
+            Width           =   1605
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "The pointer can be set to smooth or flick, the smooth movement uses more CPU."
+            Height          =   660
+            Index           =   9
+            Left            =   2025
+            TabIndex        =   175
+            Top             =   1995
+            Width           =   3810
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "1"
+            Height          =   315
+            Index           =   16
+            Left            =   2010
+            TabIndex        =   174
+            Top             =   3075
+            Width           =   345
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "30"
+            Height          =   315
+            Index           =   15
+            Left            =   5445
+            TabIndex        =   173
+            Top             =   3075
+            Width           =   405
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "15"
+            Height          =   315
+            Index           =   12
+            Left            =   3615
+            TabIndex        =   172
+            Top             =   3075
+            Width           =   840
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "Sampling Interval :"
+            Height          =   315
+            Index           =   13
+            Left            =   495
+            TabIndex        =   171
+            Top             =   2670
+            Width           =   1410
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "Adjust to determine gauge sampling frequency (seconds). *"
+            Height          =   600
+            Index           =   14
+            Left            =   2025
+            TabIndex        =   170
+            Top             =   3390
+            Width           =   3810
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "MultiCore :"
+            Height          =   315
+            Index           =   1
+            Left            =   1050
+            TabIndex        =   169
+            Top             =   960
+            Width           =   1320
+         End
+      End
+   End
+   Begin VB.Timer tmrPrefsMonitorSaveHeight 
+      Interval        =   5000
+      Left            =   -90
+      Top             =   5220
+   End
+   Begin VB.Timer tmrPrefsScreenResolution 
+      Enabled         =   0   'False
+      Interval        =   1500
+      Left            =   -90
+      Top             =   6420
+   End
    Begin VB.Frame fraDevelopmentButton 
       BorderStyle     =   0  'None
       Height          =   1140
       Left            =   5490
-      TabIndex        =   42
+      TabIndex        =   38
       Top             =   0
       Width           =   1065
       Begin VB.Label lblDevelopment 
          Caption         =   "Development"
          Height          =   240
          Left            =   45
-         TabIndex        =   43
+         TabIndex        =   39
          Top             =   855
          Width           =   960
       End
       Begin VB.Image imgDevelopment 
          Height          =   600
          Left            =   150
-         Picture         =   "frmPrefs.frx":10CA
+         Picture         =   "frmPrefs.frx":25CE
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -40,23 +219,23 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgDevelopmentClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":1682
+         Picture         =   "frmPrefs.frx":2B86
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
       End
    End
-   Begin VB.Timer positionTimer 
+   Begin VB.Timer tmrWritePosition 
       Enabled         =   0   'False
       Interval        =   5000
-      Left            =   1170
-      Top             =   9690
+      Left            =   -180
+      Top             =   6975
    End
    Begin VB.CheckBox chkEnableResizing 
       Caption         =   "Enable Corner Resize"
       Height          =   210
       Left            =   3240
-      TabIndex        =   132
+      TabIndex        =   119
       Top             =   10125
       Visible         =   0   'False
       Width           =   2250
@@ -65,7 +244,7 @@ Begin VB.Form widgetPrefs
       BorderStyle     =   0  'None
       Height          =   1140
       Left            =   7695
-      TabIndex        =   99
+      TabIndex        =   86
       Top             =   0
       Width           =   975
       Begin VB.Label lblAbout 
@@ -73,14 +252,14 @@ Begin VB.Form widgetPrefs
          Height          =   240
          Index           =   0
          Left            =   255
-         TabIndex        =   100
+         TabIndex        =   87
          Top             =   855
          Width           =   615
       End
       Begin VB.Image imgAbout 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":1A08
+         Picture         =   "frmPrefs.frx":2F0C
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -88,7 +267,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgAboutClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":1F90
+         Picture         =   "frmPrefs.frx":3494
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -98,7 +277,7 @@ Begin VB.Form widgetPrefs
       BorderStyle     =   0  'None
       Height          =   1140
       Left            =   1215
-      TabIndex        =   44
+      TabIndex        =   40
       Top             =   -15
       Width           =   930
       Begin VB.Label lblConfig 
@@ -106,22 +285,22 @@ Begin VB.Form widgetPrefs
          Height          =   240
          Index           =   0
          Left            =   270
-         TabIndex        =   45
+         TabIndex        =   41
          Top             =   855
          Width           =   510
       End
       Begin VB.Image imgConfig 
          Height          =   600
          Left            =   165
-         Picture         =   "frmPrefs.frx":247B
+         Picture         =   "frmPrefs.frx":397F
          Stretch         =   -1  'True
-         Top             =   225
+         Top             =   240
          Width           =   600
       End
       Begin VB.Image imgConfigClicked 
          Height          =   600
          Left            =   165
-         Picture         =   "frmPrefs.frx":2A5A
+         Picture         =   "frmPrefs.frx":3F5E
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -131,7 +310,7 @@ Begin VB.Form widgetPrefs
       BorderStyle     =   0  'None
       Height          =   1140
       Left            =   4410
-      TabIndex        =   40
+      TabIndex        =   36
       Top             =   0
       Width           =   930
       Begin VB.Label lblPosition 
@@ -139,14 +318,14 @@ Begin VB.Form widgetPrefs
          Height          =   240
          Index           =   0
          Left            =   180
-         TabIndex        =   41
+         TabIndex        =   37
          Top             =   855
          Width           =   615
       End
       Begin VB.Image imgPosition 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":2F5F
+         Picture         =   "frmPrefs.frx":4463
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -154,7 +333,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgPositionClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":3530
+         Picture         =   "frmPrefs.frx":4A34
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -168,7 +347,7 @@ Begin VB.Form widgetPrefs
       Style           =   1  'Graphical
       TabIndex        =   6
       ToolTipText     =   "Save the changes you have made to the preferences"
-      Top             =   10020
+      Top             =   10035
       Width           =   1320
    End
    Begin VB.CommandButton btnHelp 
@@ -176,7 +355,7 @@ Begin VB.Form widgetPrefs
       Height          =   360
       Left            =   120
       Style           =   1  'Graphical
-      TabIndex        =   38
+      TabIndex        =   35
       ToolTipText     =   "Open the help utility"
       Top             =   10035
       Width           =   1320
@@ -199,7 +378,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgSounds 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":38CE
+         Picture         =   "frmPrefs.frx":4DD2
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -207,7 +386,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgSoundsClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":3E8D
+         Picture         =   "frmPrefs.frx":5391
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -216,17 +395,17 @@ Begin VB.Form widgetPrefs
    Begin VB.Timer themeTimer 
       Enabled         =   0   'False
       Interval        =   10000
-      Left            =   660
-      Top             =   9705
+      Left            =   -90
+      Top             =   5835
    End
    Begin VB.CommandButton btnClose 
       Caption         =   "&Close"
       Height          =   360
-      Left            =   7440
+      Left            =   7425
       Style           =   1  'Graphical
       TabIndex        =   7
       ToolTipText     =   "Close the utility"
-      Top             =   10020
+      Top             =   10035
       Width           =   1320
    End
    Begin VB.Frame fraWindowButton 
@@ -247,7 +426,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgWindow 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":435D
+         Picture         =   "frmPrefs.frx":5861
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -255,7 +434,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgWindowClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":4827
+         Picture         =   "frmPrefs.frx":5D2B
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -279,7 +458,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgFonts 
          Height          =   600
          Left            =   180
-         Picture         =   "frmPrefs.frx":4BD3
+         Picture         =   "frmPrefs.frx":60D7
          Stretch         =   -1  'True
          Top             =   195
          Width           =   600
@@ -287,7 +466,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgFontsClicked 
          Height          =   600
          Left            =   180
-         Picture         =   "frmPrefs.frx":5129
+         Picture         =   "frmPrefs.frx":662D
          Stretch         =   -1  'True
          Top             =   195
          Width           =   600
@@ -300,9 +479,10 @@ Begin VB.Form widgetPrefs
       Top             =   -15
       Width           =   930
       Begin VB.Image imgGeneral 
+         Appearance      =   0  'Flat
          Height          =   600
-         Left            =   180
-         Picture         =   "frmPrefs.frx":55C2
+         Left            =   165
+         Picture         =   "frmPrefs.frx":6AC6
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -324,205 +504,16 @@ Begin VB.Form widgetPrefs
          Width           =   600
       End
    End
-   Begin VB.Frame fraDevelopment 
-      Caption         =   "Development"
-      Height          =   6210
-      Left            =   240
-      TabIndex        =   48
-      Top             =   1200
-      Visible         =   0   'False
-      Width           =   8520
-      Begin VB.Frame fraDevelopmentInner 
-         BorderStyle     =   0  'None
-         Height          =   5595
-         Left            =   870
-         TabIndex        =   49
-         Top             =   300
-         Width           =   7455
-         Begin VB.Frame fraDefaultEditor 
-            BorderStyle     =   0  'None
-            Height          =   2370
-            Left            =   75
-            TabIndex        =   135
-            Top             =   3165
-            Width           =   7290
-            Begin VB.CommandButton btnDefaultEditor 
-               Caption         =   "..."
-               Height          =   300
-               Left            =   5115
-               Style           =   1  'Graphical
-               TabIndex        =   137
-               ToolTipText     =   "Click to select the .vbp file to edit the program - You need to have access to the source!"
-               Top             =   210
-               Width           =   315
-            End
-            Begin VB.TextBox txtDefaultEditor 
-               Height          =   315
-               Left            =   1440
-               TabIndex        =   136
-               Text            =   " eg. E:\vb6\fire call\FireCallWin.vbp"
-               Top             =   195
-               Width           =   3660
-            End
-            Begin VB.Label lblGitHub 
-               Caption         =   $"frmPrefs.frx":5A2C
-               ForeColor       =   &H8000000D&
-               Height          =   915
-               Left            =   1560
-               TabIndex        =   141
-               ToolTipText     =   "Double Click to visit github"
-               Top             =   1440
-               Width           =   4935
-            End
-            Begin VB.Label lblDebug 
-               Caption         =   $"frmPrefs.frx":5AC5
-               Height          =   930
-               Index           =   9
-               Left            =   1545
-               TabIndex        =   139
-               Top             =   690
-               Width           =   4785
-            End
-            Begin VB.Label lblDebug 
-               Caption         =   "Default Editor :"
-               Height          =   255
-               Index           =   7
-               Left            =   285
-               TabIndex        =   138
-               Tag             =   "lblSharedInputFile"
-               Top             =   225
-               Width           =   1350
-            End
-         End
-         Begin VB.TextBox txtDblClickCommand 
-            Height          =   315
-            Left            =   1515
-            TabIndex        =   61
-            ToolTipText     =   "Enter a Windows command for the gauge to operate when double-clicked."
-            Top             =   1095
-            Width           =   3660
-         End
-         Begin VB.CommandButton btnOpenFile 
-            Caption         =   "..."
-            Height          =   300
-            Left            =   5175
-            Style           =   1  'Graphical
-            TabIndex        =   58
-            ToolTipText     =   "Click to select a particular file for the gauge to run or open when double-clicked."
-            Top             =   2250
-            Width           =   315
-         End
-         Begin VB.TextBox txtOpenFile 
-            Height          =   315
-            Left            =   1515
-            TabIndex        =   57
-            ToolTipText     =   "Enter a particular file for the gauge to run or open when double-clicked."
-            Top             =   2235
-            Width           =   3660
-         End
-         Begin VB.ComboBox cmbDebug 
-            Height          =   315
-            ItemData        =   "frmPrefs.frx":5B69
-            Left            =   1530
-            List            =   "frmPrefs.frx":5B6B
-            Style           =   2  'Dropdown List
-            TabIndex        =   54
-            ToolTipText     =   "Choose to set debug mode."
-            Top             =   -15
-            Width           =   2160
-         End
-         Begin VB.Label lblDebug 
-            Caption         =   "DblClick Command :"
-            Height          =   510
-            Index           =   1
-            Left            =   -15
-            TabIndex        =   63
-            Tag             =   "lblPrefixString"
-            Top             =   1155
-            Width           =   1545
-         End
-         Begin VB.Label lblConfigurationTab 
-            Caption         =   "Shift+double-clicking on the widget image will open this file. "
-            Height          =   375
-            Index           =   6
-            Left            =   1560
-            TabIndex        =   62
-            Top             =   2730
-            Width           =   3705
-         End
-         Begin VB.Label lblDebug 
-            Caption         =   "Default command to run when the gauge receives a double-click eg %SystemRoot%/system32/ncpa.cpl"
-            Height          =   570
-            Index           =   5
-            Left            =   1590
-            TabIndex        =   60
-            Tag             =   "lblSharedInputFileDesc"
-            Top             =   1605
-            Width           =   4410
-         End
-         Begin VB.Label lblDebug 
-            Caption         =   "Open File :"
-            Height          =   255
-            Index           =   4
-            Left            =   645
-            TabIndex        =   59
-            Tag             =   "lblSharedInputFile"
-            Top             =   2280
-            Width           =   1350
-         End
-         Begin VB.Label lblDebug 
-            Caption         =   "Turning on the debugging will provide extra information in the debug window.  *"
-            Height          =   495
-            Index           =   2
-            Left            =   1545
-            TabIndex        =   56
-            Tag             =   "lblAlarmSoundDesc"
-            Top             =   450
-            Width           =   4455
-         End
-         Begin VB.Label lblDebug 
-            Caption         =   "Debug :"
-            Height          =   375
-            Index           =   0
-            Left            =   855
-            TabIndex        =   55
-            Tag             =   "lblAlarmSound"
-            Top             =   45
-            Width           =   1740
-         End
-      End
-   End
    Begin VB.Frame fraAbout 
       Caption         =   "About"
       Height          =   8580
-      Left            =   255
-      TabIndex        =   101
-      Top             =   1185
+      Left            =   240
+      TabIndex        =   88
+      Top             =   1155
       Visible         =   0   'False
       Width           =   8520
-      Begin VB.Frame fraScrollbarCover 
-         BorderStyle     =   0  'None
-         Height          =   6435
-         Left            =   7950
-         TabIndex        =   115
-         Top             =   1995
-         Width           =   420
-      End
-      Begin VB.TextBox txtAboutText 
-         Appearance      =   0  'Flat
-         BackColor       =   &H8000000F&
-         BorderStyle     =   0  'None
-         Height          =   6135
-         Left            =   300
-         MultiLine       =   -1  'True
-         ScrollBars      =   2  'Vertical
-         TabIndex        =   114
-         Text            =   "frmPrefs.frx":5B6D
-         Top             =   2205
-         Width           =   8010
-      End
-      Begin VB.CommandButton btnAboutDebugInfo 
-         Caption         =   "Debug &Info."
+      Begin VB.CommandButton btnGithubHome 
+         Caption         =   "Github &Home"
          BeginProperty Font 
             Name            =   "Arial"
             Size            =   8.25
@@ -533,49 +524,11 @@ Begin VB.Form widgetPrefs
             Strikethrough   =   0   'False
          EndProperty
          Height          =   360
-         Left            =   6780
+         Left            =   6765
          Style           =   1  'Graphical
-         TabIndex        =   105
-         ToolTipText     =   "This gives access to the debugging tool"
-         Top             =   1110
-         Width           =   1470
-      End
-      Begin VB.CommandButton btnFacebook 
-         Caption         =   "&Facebook"
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   360
-         Left            =   6780
-         Style           =   1  'Graphical
-         TabIndex        =   104
-         ToolTipText     =   "This will link you to the Rocket/Steamy dock users Group"
-         Top             =   735
-         Width           =   1470
-      End
-      Begin VB.CommandButton btnUpdate 
-         Caption         =   "&Update"
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   360
-         Left            =   6780
-         Style           =   1  'Graphical
-         TabIndex        =   103
+         TabIndex        =   153
          ToolTipText     =   "Here you can visit the update location where you can download new versions of the programs."
-         Top             =   360
+         Top             =   300
          Width           =   1470
       End
       Begin VB.CommandButton btnDonate 
@@ -590,11 +543,89 @@ Begin VB.Form widgetPrefs
             Strikethrough   =   0   'False
          EndProperty
          Height          =   360
-         Left            =   6780
+         Left            =   6765
          Style           =   1  'Graphical
-         TabIndex        =   102
+         TabIndex        =   89
          ToolTipText     =   "Opens a browser window and sends you to our donate page on Amazon"
-         Top             =   1485
+         Top             =   1800
+         Width           =   1470
+      End
+      Begin VB.Frame fraScrollbarCover 
+         BorderStyle     =   0  'None
+         Height          =   6225
+         Left            =   7980
+         TabIndex        =   102
+         Top             =   2205
+         Width           =   420
+      End
+      Begin VB.TextBox txtAboutText 
+         Appearance      =   0  'Flat
+         BackColor       =   &H8000000F&
+         BorderStyle     =   0  'None
+         Height          =   6135
+         Left            =   300
+         MultiLine       =   -1  'True
+         ScrollBars      =   2  'Vertical
+         TabIndex        =   101
+         Text            =   "frmPrefs.frx":8110
+         Top             =   2205
+         Width           =   7935
+      End
+      Begin VB.CommandButton btnAboutDebugInfo 
+         Caption         =   "Debug &Info."
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   6765
+         Style           =   1  'Graphical
+         TabIndex        =   92
+         ToolTipText     =   "This gives access to the debugging tool"
+         Top             =   1425
+         Width           =   1470
+      End
+      Begin VB.CommandButton btnFacebook 
+         Caption         =   "&Facebook"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   6765
+         Style           =   1  'Graphical
+         TabIndex        =   91
+         ToolTipText     =   "This will link you to the Rocket/Steamy dock users Group"
+         Top             =   1050
+         Width           =   1470
+      End
+      Begin VB.CommandButton btnUpdate 
+         Caption         =   "&Update"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   6765
+         Style           =   1  'Graphical
+         TabIndex        =   90
+         ToolTipText     =   "Here you can visit the update location where you can download new versions of the programs."
+         Top             =   675
          Width           =   1470
       End
       Begin VB.Label lblDotDot 
@@ -611,7 +642,7 @@ Begin VB.Form widgetPrefs
          EndProperty
          Height          =   225
          Left            =   2940
-         TabIndex        =   119
+         TabIndex        =   106
          Top             =   510
          Width           =   495
       End
@@ -629,7 +660,7 @@ Begin VB.Form widgetPrefs
          EndProperty
          Height          =   240
          Left            =   3450
-         TabIndex        =   118
+         TabIndex        =   105
          Top             =   510
          Width           =   525
       End
@@ -647,7 +678,7 @@ Begin VB.Form widgetPrefs
          EndProperty
          Height          =   240
          Left            =   2730
-         TabIndex        =   117
+         TabIndex        =   104
          Top             =   510
          Width           =   225
       End
@@ -665,7 +696,7 @@ Begin VB.Form widgetPrefs
          EndProperty
          Height          =   240
          Left            =   3090
-         TabIndex        =   116
+         TabIndex        =   103
          Top             =   510
          Width           =   225
       End
@@ -683,7 +714,7 @@ Begin VB.Form widgetPrefs
          Height          =   225
          Index           =   8
          Left            =   2715
-         TabIndex        =   113
+         TabIndex        =   100
          Top             =   855
          Width           =   2175
       End
@@ -701,7 +732,7 @@ Begin VB.Form widgetPrefs
          Height          =   225
          Index           =   7
          Left            =   1050
-         TabIndex        =   112
+         TabIndex        =   99
          Top             =   855
          Width           =   795
       End
@@ -719,7 +750,7 @@ Begin VB.Form widgetPrefs
          Height          =   225
          Index           =   6
          Left            =   1065
-         TabIndex        =   111
+         TabIndex        =   98
          Top             =   495
          Width           =   795
       End
@@ -737,7 +768,7 @@ Begin VB.Form widgetPrefs
          Height          =   225
          Index           =   5
          Left            =   2715
-         TabIndex        =   110
+         TabIndex        =   97
          Top             =   1215
          Width           =   2175
       End
@@ -755,7 +786,7 @@ Begin VB.Form widgetPrefs
          Height          =   225
          Index           =   4
          Left            =   1050
-         TabIndex        =   109
+         TabIndex        =   96
          Top             =   1215
          Width           =   1470
       End
@@ -773,12 +804,12 @@ Begin VB.Form widgetPrefs
          Height          =   225
          Index           =   3
          Left            =   1050
-         TabIndex        =   108
+         TabIndex        =   95
          Top             =   1560
          Width           =   1470
       End
       Begin VB.Label lblAbout 
-         Caption         =   "Windows XP, Vista, 7, 8, 10  && 11 + ReactOS"
+         Caption         =   "Windows Vista, 7, 8, 10  && 11"
          BeginProperty Font 
             Name            =   "Arial"
             Size            =   8.25
@@ -791,7 +822,7 @@ Begin VB.Form widgetPrefs
          Height          =   225
          Index           =   2
          Left            =   2715
-         TabIndex        =   107
+         TabIndex        =   94
          Top             =   1560
          Width           =   3735
       End
@@ -809,39 +840,358 @@ Begin VB.Form widgetPrefs
          Height          =   225
          Index           =   1
          Left            =   3900
-         TabIndex        =   106
+         TabIndex        =   93
          Top             =   510
-         Width           =   1245
+         Width           =   2655
+      End
+   End
+   Begin VB.Frame fraSounds 
+      Caption         =   "Sounds"
+      Height          =   2280
+      Left            =   855
+      TabIndex        =   13
+      Top             =   1230
+      Visible         =   0   'False
+      Width           =   7965
+      Begin VB.Frame fraSoundsInner 
+         BorderStyle     =   0  'None
+         Height          =   1875
+         Left            =   765
+         TabIndex        =   24
+         Top             =   285
+         Width           =   6420
+         Begin VB.CheckBox chkEnableSounds 
+            Caption         =   "Enable ALL sounds for the whole widget."
+            Height          =   225
+            Left            =   1485
+            TabIndex        =   34
+            ToolTipText     =   "Check this box to enable or disable all of the sounds used during any animation on the main screen."
+            Top             =   285
+            Width           =   4485
+         End
+         Begin VB.Label lblSoundsTab 
+            Caption         =   "Determine the sound of UI elements, clock tick and chiming volumes. Set the overall volume to loud or quiet."
+            Height          =   540
+            Index           =   4
+            Left            =   885
+            TabIndex        =   139
+            Tag             =   "lblSharedInputFile"
+            Top             =   750
+            Width           =   4680
+         End
+         Begin VB.Label lblSoundsTab 
+            Caption         =   "Audio :"
+            Height          =   255
+            Index           =   3
+            Left            =   885
+            TabIndex        =   85
+            Tag             =   "lblSharedInputFile"
+            Top             =   285
+            Width           =   765
+         End
+      End
+   End
+   Begin VB.Frame fraConfig 
+      Caption         =   "Configuration"
+      Height          =   8145
+      Left            =   225
+      TabIndex        =   8
+      Top             =   1230
+      Width           =   7605
+      Begin VB.Frame fraConfigInner 
+         BorderStyle     =   0  'None
+         Height          =   7545
+         Left            =   435
+         TabIndex        =   33
+         Top             =   435
+         Width           =   6450
+         Begin VB.Frame fraClockTooltips 
+            BorderStyle     =   0  'None
+            Height          =   1110
+            Left            =   1785
+            TabIndex        =   157
+            Top             =   2685
+            Width           =   3345
+            Begin VB.OptionButton optGaugeTooltips 
+               Caption         =   "Disable Clock Tooltips *"
+               Height          =   300
+               Index           =   2
+               Left            =   225
+               TabIndex        =   160
+               Top             =   780
+               Width           =   2790
+            End
+            Begin VB.OptionButton optGaugeTooltips 
+               Caption         =   "Clock - Enable Square Tooltips"
+               Height          =   300
+               Index           =   1
+               Left            =   225
+               TabIndex        =   159
+               Top             =   450
+               Width           =   2790
+            End
+            Begin VB.OptionButton optGaugeTooltips 
+               Caption         =   "Clock - Enable Balloon Tooltips *"
+               Height          =   315
+               Index           =   0
+               Left            =   225
+               TabIndex        =   158
+               Top             =   120
+               Width           =   3060
+            End
+         End
+         Begin vb6projectCCRSlider.Slider sliGaugeSize 
+            Height          =   390
+            Left            =   1920
+            TabIndex        =   154
+            Top             =   30
+            Width           =   3870
+            _ExtentX        =   6826
+            _ExtentY        =   688
+            Min             =   5
+            Max             =   200
+            Value           =   5
+            TickFrequency   =   3
+            SelStart        =   5
+         End
+         Begin VB.Frame fraPrefsTooltips 
+            BorderStyle     =   0  'None
+            Height          =   1125
+            Index           =   0
+            Left            =   1860
+            TabIndex        =   144
+            Top             =   3810
+            Width           =   3150
+            Begin VB.OptionButton optPrefsTooltips 
+               Caption         =   "Disable Prefs Tooltips *"
+               Height          =   195
+               Index           =   2
+               Left            =   135
+               TabIndex        =   156
+               Top             =   780
+               Width           =   2970
+            End
+            Begin VB.OptionButton optPrefsTooltips 
+               Caption         =   "Prefs - Enable Balloon Tooltips *"
+               Height          =   195
+               Index           =   0
+               Left            =   135
+               TabIndex        =   146
+               Top             =   120
+               Width           =   2760
+            End
+            Begin VB.OptionButton optPrefsTooltips 
+               Caption         =   "Prefs - Enable SquareTooltips *"
+               Height          =   195
+               Index           =   1
+               Left            =   135
+               TabIndex        =   145
+               Top             =   450
+               Width           =   2970
+            End
+         End
+         Begin VB.Frame fraMainTooltips 
+            BorderStyle     =   0  'None
+            Height          =   645
+            Left            =   1995
+            TabIndex        =   143
+            Top             =   2775
+            Width           =   4095
+         End
+         Begin VB.CheckBox chkShowHelp 
+            Caption         =   "Show Help on Widget Start"
+            Height          =   225
+            Left            =   2010
+            TabIndex        =   138
+            ToolTipText     =   "Check the box to show the widget in the taskbar"
+            Top             =   5535
+            Width           =   3405
+         End
+         Begin VB.CheckBox chkDpiAwareness 
+            Caption         =   "DPI Awareness Enable *"
+            Height          =   285
+            Left            =   2010
+            TabIndex        =   129
+            ToolTipText     =   "Check the box to make the program DPI aware. RESTART required."
+            Top             =   5880
+            Width           =   3405
+         End
+         Begin VB.CheckBox chkShowTaskbar 
+            Caption         =   "Show Widget in Taskbar"
+            Height          =   225
+            Left            =   2010
+            TabIndex        =   127
+            ToolTipText     =   "Check the box to show the widget in the taskbar"
+            Top             =   5160
+            Width           =   3405
+         End
+         Begin VB.ComboBox cmbScrollWheelDirection 
+            Height          =   315
+            Left            =   1995
+            Style           =   2  'Dropdown List
+            TabIndex        =   80
+            ToolTipText     =   "To change the direction of the mouse scroll wheel when resiziing the globe gauge."
+            Top             =   1695
+            Width           =   2490
+         End
+         Begin VB.Label lblConfiguration 
+            Caption         =   $"frmPrefs.frx":90C7
+            Height          =   915
+            Index           =   0
+            Left            =   1980
+            TabIndex        =   130
+            Top             =   6240
+            Width           =   4335
+         End
+         Begin VB.Label lblConfiguration 
+            Caption         =   "The scroll-wheel resizing direction can be determined here. The direction chosen causes the gauge to grow. *"
+            Height          =   675
+            Index           =   6
+            Left            =   2025
+            TabIndex        =   107
+            Top             =   2115
+            Width           =   3990
+         End
+         Begin VB.Label lblGaugeSize 
+            Caption         =   "160"
+            Height          =   315
+            Index           =   4
+            Left            =   4740
+            TabIndex        =   84
+            Top             =   555
+            Width           =   345
+         End
+         Begin VB.Label lblGaugeSize 
+            Caption         =   "120"
+            Height          =   315
+            Index           =   3
+            Left            =   3990
+            TabIndex        =   83
+            Top             =   555
+            Width           =   345
+         End
+         Begin VB.Label lblGaugeSize 
+            Caption         =   "50"
+            Height          =   315
+            Index           =   1
+            Left            =   2790
+            TabIndex        =   82
+            Top             =   555
+            Width           =   345
+         End
+         Begin VB.Label lblConfiguration 
+            Caption         =   "Mouse Wheel Resize :"
+            Height          =   345
+            Index           =   3
+            Left            =   255
+            TabIndex        =   81
+            ToolTipText     =   "To change the direction of the mouse scroll wheel when resiziing the globe gauge."
+            Top             =   1740
+            Width           =   2055
+         End
+         Begin VB.Label lblConfiguration 
+            Caption         =   "Adjust to a percentage of the original size. You can also use Ctrl+Mousewheel. Immediate. *"
+            Height          =   555
+            Index           =   2
+            Left            =   2070
+            TabIndex        =   79
+            ToolTipText     =   "Adjust to a percentage of the original size. You can also use Ctrl+Mousewheel."
+            Top             =   870
+            Width           =   3810
+         End
+         Begin VB.Label lblConfiguration 
+            Caption         =   "Gauge Size :"
+            Height          =   315
+            Index           =   1
+            Left            =   885
+            TabIndex        =   78
+            Top             =   105
+            Width           =   975
+         End
+         Begin VB.Label lblGaugeSize 
+            Caption         =   "80"
+            Height          =   315
+            Index           =   2
+            Left            =   3360
+            TabIndex        =   77
+            Top             =   555
+            Width           =   360
+         End
+         Begin VB.Label lblGaugeSize 
+            Caption         =   "200 (%)"
+            Height          =   315
+            Index           =   5
+            Left            =   5385
+            TabIndex        =   76
+            Top             =   555
+            Width           =   735
+         End
+         Begin VB.Label lblGaugeSize 
+            Caption         =   "5"
+            Height          =   315
+            Index           =   0
+            Left            =   2085
+            TabIndex        =   75
+            Top             =   555
+            Width           =   345
+         End
       End
    End
    Begin VB.Frame fraFonts 
       Caption         =   "Fonts"
-      Height          =   4320
-      Left            =   240
+      Height          =   6195
+      Left            =   255
       TabIndex        =   9
       Top             =   1230
-      Width           =   7335
+      Width           =   8280
       Begin VB.Frame fraFontsInner 
          BorderStyle     =   0  'None
-         Height          =   3855
+         Height          =   5400
          Left            =   690
-         TabIndex        =   26
+         TabIndex        =   25
          Top             =   360
          Width           =   6105
+         Begin VB.TextBox txtDisplayScreenFont 
+            Height          =   315
+            Left            =   1695
+            Locked          =   -1  'True
+            TabIndex        =   149
+            Text            =   "Courier  New"
+            Top             =   3255
+            Width           =   3285
+         End
+         Begin VB.CommandButton btnDisplayScreenFont 
+            Caption         =   "Font"
+            Height          =   300
+            Left            =   5010
+            Style           =   1  'Graphical
+            TabIndex        =   148
+            Top             =   3255
+            Width           =   585
+         End
+         Begin VB.TextBox txtDisplayScreenFontSize 
+            Height          =   315
+            Left            =   1695
+            Locked          =   -1  'True
+            TabIndex        =   147
+            Text            =   "8"
+            Top             =   3795
+            Width           =   510
+         End
          Begin VB.CommandButton btnResetMessages 
             Caption         =   "Reset"
             Height          =   300
-            Left            =   1710
+            Left            =   1680
             Style           =   1  'Graphical
-            TabIndex        =   152
-            Top             =   3405
+            TabIndex        =   135
+            Top             =   4695
             Width           =   885
          End
          Begin VB.TextBox txtPrefsFontCurrentSize 
             Height          =   315
             Left            =   4200
             Locked          =   -1  'True
-            TabIndex        =   133
+            TabIndex        =   120
             ToolTipText     =   "Disabled for manual input. Shows the current font size when form resizing is enabled."
             Top             =   1065
             Visible         =   0   'False
@@ -851,7 +1201,7 @@ Begin VB.Form widgetPrefs
             Height          =   315
             Left            =   1710
             Locked          =   -1  'True
-            TabIndex        =   29
+            TabIndex        =   28
             Text            =   "8"
             ToolTipText     =   "Disabled for manual input. Choose a font size using the font selector to be used within this preferences window only"
             Top             =   1065
@@ -862,68 +1212,93 @@ Begin VB.Form widgetPrefs
             Height          =   300
             Left            =   5025
             Style           =   1  'Graphical
-            TabIndex        =   28
-            ToolTipText     =   "The Font Selector."
-            Top             =   75
+            TabIndex        =   27
+            Top             =   90
             Width           =   585
          End
          Begin VB.TextBox txtPrefsFont 
             Height          =   315
             Left            =   1710
             Locked          =   -1  'True
-            TabIndex        =   27
+            TabIndex        =   26
             Text            =   "Times New Roman"
-            ToolTipText     =   "Disabled for manual input. Choose a font via the font selector to be used only for this preferences window"
             Top             =   90
             Width           =   3285
+         End
+         Begin VB.Label lblFontsTab 
+            Caption         =   $"frmPrefs.frx":917B
+            Height          =   1710
+            Index           =   0
+            Left            =   1680
+            TabIndex        =   161
+            ToolTipText     =   "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
+            Top             =   1545
+            Width           =   4455
+         End
+         Begin VB.Label lblFontsTab 
+            Caption         =   "Choose a font to be used for the text in the console display screen on the main clock *"
+            Height          =   480
+            Index           =   9
+            Left            =   2415
+            TabIndex        =   152
+            Top             =   3780
+            Width           =   4035
+         End
+         Begin VB.Label lblFontsTab 
+            Caption         =   "Display Console Font :"
+            Height          =   300
+            Index           =   8
+            Left            =   0
+            TabIndex        =   151
+            Tag             =   "lblPrefsFont"
+            Top             =   3270
+            Width           =   1665
+         End
+         Begin VB.Label lblFontsTab 
+            Caption         =   "Console  Font Size :"
+            Height          =   330
+            Index           =   5
+            Left            =   165
+            TabIndex        =   150
+            Tag             =   "lblPrefsFontSize"
+            Top             =   3825
+            Width           =   1590
          End
          Begin VB.Label lblFontsTab 
             Caption         =   "Hidden message boxes can be reactivated by pressing this reset button."
             Height          =   480
             Index           =   4
-            Left            =   2700
-            TabIndex        =   153
-            ToolTipText     =   "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
-            Top             =   3345
+            Left            =   2670
+            TabIndex        =   136
+            Top             =   4635
             Width           =   3360
          End
          Begin VB.Label lblFontsTab 
             Caption         =   "Reset Pop ups :"
             Height          =   300
             Index           =   1
-            Left            =   435
-            TabIndex        =   151
+            Left            =   405
+            TabIndex        =   134
             Tag             =   "lblPrefsFont"
-            Top             =   3450
+            Top             =   4740
             Width           =   1470
          End
-         Begin VB.Label lblCurrentFontsTab 
+         Begin VB.Label lblFontsTab 
             Caption         =   "Resized Font"
             Height          =   315
-            Left            =   4950
-            TabIndex        =   134
-            ToolTipText     =   "Disabled for manual input. Shows the current font size when form resizing is enabled."
+            Index           =   10
+            Left            =   4920
+            TabIndex        =   121
             Top             =   1110
             Visible         =   0   'False
             Width           =   2400
          End
          Begin VB.Label lblFontsTab 
-            Caption         =   $"frmPrefs.frx":6B24
-            Height          =   1710
-            Index           =   0
-            Left            =   1725
-            TabIndex        =   98
-            ToolTipText     =   "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
-            Top             =   1455
-            Width           =   4455
-         End
-         Begin VB.Label lblFontsTab 
             Caption         =   "The chosen font size *"
             Height          =   480
             Index           =   7
-            Left            =   2370
-            TabIndex        =   33
-            ToolTipText     =   "Choose a font size that fits the text boxes"
+            Left            =   2310
+            TabIndex        =   32
             Top             =   1095
             Width           =   2400
          End
@@ -932,19 +1307,18 @@ Begin VB.Form widgetPrefs
             Height          =   330
             Index           =   3
             Left            =   435
-            TabIndex        =   32
+            TabIndex        =   31
             Tag             =   "lblPrefsFontSize"
             Top             =   1095
             Width           =   1230
          End
          Begin VB.Label lblFontsTab 
-            Caption         =   "Prefs Window Font:"
+            Caption         =   "Prefs Utility Font :"
             Height          =   300
             Index           =   2
-            Left            =   15
-            TabIndex        =   31
+            Left            =   360
+            TabIndex        =   30
             Tag             =   "lblPrefsFont"
-            ToolTipText     =   "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
             Top             =   120
             Width           =   1665
          End
@@ -953,94 +1327,69 @@ Begin VB.Form widgetPrefs
             Height          =   480
             Index           =   6
             Left            =   1695
-            TabIndex        =   30
-            ToolTipText     =   "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
+            TabIndex        =   29
             Top             =   480
             Width           =   4035
          End
       End
    End
-   Begin VB.Frame fraSounds 
-      Caption         =   "Sounds"
-      Height          =   1965
-      Left            =   240
-      TabIndex        =   13
-      Top             =   1230
-      Visible         =   0   'False
-      Width           =   7965
-      Begin VB.Frame fraSoundsInner 
-         BorderStyle     =   0  'None
-         Height          =   1605
-         Left            =   930
-         TabIndex        =   25
-         Top             =   285
-         Width           =   5160
-         Begin VB.CheckBox chkEnableSounds 
-            Caption         =   "Enable Sounds for the Animations"
-            Height          =   225
-            Left            =   1485
-            TabIndex        =   36
-            ToolTipText     =   "Check this box to enable or disable all of the sounds used during any animation on the main screen."
-            Top             =   285
-            Width           =   3405
-         End
-         Begin VB.Label lblSoundsTab 
-            Caption         =   "Audio :"
-            Height          =   255
-            Index           =   3
-            Left            =   885
-            TabIndex        =   97
-            Tag             =   "lblSharedInputFile"
-            Top             =   285
-            Width           =   765
-         End
-         Begin VB.Label lblSoundsTab 
-            Caption         =   "When checked, this box enables all the sounds used during any animation/interaction with the main program."
-            Height          =   705
-            Index           =   4
-            Left            =   1515
-            TabIndex        =   37
-            Tag             =   "lblEnableSoundsDesc"
-            Top             =   645
-            Width           =   3705
-         End
-      End
-   End
    Begin VB.Frame fraWindow 
       Caption         =   "Window"
-      Height          =   6300
-      Left            =   405
+      Height          =   7935
+      Left            =   225
       TabIndex        =   10
-      Top             =   1515
-      Width           =   8280
+      Top             =   1620
+      Width           =   8235
       Begin VB.Frame fraWindowInner 
          BorderStyle     =   0  'None
-         Height          =   5775
-         Left            =   1095
+         Height          =   7500
+         Left            =   165
          TabIndex        =   14
          Top             =   345
-         Width           =   5715
+         Width           =   7005
+         Begin vb6projectCCRSlider.Slider sliOpacity 
+            Height          =   390
+            Left            =   2115
+            TabIndex        =   155
+            Top             =   4575
+            Width           =   3870
+            _ExtentX        =   6826
+            _ExtentY        =   688
+            Min             =   20
+            Max             =   100
+            Value           =   20
+            SmallChange     =   2
+            SelStart        =   20
+         End
+         Begin VB.ComboBox cmbMultiMonitorResize 
+            Height          =   315
+            Left            =   2220
+            Style           =   2  'Dropdown List
+            TabIndex        =   142
+            Top             =   5805
+            Width           =   3720
+         End
          Begin VB.Frame fraHiding 
             BorderStyle     =   0  'None
             Height          =   2010
-            Left            =   480
-            TabIndex        =   121
+            Left            =   1395
+            TabIndex        =   108
             Top             =   2325
             Width           =   5130
             Begin VB.ComboBox cmbHidingTime 
                Height          =   315
                Left            =   825
                Style           =   2  'Dropdown List
-               TabIndex        =   124
-               Top             =   1680
+               TabIndex        =   111
+               Top             =   1605
                Width           =   3720
             End
             Begin VB.CheckBox chkWidgetHidden 
                Caption         =   "Hiding Widget *"
                Height          =   225
                Left            =   855
-               TabIndex        =   122
-               Top             =   225
+               TabIndex        =   109
+               Top             =   210
                Width           =   2955
             End
             Begin VB.Label lblWindowLevel 
@@ -1048,57 +1397,61 @@ Begin VB.Form widgetPrefs
                Height          =   345
                Index           =   2
                Left            =   90
-               TabIndex        =   125
+               TabIndex        =   112
                Top             =   210
                Width           =   720
             End
             Begin VB.Label lblWindowLevel 
-               Caption         =   $"frmPrefs.frx":6C62
+               Caption         =   $"frmPrefs.frx":92B9
                Height          =   975
                Index           =   1
                Left            =   855
-               TabIndex        =   123
+               TabIndex        =   110
                Top             =   600
                Width           =   3900
             End
          End
          Begin VB.ComboBox cmbWindowLevel 
             Height          =   315
-            Left            =   1305
+            Left            =   2220
             Style           =   2  'Dropdown List
-            TabIndex        =   17
+            TabIndex        =   16
             Top             =   0
             Width           =   3720
          End
          Begin VB.CheckBox chkIgnoreMouse 
             Caption         =   "Ignore Mouse *"
             Height          =   225
-            Left            =   1335
+            Left            =   2250
             TabIndex        =   15
             ToolTipText     =   "Checking this box causes the program to ignore all mouse events."
             Top             =   1500
             Width           =   2535
          End
-         Begin vb6projectCCRSlider.Slider sliOpacity 
-            Height          =   390
-            Left            =   1200
-            TabIndex        =   16
-            ToolTipText     =   "Set the transparency of the Program."
-            Top             =   4560
-            Width           =   3870
-            _ExtentX        =   6826
-            _ExtentY        =   688
-            Min             =   20
-            Max             =   100
-            Value           =   20
-            SelStart        =   20
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "Multi-Monitor Resizing :"
+            Height          =   255
+            Index           =   11
+            Left            =   375
+            TabIndex        =   141
+            Top             =   5835
+            Width           =   1830
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   $"frmPrefs.frx":935C
+            Height          =   1140
+            Index           =   10
+            Left            =   2235
+            TabIndex        =   140
+            Top             =   6255
+            Width           =   4050
          End
          Begin VB.Label lblWindowLevel 
             Caption         =   "This setting controls the relative layering of this widget. You may use it to place it on top of other windows or underneath. "
             Height          =   660
             Index           =   3
-            Left            =   1320
-            TabIndex        =   130
+            Left            =   2235
+            TabIndex        =   117
             Top             =   570
             Width           =   3810
          End
@@ -1106,8 +1459,8 @@ Begin VB.Form widgetPrefs
             Caption         =   "Window Level :"
             Height          =   345
             Index           =   0
-            Left            =   0
-            TabIndex        =   24
+            Left            =   915
+            TabIndex        =   23
             Top             =   60
             Width           =   1740
          End
@@ -1115,8 +1468,8 @@ Begin VB.Form widgetPrefs
             Caption         =   "20%"
             Height          =   315
             Index           =   7
-            Left            =   1290
-            TabIndex        =   23
+            Left            =   2205
+            TabIndex        =   22
             Top             =   5070
             Width           =   345
          End
@@ -1124,17 +1477,17 @@ Begin VB.Form widgetPrefs
             Caption         =   "100%"
             Height          =   315
             Index           =   9
-            Left            =   4650
-            TabIndex        =   22
+            Left            =   5565
+            TabIndex        =   21
             Top             =   5070
             Width           =   405
          End
          Begin VB.Label lblWindowLevel 
-            Caption         =   "Opacity"
+            Caption         =   "60%"
             Height          =   315
             Index           =   8
-            Left            =   2775
-            TabIndex        =   21
+            Left            =   3975
+            TabIndex        =   20
             Top             =   5070
             Width           =   840
          End
@@ -1142,8 +1495,8 @@ Begin VB.Form widgetPrefs
             Caption         =   "Opacity:"
             Height          =   315
             Index           =   6
-            Left            =   555
-            TabIndex        =   20
+            Left            =   1470
+            TabIndex        =   19
             Top             =   4620
             Width           =   780
          End
@@ -1151,8 +1504,8 @@ Begin VB.Form widgetPrefs
             Caption         =   "Set the program transparency level."
             Height          =   330
             Index           =   5
-            Left            =   1335
-            TabIndex        =   19
+            Left            =   2250
+            TabIndex        =   18
             Top             =   5385
             Width           =   3810
          End
@@ -1160,375 +1513,186 @@ Begin VB.Form widgetPrefs
             Caption         =   "Checking this box causes the program to ignore all mouse events except right click menu interactions."
             Height          =   660
             Index           =   4
-            Left            =   1320
-            TabIndex        =   18
+            Left            =   2235
+            TabIndex        =   17
             Top             =   1890
             Width           =   3810
          End
       End
    End
-   Begin VB.Frame fraGeneral 
-      Caption         =   "General"
-      ForeColor       =   &H80000008&
-      Height          =   5325
-      Left            =   75
-      TabIndex        =   50
+   Begin VB.Frame fraDevelopment 
+      Caption         =   "Development"
+      Height          =   6210
+      Left            =   240
+      TabIndex        =   44
       Top             =   1200
       Visible         =   0   'False
-      Width           =   7995
-      Begin VB.Frame fraGeneralInner 
+      Width           =   8520
+      Begin VB.Frame fraDevelopmentInner 
          BorderStyle     =   0  'None
-         Height          =   4545
-         Left            =   465
-         TabIndex        =   51
+         Height          =   5595
+         Left            =   870
+         TabIndex        =   45
          Top             =   300
-         Width           =   6750
-         Begin VB.CheckBox chkMultiCoreEnable 
-            Caption         =   "Enable multi-core display *"
-            Height          =   225
-            Left            =   1995
-            TabIndex        =   161
-            ToolTipText     =   "When checked this box enables the pointer. That's it!"
-            Top             =   975
-            Width           =   3405
+         Width           =   7455
+         Begin VB.Frame fraDefaultEditor 
+            BorderStyle     =   0  'None
+            Height          =   2370
+            Left            =   75
+            TabIndex        =   122
+            Top             =   3165
+            Width           =   7290
+            Begin VB.CommandButton btnDefaultEditor 
+               Caption         =   "..."
+               Height          =   300
+               Left            =   5115
+               Style           =   1  'Graphical
+               TabIndex        =   124
+               ToolTipText     =   "Click to select the .vbp file to edit the program - You need to have access to the source!"
+               Top             =   210
+               Width           =   315
+            End
+            Begin VB.TextBox txtDefaultEditor 
+               Height          =   315
+               Left            =   1440
+               TabIndex        =   123
+               Text            =   " eg. E:\vb6\fire call\FireCallWin.vbp"
+               Top             =   195
+               Width           =   3660
+            End
+            Begin VB.Label lblGitHub 
+               Caption         =   $"frmPrefs.frx":9473
+               ForeColor       =   &H8000000D&
+               Height          =   915
+               Left            =   1560
+               TabIndex        =   128
+               ToolTipText     =   "Double Click to visit github"
+               Top             =   1440
+               Width           =   4935
+            End
+            Begin VB.Label lblDebug 
+               Caption         =   $"frmPrefs.frx":953A
+               Height          =   930
+               Index           =   9
+               Left            =   1545
+               TabIndex        =   126
+               Top             =   690
+               Width           =   4785
+            End
+            Begin VB.Label lblDebug 
+               Caption         =   "Default Editor :"
+               Height          =   255
+               Index           =   7
+               Left            =   285
+               TabIndex        =   125
+               Tag             =   "lblSharedInputFile"
+               Top             =   225
+               Width           =   1350
+            End
          End
-         Begin VB.CheckBox chkGaugeFunctions 
-            Caption         =   "Pointer operation toggle *"
-            Height          =   225
-            Left            =   2010
-            TabIndex        =   52
-            ToolTipText     =   "When checked this box enables the pointer. That's it!"
-            Top             =   180
-            Width           =   3405
-         End
-         Begin VB.ComboBox cmbTickSwitchPref 
+         Begin VB.TextBox txtDblClickCommand 
             Height          =   315
-            ItemData        =   "frmPrefs.frx":6D05
-            Left            =   2010
-            List            =   "frmPrefs.frx":6D07
-            Style           =   2  'Dropdown List
-            TabIndex        =   145
-            Top             =   1560
-            Width           =   3720
-         End
-         Begin VB.CheckBox chkGenStartup 
-            Caption         =   "Run the CPU Widget at Windows Startup "
-            Height          =   465
-            Left            =   1995
-            TabIndex        =   93
-            ToolTipText     =   "Check this box to enable the automatic start of the program when Windows is started."
-            Top             =   3975
-            Width           =   4020
-         End
-         Begin vb6projectCCRSlider.Slider sliSamplingInterval 
-            Height          =   390
-            Left            =   1890
-            TabIndex        =   155
-            ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
-            Top             =   2610
-            Width           =   3870
-            _ExtentX        =   6826
-            _ExtentY        =   688
-            Min             =   1
-            Max             =   30
-            Value           =   20
-            SelStart        =   20
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "MultiCore :"
-            Height          =   315
-            Index           =   1
-            Left            =   1050
-            TabIndex        =   162
-            Top             =   960
-            Width           =   1320
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "Adjust to determine gauge sampling frequency (seconds). *"
-            Height          =   600
-            Index           =   14
-            Left            =   2025
-            TabIndex        =   160
-            Top             =   3390
-            Width           =   3810
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "Sampling Interval :"
-            Height          =   315
-            Index           =   13
-            Left            =   495
-            TabIndex        =   159
-            Top             =   2670
-            Width           =   1410
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "15"
-            Height          =   315
-            Index           =   12
-            Left            =   3615
-            TabIndex        =   158
-            Top             =   3075
-            Width           =   840
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "30"
-            Height          =   315
-            Index           =   11
-            Left            =   5445
-            TabIndex        =   157
-            Top             =   3075
-            Width           =   405
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "1"
-            Height          =   315
-            Index           =   10
-            Left            =   2010
-            TabIndex        =   156
-            Top             =   3075
-            Width           =   345
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "The pointer can be set to smooth or flick, the smooth movement uses more CPU."
-            Height          =   660
-            Index           =   9
-            Left            =   2025
-            TabIndex        =   147
-            Top             =   1995
-            Width           =   3810
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "Smooth Movement :"
-            Height          =   480
-            Index           =   3
-            Left            =   375
-            TabIndex        =   146
-            Top             =   1620
-            Width           =   1605
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "Gauge Functions :"
-            Height          =   315
-            Index           =   6
-            Left            =   510
-            TabIndex        =   95
-            Top             =   165
-            Width           =   1320
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "Auto Start :"
-            Height          =   375
-            Index           =   11
-            Left            =   960
-            TabIndex        =   94
-            Tag             =   "lblRefreshInterval"
-            Top             =   4095
-            Width           =   1740
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "When checked this box enables the pointer. *"
-            Height          =   660
-            Index           =   2
-            Left            =   2025
+            Left            =   1515
             TabIndex        =   53
-            Tag             =   "lblEnableSoundsDesc"
-            Top             =   540
-            Width           =   3615
+            ToolTipText     =   "Enter a Windows command for the gauge to operate when double-clicked."
+            Top             =   1095
+            Width           =   3660
          End
-      End
-   End
-   Begin VB.Frame fraConfig 
-      Caption         =   "Configuration"
-      Height          =   6540
-      Left            =   240
-      TabIndex        =   8
-      Top             =   1200
-      Width           =   7140
-      Begin VB.Frame fraConfigInner 
-         BorderStyle     =   0  'None
-         Height          =   5805
-         Left            =   435
-         TabIndex        =   34
-         Top             =   435
-         Width           =   6450
-         Begin VB.CheckBox chkEnablePrefsTooltips 
-            Caption         =   "Enable Preference Utility Tooltips *"
-            Height          =   225
-            Left            =   2010
-            TabIndex        =   144
-            ToolTipText     =   "Check the box to enable tooltips for all controls in the preferences utility"
-            Top             =   3720
-            Width           =   3345
+         Begin VB.CommandButton btnOpenFile 
+            Caption         =   "..."
+            Height          =   300
+            Left            =   5175
+            Style           =   1  'Graphical
+            TabIndex        =   50
+            ToolTipText     =   "Click to select a particular file for the gauge to run or open when double-clicked."
+            Top             =   2250
+            Width           =   315
          End
-         Begin VB.CheckBox chkDpiAwareness 
-            Caption         =   "DPI Awareness Enable *"
-            Height          =   225
-            Left            =   2010
-            TabIndex        =   142
-            ToolTipText     =   "Check the box to make the program DPI aware. RESTART required."
-            Top             =   4500
-            Width           =   3405
-         End
-         Begin VB.CheckBox chkShowTaskbar 
-            Caption         =   "Show Widget in Taskbar"
-            Height          =   225
-            Left            =   2010
-            TabIndex        =   140
-            ToolTipText     =   "Check the box to show the widget in the taskbar"
-            Top             =   4110
-            Width           =   3405
-         End
-         Begin VB.ComboBox cmbScrollWheelDirection 
+         Begin VB.TextBox txtOpenFile 
             Height          =   315
-            Left            =   1995
+            Left            =   1515
+            TabIndex        =   49
+            ToolTipText     =   "Enter a particular file for the gauge to run or open when double-clicked."
+            Top             =   2235
+            Width           =   3660
+         End
+         Begin VB.ComboBox cmbDebug 
+            Height          =   315
+            ItemData        =   "frmPrefs.frx":95DE
+            Left            =   1530
+            List            =   "frmPrefs.frx":95E0
             Style           =   2  'Dropdown List
-            TabIndex        =   88
-            ToolTipText     =   "To change the direction of the mouse scroll wheel when resiziing the globe gauge."
-            Top             =   1695
-            Width           =   2490
+            TabIndex        =   46
+            ToolTipText     =   "Choose to set debug mode."
+            Top             =   -15
+            Width           =   2160
          End
-         Begin VB.CheckBox chkEnableBalloonTooltips 
-            Caption         =   "Enable Balloon Tooltips on all Controls *"
-            Height          =   225
-            Left            =   2010
-            TabIndex        =   39
-            ToolTipText     =   "Check the box to enable larger balloon tooltips for all controls on the main program"
-            Top             =   3345
-            Width           =   4035
+         Begin VB.Label lblDebug 
+            Caption         =   "DblClick Command :"
+            Height          =   510
+            Index           =   1
+            Left            =   -15
+            TabIndex        =   55
+            Tag             =   "lblPrefixString"
+            Top             =   1155
+            Width           =   1545
          End
-         Begin VB.CheckBox chkEnableTooltips 
-            Caption         =   "Enable Main Program Tooltips"
-            Height          =   225
-            Left            =   2010
-            TabIndex        =   35
-            ToolTipText     =   "Check the box to enable tooltips for all controls on the main program"
-            Top             =   2910
-            Width           =   3345
-         End
-         Begin vb6projectCCRSlider.Slider sliGaugeSize 
-            Height          =   390
-            Left            =   1920
-            TabIndex        =   96
-            ToolTipText     =   "Adjust to a percentage of the original size. You can also use Ctrl+Mousewheel."
-            Top             =   60
-            Width           =   3870
-            _ExtentX        =   6826
-            _ExtentY        =   688
-            Min             =   5
-            Max             =   220
-            Value           =   5
-            TickFrequency   =   5
-            LargeChange     =   5
-            SelStart        =   5
-         End
-         Begin VB.Label lblConfiguration 
-            Caption         =   $"frmPrefs.frx":6D09
-            Height          =   930
-            Index           =   0
-            Left            =   1980
-            TabIndex        =   143
-            Top             =   4830
-            Width           =   4335
-         End
-         Begin VB.Label lblConfiguration 
-            Caption         =   "The scroll-wheel resizing direction can be determined here. The direction chosen causes the gauge to grow. *"
-            Height          =   690
+         Begin VB.Label lblConfigurationTab 
+            Caption         =   "Shift+double-clicking on the widget image will open this file. "
+            Height          =   375
             Index           =   6
-            Left            =   2025
-            TabIndex        =   120
-            Top             =   2115
-            Width           =   3930
+            Left            =   1560
+            TabIndex        =   54
+            Top             =   2730
+            Width           =   3705
          End
-         Begin VB.Label lblGaugeSize 
-            Caption         =   "180"
-            Height          =   315
-            Index           =   4
-            Left            =   4770
-            TabIndex        =   92
-            Top             =   555
-            Width           =   345
-         End
-         Begin VB.Label lblGaugeSize 
-            Caption         =   "130"
-            Height          =   315
-            Index           =   3
-            Left            =   3990
-            TabIndex        =   91
-            Top             =   555
-            Width           =   345
-         End
-         Begin VB.Label lblGaugeSize 
-            Caption         =   "50"
-            Height          =   315
-            Index           =   1
-            Left            =   2730
-            TabIndex        =   90
-            Top             =   555
-            Width           =   345
-         End
-         Begin VB.Label lblConfiguration 
-            Caption         =   "Mouse Wheel Resize :"
-            Height          =   345
-            Index           =   3
-            Left            =   255
-            TabIndex        =   89
-            ToolTipText     =   "To change the direction of the mouse scroll wheel when resiziing the globe gauge."
-            Top             =   1740
-            Width           =   2055
-         End
-         Begin VB.Label lblConfiguration 
-            Caption         =   "Adjust to a percentage of the original size. You can also use Ctrl+Mousewheel. Immediate. *"
-            Height          =   555
-            Index           =   2
-            Left            =   2070
-            TabIndex        =   87
-            ToolTipText     =   "Adjust to a percentage of the original size. You can also use Ctrl+Mousewheel."
-            Top             =   870
-            Width           =   3810
-         End
-         Begin VB.Label lblConfiguration 
-            Caption         =   "Gauge Size :"
-            Height          =   315
-            Index           =   1
-            Left            =   885
-            TabIndex        =   86
-            Top             =   105
-            Width           =   975
-         End
-         Begin VB.Label lblGaugeSize 
-            Caption         =   "90"
-            Height          =   315
-            Index           =   2
-            Left            =   3345
-            TabIndex        =   85
-            Top             =   555
-            Width           =   840
-         End
-         Begin VB.Label lblGaugeSize 
-            Caption         =   "220 (%)"
-            Height          =   315
+         Begin VB.Label lblDebug 
+            Caption         =   "Default command to run when the gauge receives a double-click eg.  mmsys.cpl to run the sounds utility."
+            Height          =   570
             Index           =   5
-            Left            =   5385
-            TabIndex        =   84
-            Top             =   555
-            Width           =   735
+            Left            =   1590
+            TabIndex        =   52
+            Tag             =   "lblSharedInputFileDesc"
+            Top             =   1605
+            Width           =   4410
          End
-         Begin VB.Label lblGaugeSize 
-            Caption         =   "5"
-            Height          =   315
+         Begin VB.Label lblDebug 
+            Caption         =   "Open File :"
+            Height          =   255
+            Index           =   4
+            Left            =   645
+            TabIndex        =   51
+            Tag             =   "lblSharedInputFile"
+            Top             =   2280
+            Width           =   1350
+         End
+         Begin VB.Label lblDebug 
+            Caption         =   "Turning on the debugging will provide extra information in the debug window.  *"
+            Height          =   495
+            Index           =   2
+            Left            =   1545
+            TabIndex        =   48
+            Tag             =   "lblAlarmSoundDesc"
+            Top             =   450
+            Width           =   4455
+         End
+         Begin VB.Label lblDebug 
+            Caption         =   "Debug :"
+            Height          =   375
             Index           =   0
-            Left            =   2070
-            TabIndex        =   83
-            Top             =   540
-            Width           =   345
+            Left            =   855
+            TabIndex        =   47
+            Tag             =   "lblAlarmSound"
+            Top             =   45
+            Width           =   1740
          End
       End
    End
    Begin VB.Frame fraPosition 
       Caption         =   "Position"
       Height          =   7440
-      Left            =   240
-      TabIndex        =   46
+      Left            =   270
+      TabIndex        =   42
       Top             =   1230
       Visible         =   0   'False
       Width           =   8520
@@ -1536,13 +1700,13 @@ Begin VB.Form widgetPrefs
          BorderStyle     =   0  'None
          Height          =   6960
          Left            =   150
-         TabIndex        =   47
+         TabIndex        =   43
          Top             =   300
          Width           =   7680
          Begin VB.TextBox txtLandscapeHoffset 
             Height          =   315
             Left            =   2250
-            TabIndex        =   75
+            TabIndex        =   67
             Top             =   4425
             Width           =   2130
          End
@@ -1550,7 +1714,7 @@ Begin VB.Form widgetPrefs
             Caption         =   "Widget Position Locked. *"
             Height          =   225
             Left            =   2265
-            TabIndex        =   128
+            TabIndex        =   115
             ToolTipText     =   "Checking this box turns off the ability to drag the program with the mouse, locking it in position."
             Top             =   3465
             Width           =   2505
@@ -1558,7 +1722,7 @@ Begin VB.Form widgetPrefs
          Begin VB.TextBox txtPortraitYoffset 
             Height          =   315
             Left            =   2250
-            TabIndex        =   81
+            TabIndex        =   73
             ToolTipText     =   "Enter a prefix/nickname for outgoing messages."
             Top             =   6465
             Width           =   2130
@@ -1566,7 +1730,7 @@ Begin VB.Form widgetPrefs
          Begin VB.TextBox txtPortraitHoffset 
             Height          =   315
             Left            =   2250
-            TabIndex        =   79
+            TabIndex        =   71
             ToolTipText     =   "Enter a prefix/nickname for outgoing messages."
             Top             =   6000
             Width           =   2130
@@ -1574,7 +1738,7 @@ Begin VB.Form widgetPrefs
          Begin VB.TextBox txtLandscapeVoffset 
             Height          =   315
             Left            =   2250
-            TabIndex        =   77
+            TabIndex        =   69
             ToolTipText     =   "Enter a prefix/nickname for outgoing messages."
             Top             =   4875
             Width           =   2130
@@ -1583,8 +1747,7 @@ Begin VB.Form widgetPrefs
             Height          =   315
             Left            =   2250
             Style           =   2  'Dropdown List
-            TabIndex        =   73
-            ToolTipText     =   "Choose the alarm sound."
+            TabIndex        =   65
             Top             =   3930
             Width           =   2160
          End
@@ -1592,7 +1755,7 @@ Begin VB.Form widgetPrefs
             Height          =   315
             Left            =   2250
             Style           =   2  'Dropdown List
-            TabIndex        =   70
+            TabIndex        =   62
             ToolTipText     =   "Choose the alarm sound."
             Top             =   5505
             Width           =   2160
@@ -1601,7 +1764,7 @@ Begin VB.Form widgetPrefs
             Height          =   315
             Left            =   2265
             Style           =   2  'Dropdown List
-            TabIndex        =   67
+            TabIndex        =   59
             ToolTipText     =   "Choose the alarm sound."
             Top             =   2100
             Width           =   2160
@@ -1610,7 +1773,7 @@ Begin VB.Form widgetPrefs
             Height          =   315
             Left            =   2265
             Style           =   2  'Dropdown List
-            TabIndex        =   64
+            TabIndex        =   56
             ToolTipText     =   "Choose the alarm sound."
             Top             =   0
             Width           =   2160
@@ -1620,7 +1783,7 @@ Begin VB.Form widgetPrefs
             Height          =   300
             Index           =   7
             Left            =   4530
-            TabIndex        =   149
+            TabIndex        =   132
             Tag             =   "lblPrefixString"
             Top             =   6495
             Width           =   435
@@ -1630,7 +1793,7 @@ Begin VB.Form widgetPrefs
             Height          =   300
             Index           =   5
             Left            =   4530
-            TabIndex        =   148
+            TabIndex        =   131
             Tag             =   "lblPrefixString"
             Top             =   6045
             Width           =   435
@@ -1640,7 +1803,7 @@ Begin VB.Form widgetPrefs
             Height          =   255
             Index           =   1
             Left            =   4545
-            TabIndex        =   131
+            TabIndex        =   118
             Tag             =   "lblAlarmSound"
             Top             =   45
             Width           =   345
@@ -1650,7 +1813,7 @@ Begin VB.Form widgetPrefs
             Height          =   300
             Index           =   4
             Left            =   4530
-            TabIndex        =   127
+            TabIndex        =   114
             Tag             =   "lblPrefixString"
             Top             =   4905
             Width           =   435
@@ -1660,7 +1823,7 @@ Begin VB.Form widgetPrefs
             Height          =   300
             Index           =   2
             Left            =   4530
-            TabIndex        =   126
+            TabIndex        =   113
             Tag             =   "lblPrefixString"
             Top             =   4500
             Width           =   390
@@ -1670,7 +1833,7 @@ Begin VB.Form widgetPrefs
             Height          =   510
             Index           =   17
             Left            =   645
-            TabIndex        =   82
+            TabIndex        =   74
             Tag             =   "lblPrefixString"
             Top             =   6480
             Width           =   2175
@@ -1680,7 +1843,7 @@ Begin VB.Form widgetPrefs
             Height          =   510
             Index           =   16
             Left            =   660
-            TabIndex        =   80
+            TabIndex        =   72
             Tag             =   "lblPrefixString"
             Top             =   6015
             Width           =   2175
@@ -1690,7 +1853,7 @@ Begin VB.Form widgetPrefs
             Height          =   510
             Index           =   15
             Left            =   420
-            TabIndex        =   78
+            TabIndex        =   70
             Tag             =   "lblPrefixString"
             Top             =   4905
             Width           =   2175
@@ -1700,7 +1863,7 @@ Begin VB.Form widgetPrefs
             Height          =   510
             Index           =   14
             Left            =   420
-            TabIndex        =   76
+            TabIndex        =   68
             Tag             =   "lblPrefixString"
             Top             =   4455
             Width           =   2175
@@ -1710,17 +1873,17 @@ Begin VB.Form widgetPrefs
             Height          =   435
             Index           =   13
             Left            =   450
-            TabIndex        =   74
+            TabIndex        =   66
             Tag             =   "lblAlarmSound"
             Top             =   3975
             Width           =   2115
          End
          Begin VB.Label lblPosition 
-            Caption         =   $"frmPrefs.frx":6DBD
+            Caption         =   $"frmPrefs.frx":95E2
             Height          =   3435
             Index           =   12
             Left            =   5145
-            TabIndex        =   72
+            TabIndex        =   64
             Tag             =   "lblAlarmSoundDesc"
             Top             =   3480
             Width           =   2520
@@ -1730,17 +1893,17 @@ Begin VB.Form widgetPrefs
             Height          =   375
             Index           =   11
             Left            =   690
-            TabIndex        =   71
+            TabIndex        =   63
             Tag             =   "lblAlarmSound"
             Top             =   5550
             Width           =   2040
          End
          Begin VB.Label lblPosition 
-            Caption         =   $"frmPrefs.frx":6F8F
+            Caption         =   $"frmPrefs.frx":97B4
             Height          =   705
             Index           =   10
             Left            =   2250
-            TabIndex        =   69
+            TabIndex        =   61
             Tag             =   "lblAlarmSoundDesc"
             Top             =   2550
             Width           =   5325
@@ -1750,17 +1913,17 @@ Begin VB.Form widgetPrefs
             Height          =   375
             Index           =   8
             Left            =   195
-            TabIndex        =   68
+            TabIndex        =   60
             Tag             =   "lblAlarmSound"
             Top             =   2145
             Width           =   2355
          End
          Begin VB.Label lblPosition 
-            Caption         =   $"frmPrefs.frx":702E
+            Caption         =   $"frmPrefs.frx":9853
             Height          =   3045
             Index           =   6
             Left            =   2265
-            TabIndex        =   66
+            TabIndex        =   58
             Tag             =   "lblAlarmSoundDesc"
             Top             =   450
             Width           =   5370
@@ -1770,7 +1933,7 @@ Begin VB.Form widgetPrefs
             Height          =   375
             Index           =   3
             Left            =   120
-            TabIndex        =   65
+            TabIndex        =   57
             Tag             =   "lblAlarmSound"
             Top             =   45
             Width           =   2145
@@ -1789,10 +1952,10 @@ Begin VB.Form widgetPrefs
          Strikethrough   =   0   'False
       EndProperty
       Height          =   165
-      Left            =   8670
-      TabIndex        =   154
+      Left            =   8700
+      TabIndex        =   137
       ToolTipText     =   "drag me"
-      Top             =   10335
+      Top             =   10350
       Visible         =   0   'False
       Width           =   345
    End
@@ -1800,7 +1963,7 @@ Begin VB.Form widgetPrefs
       Caption         =   "Size in twips"
       Height          =   285
       Left            =   1875
-      TabIndex        =   150
+      TabIndex        =   133
       Top             =   9780
       Visible         =   0   'False
       Width           =   4170
@@ -1809,7 +1972,7 @@ Begin VB.Form widgetPrefs
       Caption         =   "All controls marked with a * take effect immediately."
       Height          =   300
       Left            =   1920
-      TabIndex        =   129
+      TabIndex        =   116
       Top             =   10155
       Width           =   3870
    End
@@ -1817,7 +1980,7 @@ Begin VB.Form widgetPrefs
       Caption         =   "The main menu"
       Visible         =   0   'False
       Begin VB.Menu mnuAbout 
-         Caption         =   "About Panzer CPU Widget"
+         Caption         =   "About Panzer Earth Widget"
       End
       Begin VB.Menu blank 
          Caption         =   "-"
@@ -1858,8 +2021,6 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '@IgnoreModule IntegerDataType, ModuleWithoutFolder
 
-' gaugeForm_BubblingEvent ' leaving that here so I can copy/paste to find it
-
 '---------------------------------------------------------------------------------------
 ' Module    : widgetPrefs
 ' Author    : beededea
@@ -1875,7 +2036,7 @@ Private Declare Function ReleaseCapture Lib "user32" () As Long
 
 Private Declare Function SendMessage Lib "user32" _
    Alias "SendMessageA" _
-  (ByVal hwnd As Long, _
+  (ByVal hWnd As Long, _
    ByVal wMsg As Long, _
    ByVal wParam As Long, _
    lParam As Any) As Long
@@ -1894,170 +2055,124 @@ Private Declare Function GetSysColor Lib "user32.dll" (ByVal nIndex As Long) As 
 Private Declare Function IsThemeActive Lib "uxtheme" () As Boolean
 '------------------------------------------------------ ENDS
 
-'------------------------------------------------------ STARTS
-' Types for determining the timezone
-
-'Private BiasAdjust As Boolean
-'
-'' results UDT
-'Private Type TZ_LOOKUP_DATA
-'   TimeZoneName As String
-'   bias As Long
-'   IsDST As Boolean
-'End Type
-'
-'Private tzinfo() As TZ_LOOKUP_DATA
-'
-''holds the correct key for the OS version
-'Private sTzKey As String
-
-'windows constants and declares
-'Private Const TIME_ZONE_ID_UNKNOWN As Long = 1
-'Private Const TIME_ZONE_ID_STANDARD As Long = 1
-'Private Const TIME_ZONE_ID_DAYLIGHT As Long = 2
-'Private Const TIME_ZONE_ID_INVALID As Long = &HFFFFFFFF
-'Private Const VER_PLATFORM_WIN32_NT = 2
-'Private Const VER_PLATFORM_WIN32_WINDOWS = 1
-
-'registry constants
-'Private Const SKEY_NT = "SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones"
-'Private Const SKEY_9X = "SOFTWARE\Microsoft\Windows\CurrentVersion\Time Zones"
-'Private Const HKEY_LOCAL_MACHINE = &H80000002
-'Private Const ERROR_SUCCESS = 0
-''Private Const REG_SZ As Long = 1
-''Private Const REG_BINARY = 3
-''Private Const REG_DWORD As Long = 4
-'Private Const STANDARD_RIGHTS_READ As Long = &H20000
-'Private Const KEY_QUERY_VALUE As Long = &H1
-'Private Const KEY_ENUMERATE_SUB_KEYS As Long = &H8
-'Private Const KEY_NOTIFY As Long = &H10
-'Private Const SYNCHRONIZE As Long = &H100000
-'Private Const KEY_READ As Long = ((STANDARD_RIGHTS_READ Or _
-'                                   KEY_QUERY_VALUE Or _
-'                                   KEY_ENUMERATE_SUB_KEYS Or _
-'                                   KEY_NOTIFY) And _
-'                                   (Not SYNCHRONIZE))
-
-'Private Type SYSTEMTIME
-'   wYear As Integer
-'   wMonth As Integer
-'   wDayOfWeek As Integer
-'   wDay As Integer
-'   wHour As Integer
-'   wMinute As Integer
-'   wSecond As Integer
-'   wMilliseconds As Integer
-'End Type
-'
-'Private Type FILETIME
-'   dwLowDateTime As Long
-'   dwHighDateTime As Long
-'End Type
-'
-'Private Type REG_TIME_ZONE_INFORMATION
-'   bias As Long
-'   StandardBias As Long
-'   DaylightBias As Long
-'   StandardDate As SYSTEMTIME
-'   DaylightDate As SYSTEMTIME
-'End Type
-
-
-'Private Type TIME_ZONE_INFORMATION
-'    bias                    As Long
-'    StandardName(0 To 63)   As Byte
-'    StandardDate            As SYSTEMTIME
-'    StandardBias            As Long
-'    DaylightName(0 To 63)   As Byte
-'    DaylightDate            As SYSTEMTIME
-'    DaylightBias            As Long
-'End Type
-
-'Private Type OSVERSIONINFO
-'   OSVSize As Long
-'   dwVerMajor As Long
-'   dwVerMinor As Long
-'   dwBuildNumber As Long
-'   PlatformID As Long
-'   szCSDVersion As String * 128
-'End Type
-
-' APIs for determining the timezone
-
-'Private Declare Function GetVersionEx Lib "kernel32" _
-'   Alias "GetVersionExA" _
-'  (lpVersionInformation As OSVERSIONINFO) As Long
-'
-'Private Declare Function GetTimeZoneInformation Lib "kernel32" _
-'   (lpTimeZoneInformation As TIME_ZONE_INFORMATION) As Long
-
-'Private Declare Function RegOpenKeyEx Lib "advapi32.dll" _
-'   Alias "RegOpenKeyExA" _
-'  (ByVal hKey As Long, _
-'   ByVal lpsSubKey As String, _
-'   ByVal ulOptions As Long, _
-'   ByVal samDesired As Long, _
-'   phkResult As Long) As Long
-'
-'Private Declare Function RegQueryValueEx Lib "advapi32.dll" _
-'   Alias "RegQueryValueExA" _
-'  (ByVal hKey As Long, _
-'   ByVal lpszValueName As String, _
-'   ByVal lpdwReserved As Long, _
-'   lpdwType As Long, _
-'   lpData As Any, _
-'   lpcbData As Long) As Long
-'
-'Private Declare Function RegQueryInfoKey Lib "advapi32.dll" _
-'   Alias "RegQueryInfoKeyA" _
-'  (ByVal hKey As Long, _
-'   ByVal lpClass As String, _
-'   lpcbClass As Long, _
-'   ByVal lpReserved As Long, _
-'   lpcsSubKeys As Long, _
-'   lpcbMaxsSubKeyLen As Long, _
-'   lpcbMaxClassLen As Long, _
-'   lpcValues As Long, _
-'   lpcbMaxValueNameLen As Long, _
-'   lpcbMaxValueLen As Long, _
-'   lpcbSecurityDescriptor As Long, _
-'   lpftLastWriteTime As FILETIME) As Long
-   
-'Private Declare Function RegQueryValueExString Lib "advapi32.dll" _
-'   Alias "RegQueryValueExA" _
-'  (ByVal hKey As Long, _
-'   ByVal lpValueName As String, _
-'   ByVal lpReserved As Long, _
-'   lpType As Long, _
-'   ByVal lpData As String, _
-'   lpcbData As Long) As Long
-
-'Private Declare Function RegEnumKey Lib "advapi32.dll" _
-'   Alias "RegEnumKeyA" _
-'  (ByVal hKey As Long, _
-'   ByVal dwIndex As Long, _
-'   ByVal lpName As String, _
-'   ByVal cbName As Long) As Long
-'
-'Private Declare Function RegCloseKey Lib "advapi32.dll" _
-'  (ByVal hKey As Long) As Long
-
-'Private Declare Function lstrlenW Lib "kernel32" _
-'  (ByVal lpString As Long) As Long
-'
-'------------------------------------------------------ ENDS
 
 '------------------------------------------------------ STARTS
 ' Private Types for determining prefs sizing
-Private gblPrefsLoadedFlg As Boolean
-Private prefsDynamicSizingFlg As Boolean
-Private lastFormHeight As Long
-Private Const cPrefsFormHeight As Long = 11055
-Private Const cPrefsFormWidth  As Long = 9090
+Private pvtPrefsDynamicSizingFlg As Boolean
+Private pvtLastFormHeight As Long
+Private Const pvtcPrefsFormHeight As Long = 11055
+Private Const pvtcPrefsFormWidth  As Long = 9090
+
+Private pvtPrefsFormResizedByDrag As Boolean
+
+'    gblPrefsStartWidth = 9075
+'    gblPrefsStartHeight = 16450
 '------------------------------------------------------ ENDS
 
-Private prefsStartupFlg As Boolean
-Private gblAllowSizeChangeFlg As Boolean
+Private pvtPrefsStartupFlg As Boolean
+Private pvtAllowSizeChangeFlg As Boolean
+
+' module level balloon tooltip variables for subclassed comboBoxes ONLY.
+Private pCmbMultiMonitorResizeBalloonTooltip As String
+Private pCmbScrollWheelDirectionBalloonTooltip As String
+Private pCmbWindowLevelBalloonTooltip As String
+Private pCmbHidingTimeBalloonTooltip As String
+Private pCmbAspectHiddenBalloonTooltip As String
+Private pCmbWidgetPositionBalloonTooltip As String
+Private pCmbWidgetLandscapeBalloonTooltip As String
+Private pCmbWidgetPortraitBalloonTooltip As String
+Private pCmbDebugBalloonTooltip As String
+Private pCmbTickSwitchPrefBalloonTooltip As String
+
+Private mIsLoaded As Boolean ' property
+Private mGaugeSize As Single   ' property
+
+Private gblConstraintRatio As Double
+
+
+
+
+Private Sub btnDefaultEditor_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip btnDefaultEditor.hWnd, "Field to hold the path to a Visual Basic Project (VBP) file you would like to execute on a right click menu, edit option, if you select the adjacent button a file explorer will appear allowing you to select the VBP file, this field is automatically filled with the chosen file.", _
+                  TTIconInfo, "Help on the Default Editor Field", , , , True
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : btnGithubHome_Click
+' Author    : beededea
+' Date      : 22/06/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub btnGithubHome_Click()
+   On Error GoTo btnGithubHome_Click_Error
+
+    Call menuForm.mnuGithubHome_Click
+
+   On Error GoTo 0
+   Exit Sub
+
+btnGithubHome_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure btnGithubHome_Click of Form widgetPrefs"
+End Sub
+
+
+
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : btnSelectMonitor_Click
+' Author    : beededea
+' Date      : 02/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub btnSelectMonitor_Click()
+    Dim retFileName As String: retFileName = vbNullString
+    Dim answer As VbMsgBoxResult: answer = vbNo
+    Dim answerMsg As String: answerMsg = vbNullString
+
+    On Error GoTo btnSelectMonitor_Click_Error
+
+    Call addTargetFile(txtDefaultEditor.Text, retFileName)
+    
+    If retFileName <> vbNullString Then
+        txtDefaultEditor.Text = retFileName ' strips the buffered bit, leaving just the filename
+    End If
+    
+    If retFileName = vbNullString Then
+        Exit Sub
+    End If
+    
+    If Not fFExists(retFileName) Then
+        answer = vbYes
+        answerMsg = "The file doesn't currently exist, do you want me to create the chosen file, " & "   -  are you sure?"
+        answer = msgBoxA(answerMsg, vbYesNo, "Default Editor Confirmation", False)
+        If answer = vbNo Then
+            Exit Sub
+        End If
+    
+        'create new
+        Open retFileName For Output As #1
+        Close #1
+    End If
+
+    On Error GoTo 0
+    Exit Sub
+
+btnSelectMonitor_Click_Error:
+
+    With Err
+         If .Number <> 0 Then
+            MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure btnSelectMonitor_Click of Form widgetPrefs"
+            Resume Next
+          End If
+    End With
+    
+End Sub
+
+
 
 
 
@@ -2071,7 +2186,7 @@ Private gblAllowSizeChangeFlg As Boolean
 Private Sub chkMultiCoreEnable_Click()
     On Error GoTo chkMultiCoreEnable_Click_Error
 
-    If prefsStartupFlg = True Then Exit Sub
+    If pvtPrefsStartupFlg = True Then Exit Sub
     
     btnSave.Enabled = True ' enable the save button
     
@@ -2089,6 +2204,267 @@ chkMultiCoreEnable_Click_Error:
      MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure chkMultiCoreEnable_Click of Form widgetPrefs"
 End Sub
 
+Private Sub chkMultiCoreEnable_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip chkMultiCoreEnable.hWnd, "When checked this box enables the Multicore CPU form to display. Any adjustment takes place instantly.", _
+                  TTIconInfo, "Help on the MultiCore Button Toggle", , , , True
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : optGaugeTooltips_Click
+' Author    : beededea
+' Date      : 19/08/2023
+' Purpose   : three options radio buttons for selecting the gauge/cal tooltip style
+'---------------------------------------------------------------------------------------
+'
+Private Sub optGaugeTooltips_Click(Index As Integer)
+    Dim answer As VbMsgBoxResult: answer = vbNo
+    Dim answerMsg As String: answerMsg = vbNullString
+    On Error GoTo optGaugeTooltips_Click_Error
+
+    btnSave.Enabled = True ' enable the save button
+
+    If pvtPrefsStartupFlg = False Then
+        gblGaugeTooltips = CStr(Index)
+    
+        optGaugeTooltips(0).Tag = CStr(Index)
+        optGaugeTooltips(1).Tag = CStr(Index)
+        optGaugeTooltips(2).Tag = CStr(Index)
+        
+        sPutINISetting "Software\PzCPUGauge", "gaugeTooltips", gblGaugeTooltips, gblSettingsFile
+
+        answer = vbYes
+        answerMsg = "You must soft reload this widget, in order to change the tooltip setting, do you want me to reload this widget? I can do it now for you."
+        answer = msgBoxA(answerMsg, vbYesNo, "Request to Enable Tooltips", True, "optGaugeTooltipsClick")
+        If answer = vbNo Then
+            Exit Sub
+        Else
+            Call reloadProgram
+        End If
+    End If
+
+
+   On Error GoTo 0
+   Exit Sub
+
+optGaugeTooltips_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure optGaugeTooltips_Click of Form widgetPrefs"
+
+End Sub
+
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : chkGaugeFunctions_Click
+' Author    : beededea
+' Date      : 30/09/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub chkGaugeFunctions_Click()
+    On Error GoTo chkGaugeFunctions_Click_Error
+
+    btnSave.Enabled = True ' enable the save button
+    overlayWidget.Ticking = chkGaugeFunctions.Value
+
+    On Error GoTo 0
+    Exit Sub
+
+chkGaugeFunctions_Click_Error:
+
+     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure chkGaugeFunctions_Click of Form widgetPrefs"
+End Sub
+
+
+
+Private Sub cmbTickSwitchPref_Click()
+   btnSave.Enabled = True ' enable the save button
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : optPrefsTooltips_Click
+' Author    : beededea
+' Date      : 10/01/2025
+' Purpose   : three options radio buttons for selecting the VB6 preference form tooltip style
+'---------------------------------------------------------------------------------------
+'
+Private Sub optPrefsTooltips_Click(Index As Integer)
+
+   On Error GoTo optPrefsTooltips_Click_Error
+
+    If pvtPrefsStartupFlg = False Then
+    
+        btnSave.Enabled = True ' enable the save button
+        gblPrefsTooltips = CStr(Index)
+        optPrefsTooltips(0).Tag = CStr(Index)
+        optPrefsTooltips(1).Tag = CStr(Index)
+        optPrefsTooltips(2).Tag = CStr(Index)
+        
+        sPutINISetting "Software\PzCPUGauge", "prefsTooltips", gblPrefsTooltips, gblSettingsFile
+        
+        ' set the tooltips on the prefs screen
+        Call setPrefsTooltips
+    End If
+     
+   On Error GoTo 0
+   Exit Sub
+
+optPrefsTooltips_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure optPrefsTooltips_Click of Form widgetPrefs"
+    
+End Sub
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : chkEnableChimes_Click
+' Author    : beededea
+' Date      : 18/02/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub chkEnableChimes_Click()
+   On Error GoTo chkEnableChimes_Click_Error
+
+    btnSave.Enabled = True ' enable the save button
+
+   On Error GoTo 0
+   Exit Sub
+
+chkEnableChimes_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure chkEnableChimes_Click of Form widgetPrefs"
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : chkNumericDisplayRotation_Click
+' Author    : beededea
+' Date      : 18/02/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub chkNumericDisplayRotation_Click()
+   On Error GoTo chkNumericDisplayRotation_Click_Error
+
+    btnSave.Enabled = True ' enable the save button
+
+   On Error GoTo 0
+   Exit Sub
+
+chkNumericDisplayRotation_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure chkNumericDisplayRotation_Click of Form widgetPrefs"
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : cmbMultiMonitorResize_Click
+' Author    : beededea
+' Date      : 10/01/2025
+' Purpose   : For monitors of different sizes, this allows you to resize the widget to suit the monitor it is currently sitting on.
+'---------------------------------------------------------------------------------------
+'
+Private Sub cmbMultiMonitorResize_Click()
+   On Error GoTo cmbMultiMonitorResize_Click_Error
+
+    btnSave.Enabled = True ' enable the save button
+    
+    If pvtPrefsStartupFlg = True Then Exit Sub
+    
+    gblMultiMonitorResize = CStr(cmbMultiMonitorResize.ListIndex)
+    
+    If cmbMultiMonitorResize.ListIndex = 2 Then
+        If prefsMonitorStruct.IsPrimary = True Then
+            gblGaugePrimaryHeightRatio = fGauge.gaugeForm.WidgetRoot.Zoom
+            sPutINISetting "Software\PzCPUGauge", "gaugePrimaryHeightRatio", gblGaugePrimaryHeightRatio, gblSettingsFile
+            
+            'gblPrefsPrimaryHeightTwips = Trim$(cstr(widgetPrefs.Height))
+            sPutINISetting "Software\PzCPUGauge", "prefsPrimaryHeightTwips", gblPrefsPrimaryHeightTwips, gblSettingsFile
+        Else
+            gblGaugeSecondaryHeightRatio = fGauge.gaugeForm.WidgetRoot.Zoom
+            sPutINISetting "Software\PzCPUGauge", "gaugeSecondaryHeightRatio", gblGaugeSecondaryHeightRatio, gblSettingsFile
+            
+            'gblPrefsSecondaryHeightTwips = Trim$(cstr(widgetPrefs.Height))
+            sPutINISetting "Software\PzCPUGauge", "prefsSecondaryHeightTwips", gblPrefsSecondaryHeightTwips, gblSettingsFile
+        End If
+    End If
+
+   On Error GoTo 0
+   Exit Sub
+
+cmbMultiMonitorResize_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure cmbMultiMonitorResize_Click of Form widgetPrefs"
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : chkVolumeBoost_Click
+' Author    : beededea
+' Date      : 18/02/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub chkVolumeBoost_Click()
+   On Error GoTo chkVolumeBoost_Click_Error
+
+    btnSave.Enabled = True ' enable the save button
+
+   On Error GoTo 0
+   Exit Sub
+
+chkVolumeBoost_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure chkVolumeBoost_Click of Form widgetPrefs"
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : chkEnableTicks_Click
+' Author    : beededea
+' Date      : 18/02/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub chkEnableTicks_Click()
+   On Error GoTo chkEnableTicks_Click_Error
+
+    btnSave.Enabled = True ' enable the save button
+
+   On Error GoTo 0
+   Exit Sub
+
+chkEnableTicks_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure chkEnableTicks_Click of Form widgetPrefs"
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : chkShowHelp_Click
+' Author    : beededea
+' Date      : 03/07/2024
+' Purpose   : show help on the program startup
+'---------------------------------------------------------------------------------------
+'
+Private Sub chkShowHelp_Click()
+   On Error GoTo chkShowHelp_Click_Error
+
+    btnSave.Enabled = True ' enable the save button
+    If chkShowHelp.Value = 1 Then
+        gblShowHelp = "1"
+    Else
+        gblShowHelp = "0"
+    End If
+
+   On Error GoTo 0
+   Exit Sub
+
+chkShowHelp_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure chkShowHelp_Click of Form widgetPrefs"
+End Sub
+
+
+
+
+
 ' ----------------------------------------------------------------
 ' Procedure Name: Form_Initialize
 ' Purpose:
@@ -2100,9 +2476,8 @@ End Sub
 Private Sub Form_Initialize()
     On Error GoTo Form_Initialize_Error
     
-    gblPrefsLoadedFlg = False
-    prefsDynamicSizingFlg = False
-    lastFormHeight = 0
+    ' initialise private variables
+    Call initialisePrefsVars
 
     On Error GoTo 0
     Exit Sub
@@ -2113,51 +2488,53 @@ Form_Initialize_Error:
     
     End Sub
 
+
+
+
 '---------------------------------------------------------------------------------------
-' Procedure : Form_Load
+' Procedure : Form_Load     WidgetPrefs
 ' Author    : beededea
 ' Date      : 25/04/2023
-' Purpose   :
 '---------------------------------------------------------------------------------------
 '
 Private Sub Form_Load()
-    Dim prefsFormHeight As Long: prefsFormHeight = 0
 
     On Error GoTo Form_Load_Error
-        
-    prefsStartupFlg = True ' this is used to prevent some control initialisations from running code at startup
-    prefsDynamicSizingFlg = False
-    gblPrefsLoadedFlg = True ' this is a variable tested by an added form property to indicate whether the form is loaded or not
-    gblWindowLevelWasChanged = False
-    prefsFormHeight = prefsCurrentHeight
     
-    With lblDragCorner
-      .ForeColor = &H80000015
-      .BackStyle = vbTransparent
-      .AutoSize = True
-      .Font.Size = 12
-      .Font.Name = "Marlett"
-      .Caption = "o"
-      .Font.Bold = False
-      .Visible = False
-    End With
-     
+    Me.Visible = False
     btnSave.Enabled = False ' disable the save button
+    Me.mnuAbout.Caption = "About Panzer CPU Gauge Cairo " & gblCodingEnvironment & " widget"
 
-    If gblDpiAwareness = "1" Then
-        prefsDynamicSizingFlg = True
-        chkEnableResizing.Value = 1
-        lblDragCorner.Visible = True
-    End If
-      
+    pvtPrefsStartupFlg = True ' this is used to prevent some control initialisations from running code at startup
+    'pvtPrefsDynamicSizingFlg = False
+    IsLoaded = True
+    gblWindowLevelWasChanged = False
+    gblPrefsStartWidth = pvtcPrefsFormWidth
+    gblPrefsStartHeight = pvtcPrefsFormHeight
+    pvtPrefsFormResizedByDrag = False
+            
+    ' subclass ALL forms created by intercepting WM_Create messages, identifying dialog forms to centre them in the middle of the monitor - specifically the font form.
+    If Not InIDE Then subclassDialogForms
+    
+    ' subclass specific WidgetPrefs controls that need additional functionality that VB6 does not provide (scrollwheel/balloon tooltips)
+    Call subClassControls
+    
+    ' set form resizing
+    Call setFormResizingVars
+    
+    ' note the monitor primary at the preferences form_load and store as gblOldgaugeFormMonitorPrimary
+    Call identifyPrefsPrimaryMonitor
+    
+    ' reverts TwinBasic form themeing to that of the earlier classic look and feel
+    #If TWINBASIC Then
+       Call setVisualStyles
+    #End If
+       
     ' read the last saved position from the settings.ini
     Call readPrefsPosition
         
     ' determine the frame heights in dynamic sizing or normal mode
     Call setframeHeights
-    
-    ' set the tooltips on the prefs screen
-    Call setPrefsTooltips
     
     ' set the text in any labels that need a vbCrLf to space the text
     Call setPrefsLabels
@@ -2167,6 +2544,9 @@ Private Sub Form_Load()
         
     ' adjust all the preferences and main program controls
     Call adjustPrefsControls
+    
+    ' set the tooltips on the prefs screen
+    Call setPrefsTooltips
     
     ' adjust the theme used by the prefs alone
     Call adjustPrefsTheme
@@ -2183,26 +2563,22 @@ Private Sub Form_Load()
     ' load the preference icons from a previously populated CC imageList
     Call loadHigherResPrefsImages
     
-    ' now cause a form_resize event and set the height of the whole form
-    If gblDpiAwareness = "1" Then
-        If prefsFormHeight < screenHeightTwips Then
-            Me.Height = prefsFormHeight
-        Else
-            Me.Height = screenHeightTwips - 1000
-        End If
-    End If
+    ' set the height of the whole form not higher than the screen size, cause a form_resize event
+    Call setPrefsHeight
     
     ' position the prefs on the current monitor
     Call positionPrefsMonitor
     
-    ' set the Z order of the prefs form
-    Call setPrefsFormZordering
+    ' start the timers
+    Call startPrefsTimers
     
-    ' start the timer that records the prefs position every 10 seconds
-    positionTimer.Enabled = True
+    widgetPrefsOldHeight = widgetPrefs.Height
+    widgetPrefsOldWidth = widgetPrefs.Width
     
-    ' end the startup by un-setting the start flag
-    prefsStartupFlg = False
+    ' end the startup by un-setting the start global-ish flag
+    pvtPrefsStartupFlg = False
+    
+    btnSave.Enabled = False
 
    On Error GoTo 0
    Exit Sub
@@ -2213,8 +2589,316 @@ Form_Load_Error:
 
 End Sub
 
+
+
+' ---------------------------------------------------------------------------------------
+' Procedure : initialisePrefsVars
+' Author    : beededea
+' Date      : 20/02/2025
+' Purpose   : initialise private variables
+'---------------------------------------------------------------------------------------
+'
+Private Sub initialisePrefsVars()
+
+   On Error GoTo initialisePrefsVars_Error
+
+    pvtPrefsDynamicSizingFlg = False
+    pvtLastFormHeight = 0
+    pvtPrefsStartupFlg = False
+    pvtAllowSizeChangeFlg = False
+    pCmbMultiMonitorResizeBalloonTooltip = vbNullString
+    pCmbScrollWheelDirectionBalloonTooltip = vbNullString
+    pCmbWindowLevelBalloonTooltip = vbNullString
+    pCmbHidingTimeBalloonTooltip = vbNullString
+    pCmbAspectHiddenBalloonTooltip = vbNullString
+    pCmbWidgetPositionBalloonTooltip = vbNullString
+    pCmbWidgetLandscapeBalloonTooltip = vbNullString
+    pCmbWidgetPortraitBalloonTooltip = vbNullString
+    pCmbDebugBalloonTooltip = vbNullString
+    pvtPrefsFormResizedByDrag = False
+    mIsLoaded = False ' property
+    
+    pCmbTickSwitchPrefBalloonTooltip = vbNullString
+
+   On Error GoTo 0
+   Exit Sub
+
+initialisePrefsVars_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure initialisePrefsVars of Form widgetPrefs"
+
+End Sub
+
+     
 '
 '---------------------------------------------------------------------------------------
+' Procedure : setFormResizingVars
+' Author    : beededea
+' Date      : 20/02/2025
+' Purpose   : set form resizing characteristics
+'---------------------------------------------------------------------------------------
+'
+Private Sub setFormResizingVars()
+
+   On Error GoTo setFormResizingVars_Error
+
+    With lblDragCorner
+      .ForeColor = &H80000015
+      .BackStyle = vbTransparent
+      .AutoSize = True
+      .Font.Size = 12
+      .Font.Name = "Marlett"
+      .Caption = "o"
+      .Font.Bold = False
+      .Visible = False
+    End With
+    
+    If gblDpiAwareness = "1" Then
+        pvtPrefsDynamicSizingFlg = True
+        chkEnableResizing.Value = 1
+        lblDragCorner.Visible = True
+    End If
+    
+    widgetPrefsOldHeight = widgetPrefs.Height
+    widgetPrefsOldWidth = widgetPrefs.Width
+
+   On Error GoTo 0
+   Exit Sub
+
+setFormResizingVars_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure setFormResizingVars of Form widgetPrefs"
+    
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : identifyPrefsPrimaryMonitor
+' Author    : beededea
+' Date      : 20/02/2025
+' Purpose   : note the monitor primary at the preferences form_load and store as gblOldPrefsFormMonitorPrimary - will be resampled regularly later and compared
+'---------------------------------------------------------------------------------------
+'
+Private Sub identifyPrefsPrimaryMonitor()
+    'Dim prefsFormHeight As Long: prefsFormHeight = 0
+    Dim prefsFormMonitorID As Long: prefsFormMonitorID = 0
+    
+    On Error GoTo identifyPrefsPrimaryMonitor_Error
+    
+    'prefsFormHeight = gblPrefsStartHeight
+
+    prefsMonitorStruct = formScreenProperties(widgetPrefs, prefsFormMonitorID)
+    gblOldPrefsFormMonitorPrimary = prefsMonitorStruct.IsPrimary ' -1 true
+
+   On Error GoTo 0
+   Exit Sub
+
+identifyPrefsPrimaryMonitor_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure identifyPrefsPrimaryMonitor of Form widgetPrefs"
+
+End Sub
+'---------------------------------------------------------------------------------------
+' Procedure : setPrefsHeight
+' Author    : beededea
+' Date      : 20/02/2025
+' Purpose   : set the height of the whole form not higher than the screen size, cause a form_resize event
+'---------------------------------------------------------------------------------------
+'
+Private Sub setPrefsHeight()
+
+   On Error GoTo setPrefsHeight_Error
+
+    If gblDpiAwareness = "1" Then
+        gblPrefsFormResizedInCode = True
+        If gblPrefsPrimaryHeightTwips < gblPhysicalScreenHeightTwips Then
+            widgetPrefs.Height = CLng(gblPrefsPrimaryHeightTwips) ' 16450
+        Else
+            widgetPrefs.Height = gblPhysicalScreenHeightTwips - 1000
+        End If
+    End If
+
+   On Error GoTo 0
+   Exit Sub
+
+setPrefsHeight_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure setPrefsHeight of Form widgetPrefs"
+End Sub
+   
+'---------------------------------------------------------------------------------------
+' Procedure : startPrefsTimers
+' Author    : beededea
+' Date      : 20/02/2025
+' Purpose   :  start the timers
+'---------------------------------------------------------------------------------------
+'
+Private Sub startPrefsTimers()
+
+    ' start the timer that records the prefs position every 10 seconds
+   On Error GoTo startPrefsTimers_Error
+
+    tmrWritePosition.Enabled = True
+    
+    ' start the timer that detects a MOVE event on the preferences form
+    tmrPrefsScreenResolution.Enabled = True
+
+   On Error GoTo 0
+   Exit Sub
+
+startPrefsTimers_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure startPrefsTimers of Form widgetPrefs"
+
+End Sub
+    
+
+#If TWINBASIC Then
+    '---------------------------------------------------------------------------------------
+    ' Procedure : setVisualStyles
+    ' Author    : beededea
+    ' Date      : 13/01/2025
+    ' Purpose   : loop through all the controls and identify the labels and text boxes and disable modern styles
+    '             reverts TwinBasic form themeing to that of the earlier classic look and feel.
+    '---------------------------------------------------------------------------------------
+    '
+        Private Sub setVisualStyles()
+            Dim Ctrl As Control
+          
+            On Error GoTo setVisualStyles_Error
+
+            For Each Ctrl In widgetPrefs.Controls
+                If (TypeOf Ctrl Is textBox) Or (TypeOf Ctrl Is FileListBox) Or (TypeOf Ctrl Is ComboBox) Or (TypeOf Ctrl Is CheckBox) Or (TypeOf Ctrl Is OptionButton) Or (TypeOf Ctrl Is Frame) Or (TypeOf Ctrl Is ListBox) Then
+                    Ctrl.VisualStyles = False
+                End If
+            Next
+
+       On Error GoTo 0
+       Exit Sub
+
+setVisualStyles_Error:
+
+        MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure setVisualStyles of Form widgetPrefs"
+        End Sub
+#End If
+
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : subClassControls
+' Author    : beededea
+' Date      : 16/07/2024
+' Purpose   : sub classing code to capture form movement and intercept messages to the comboboxes to provide missing balloon tooltips functionality
+'---------------------------------------------------------------------------------------
+'
+Private Sub subClassControls()
+    
+   On Error GoTo subClassControls_Error
+
+    If InIDE Then
+        MsgBox "NOTE: Running in IDE so Sub classing is disabled" & vbCrLf & "Mousewheel will not scroll icon maps and balloon tooltips will not display on comboboxes" & vbCrLf & vbCrLf & _
+            "In addition, the display screen will not show messages as it currently crashes when run within the IDE."
+    Else
+        ' sub classing code to intercept messages to the form itself in order to capture WM_EXITSIZEMOVE messages that occur AFTER the form has been resized
+        
+        Call SubclassForm(widgetPrefs.hWnd, ObjPtr(widgetPrefs))
+        
+        'now the comboboxes in order to capture the mouseOver and display the balloon tooltips
+        
+        Call SubclassComboBox(cmbMultiMonitorResize.hWnd, ObjPtr(cmbMultiMonitorResize))
+        Call SubclassComboBox(cmbScrollWheelDirection.hWnd, ObjPtr(cmbScrollWheelDirection))
+        Call SubclassComboBox(cmbWindowLevel.hWnd, ObjPtr(cmbWindowLevel))
+        Call SubclassComboBox(cmbHidingTime.hWnd, ObjPtr(cmbHidingTime))
+        
+        Call SubclassComboBox(cmbWidgetLandscape.hWnd, ObjPtr(cmbWidgetLandscape))
+        Call SubclassComboBox(cmbWidgetPortrait.hWnd, ObjPtr(cmbWidgetPortrait))
+        Call SubclassComboBox(cmbWidgetPosition.hWnd, ObjPtr(cmbWidgetPosition))
+        Call SubclassComboBox(cmbAspectHidden.hWnd, ObjPtr(cmbAspectHidden))
+        Call SubclassComboBox(cmbDebug.hWnd, ObjPtr(cmbDebug))
+        Call SubclassComboBox(cmbTickSwitchPref.hWnd, ObjPtr(cmbTickSwitchPref))
+        
+        
+    End If
+    
+
+    On Error GoTo 0
+    Exit Sub
+
+subClassControls_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure subClassControls of Form widgetPrefs"
+End Sub
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : MouseMoveOnComboText
+' Author    : beededea
+' Date      : 16/07/2024
+' Purpose   : Add a balloon tooltip dynamically to combo boxes using subclassing, called by combobox_proc
+'             (VB6 will not allow Elroy's advanced tooltips to show on VB6 comboboxes, we must subclass the controls)
+'             Note: Each control must also be added to the subClassControls routine
+'---------------------------------------------------------------------------------------
+'
+Public Sub MouseMoveOnComboText(sComboName As String)
+    Dim sTitle As String
+    Dim sText As String
+
+    On Error GoTo MouseMoveOnComboText_Error
+    
+    Select Case sComboName
+        Case "cmbMultiMonitorResize"
+            sTitle = "Help on the Drop Down Icon Filter"
+            sText = pCmbMultiMonitorResizeBalloonTooltip
+            If gblPrefsTooltips = "0" Then CreateToolTip cmbMultiMonitorResize.hWnd, sText, , sTitle, , , , True
+        Case "cmbScrollWheelDirection"
+            sTitle = "Help on the Scroll Wheel Direction"
+            sText = pCmbScrollWheelDirectionBalloonTooltip
+            If gblPrefsTooltips = "0" Then CreateToolTip cmbScrollWheelDirection.hWnd, sText, , sTitle, , , , True
+        Case "cmbWindowLevel"
+            sTitle = "Help on the Window Level"
+            sText = pCmbWindowLevelBalloonTooltip
+            If gblPrefsTooltips = "0" Then CreateToolTip cmbWindowLevel.hWnd, sText, , sTitle, , , , True
+        Case "cmbHidingTime"
+            sTitle = "Help on the Hiding Time"
+            sText = pCmbHidingTimeBalloonTooltip
+            If gblPrefsTooltips = "0" Then CreateToolTip cmbHidingTime.hWnd, sText, , sTitle, , , , True
+            
+        Case "cmbAspectHidden"
+            sTitle = "Help on Hiding in Landscape/Portrait Mode"
+            sText = pCmbAspectHiddenBalloonTooltip
+            If gblPrefsTooltips = "0" Then CreateToolTip cmbAspectHidden.hWnd, sText, , sTitle, , , , True
+        Case "cmbWidgetPosition"
+            sTitle = "Help on Widget Position in Landscape/Portrait Modes"
+            sText = pCmbWidgetPositionBalloonTooltip
+            If gblPrefsTooltips = "0" Then CreateToolTip cmbWidgetPosition.hWnd, sText, , sTitle, , , , True
+        Case "cmbWidgetLandscape"
+            sTitle = "Help on Widget Locking in Landscape Mode"
+            sText = pCmbWidgetLandscapeBalloonTooltip
+            If gblPrefsTooltips = "0" Then CreateToolTip cmbWidgetLandscape.hWnd, sText, , sTitle, , , , True
+        Case "cmbWidgetPortrait"
+            sTitle = "Help on Widget Locking in Portrait Mode"
+            sText = pCmbWidgetPortraitBalloonTooltip
+            If gblPrefsTooltips = "0" Then CreateToolTip cmbWidgetPortrait.hWnd, sText, , sTitle, , , , True
+        Case "cmbDebug"
+            sTitle = "Help on Debug Mode"
+            sText = pCmbDebugBalloonTooltip
+            If gblPrefsTooltips = "0" Then CreateToolTip cmbDebug.hWnd, sText, , sTitle, , , , True
+         Case "cmbTickSwitchPref"
+            sTitle = "Help on Pointer Selection"
+            sText = pCmbTickSwitchPrefBalloonTooltip
+            If gblPrefsTooltips = "0" Then CreateToolTip cmbTickSwitchPref.hWnd, sText, , sTitle, , , , True
+        
+    End Select
+    
+   On Error GoTo 0
+   Exit Sub
+
+MouseMoveOnComboText_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure MouseMoveOnComboText of Form widgetPrefs"
+End Sub
+
+
+' ---------------------------------------------------------------------------------------
 ' Procedure : positionPrefsMonitor
 ' Author    : beededea
 ' Date      : 06/10/2023
@@ -2225,60 +2909,79 @@ Public Sub positionPrefsMonitor()
 
     Dim formLeftTwips As Long: formLeftTwips = 0
     Dim formTopTwips As Long: formTopTwips = 0
-    Dim monitorCount As Long: monitorCount = 0
+    'Dim monitorCount As Long: monitorCount = 0
     
     On Error GoTo positionPrefsMonitor_Error
     
     If gblDpiAwareness = "1" Then
-        formLeftTwips = Val(gblFormHighDpiXPosTwips)
-        formTopTwips = Val(gblFormHighDpiYPosTwips)
+        formLeftTwips = Val(gblPrefsHighDpiXPosTwips)
+        formTopTwips = Val(gblPrefsHighDpiYPosTwips)
     Else
-        formLeftTwips = Val(gblFormLowDpiXPosTwips)
-        formTopTwips = Val(gblFormLowDpiYPosTwips)
+        formLeftTwips = Val(gblPrefsLowDpiXPosTwips)
+        formTopTwips = Val(gblPrefsLowDpiYPosTwips)
     End If
     
     If formLeftTwips = 0 Then
-        If ((fAlpha.gaugeForm.Left + fAlpha.gaugeForm.Width) * gblScreenTwipsPerPixelX) + 200 + widgetPrefs.Width > screenWidthTwips Then
-            widgetPrefs.Left = (fAlpha.gaugeForm.Left * gblScreenTwipsPerPixelX) - (widgetPrefs.Width + 200)
+        If ((fGauge.gaugeForm.Left + fGauge.gaugeForm.Width) * gblScreenTwipsPerPixelX) + 200 + widgetPrefs.Width > gblPhysicalScreenWidthTwips Then
+            widgetPrefs.Left = (fGauge.gaugeForm.Left * gblScreenTwipsPerPixelX) - (widgetPrefs.Width + 200)
         End If
     End If
 
     ' if a current location not stored then position to the middle of the screen
+    
     If formLeftTwips <> 0 Then
-        Me.Left = formLeftTwips
+        widgetPrefs.Left = formLeftTwips
     Else
-        Me.Left = screenWidthTwips / 2 - Me.Width / 2
+        widgetPrefs.Left = gblPhysicalScreenWidthTwips / 2 - widgetPrefs.Width / 2
     End If
     
     If formTopTwips <> 0 Then
-        Me.Top = formTopTwips
+        widgetPrefs.Top = formTopTwips
     Else
-        Me.Top = Screen.Height / 2 - Me.Height / 2
+        widgetPrefs.Top = Screen.Height / 2 - widgetPrefs.Height / 2
     End If
     
-    monitorCount = fGetMonitorCount
-    If monitorCount > 1 Then Call SetFormOnMonitor(Me.hwnd, formLeftTwips / fTwipsPerPixelX, formTopTwips / fTwipsPerPixelY)
+    'monitorCount = fGetMonitorCount
+    If gblMonitorCount > 1 Then Call SetFormOnMonitor(Me.hWnd, formLeftTwips / fTwipsPerPixelX, formTopTwips / fTwipsPerPixelY)
     
     ' calculate the on-screen widget position
     If Me.Left < 0 Then
-        Me.Left = 10
+        widgetPrefs.Left = 10
     End If
     If Me.Top < 0 Then
-        Me.Top = 0
+        widgetPrefs.Top = 0
     End If
-'    If Me.Left > screenWidthTwips - 2500 Then
-'        Me.Left = screenWidthTwips - 2500
-'    End If
-'    If Me.Top > screenHeightTwips - 2500 Then
-'        Me.Top = screenHeightTwips - 2500
-'    End If
-
     If Me.Left > gblVirtualScreenWidthTwips - 2500 Then
-        Me.Left = gblVirtualScreenWidthTwips - 2500
+        widgetPrefs.Left = gblVirtualScreenWidthTwips - 2500
     End If
     If Me.Top > gblVirtualScreenHeightTwips - 2500 Then
-        Me.Top = gblVirtualScreenHeightTwips - 2500
+        widgetPrefs.Top = gblVirtualScreenHeightTwips - 2500
     End If
+    
+    
+    ' if just one monitor or the global switch is off then exit
+    If gblMonitorCount > 1 And LTrim$(gblMultiMonitorResize) = "2" Then
+
+        If prefsMonitorStruct.IsPrimary = True Then
+            gblPrefsFormResizedInCode = True
+            gblPrefsPrimaryHeightTwips = fGetINISetting("Software\PzCPUGauge", "prefsPrimaryHeightTwips", gblSettingsFile)
+            If Val(gblPrefsPrimaryHeightTwips) <= 0 Then
+                widgetPrefs.Height = gblPrefsStartHeight
+            Else
+                widgetPrefs.Height = CLng(gblPrefsPrimaryHeightTwips)
+            End If
+        Else
+            gblPrefsSecondaryHeightTwips = fGetINISetting("Software\PzCPUGauge", "prefsSecondaryHeightTwips", gblSettingsFile)
+            gblPrefsFormResizedInCode = True
+            If Val(gblPrefsSecondaryHeightTwips) <= 0 Then
+                widgetPrefs.Height = gblPrefsStartHeight
+            Else
+                widgetPrefs.Height = CLng(gblPrefsSecondaryHeightTwips)
+            End If
+        End If
+    End If
+
+    '' fGauge.RotateBusyTimer = True
     
     On Error GoTo 0
     Exit Sub
@@ -2288,32 +2991,14 @@ positionPrefsMonitor_Error:
      MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure positionPrefsMonitor of Form widgetPrefs"
 End Sub
     
-'---------------------------------------------------------------------------------------
-' Procedure : btnResetMessages_MouseMove
-' Author    : beededea
-' Date      : 01/10/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
-'
-Private Sub btnResetMessages_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    On Error GoTo btnResetMessages_MouseMove_Error
+    
 
-    If gblEnableBalloonTooltips = "1" Then CreateToolTip btnResetMessages.hwnd, "The various pop-up messages that this program generates can be manually hidden. This button restores them to their original visible state.", _
-                  TTIconInfo, "Help on the message reset button", , , , True
-
-    On Error GoTo 0
-    Exit Sub
-
-btnResetMessages_MouseMove_Error:
-
-     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure btnResetMessages_MouseMove of Form widgetPrefs"
-End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : chkDpiAwareness_Click
 ' Author    : beededea
 ' Date      : 14/08/2023
-' Purpose   :
+' Purpose   : toggle for setting the DPI awareness
 '---------------------------------------------------------------------------------------
 '
 Private Sub chkDpiAwareness_Click()
@@ -2323,7 +3008,7 @@ Private Sub chkDpiAwareness_Click()
     On Error GoTo chkDpiAwareness_Click_Error
 
     btnSave.Enabled = True ' enable the save button
-    If prefsStartupFlg = False Then ' don't run this on startup
+    If pvtPrefsStartupFlg = False Then ' don't run this on startup
                     
         answer = vbYes
         answerMsg = "You must close this widget and HARD restart it, in order to change the widget's DPI awareness (a simple soft reload just won't cut it), do you want me to close and restart this widget? I can do it now for you."
@@ -2346,7 +3031,7 @@ Private Sub chkDpiAwareness_Click()
         Else
 
             sPutINISetting "Software\PzCPUGauge", "dpiAwareness", gblDpiAwareness, gblSettingsFile
-            'Call reloadWidget ' this is insufficient, image controls still fail to resize and autoscale correctly
+            'Call reloadProgram ' this is insufficient, image controls still fail to resize and autoscale correctly
             Call hardRestart
         End If
 
@@ -2362,68 +3047,15 @@ End Sub
 
 
 
-'---------------------------------------------------------------------------------------
-' Procedure : chkEnablePrefsTooltips_Click
-' Author    : beededea
-' Date      : 07/09/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
-'
-Private Sub chkEnablePrefsTooltips_Click()
 
-   On Error GoTo chkEnablePrefsTooltips_Click_Error
 
-    btnSave.Enabled = True ' enable the save button
-    
-    If prefsStartupFlg = False Then
-        If chkEnablePrefsTooltips.Value = 1 Then
-            gblEnablePrefsTooltips = "1"
-        Else
-            gblEnablePrefsTooltips = "0"
-        End If
-        
-        sPutINISetting "Software\PzCPUGauge", "enablePrefsTooltips", gblEnablePrefsTooltips, gblSettingsFile
 
-    End If
-    
-    ' set the tooltips on the prefs screen
-    Call setPrefsTooltips
-
-   On Error GoTo 0
-   Exit Sub
-
-chkEnablePrefsTooltips_Click_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure chkEnablePrefsTooltips_Click of Form widgetPrefs"
-
-End Sub
-
-'---------------------------------------------------------------------------------------
-' Procedure : chkEnableTooltips_MouseMove
-' Author    : beededea
-' Date      : 05/10/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
-'
-Private Sub chkEnableTooltips_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    On Error GoTo chkEnableTooltips_MouseMove_Error
-
-    If gblEnableBalloonTooltips = "1" Then CreateToolTip chkEnableTooltips.hwnd, "There is a problem with the current tooltips on the clock itself as they resize along with the program graphical elements, meaning that they cannot be seen, there is also a problem with tooltip handling different fonts, hoping to get Olaf to fix these soon. My suggestion is to turn them off for the moment.", _
-                  TTIconInfo, "Help on the Program tooltip problem", , , , True
-
-    On Error GoTo 0
-    Exit Sub
-
-chkEnableTooltips_MouseMove_Error:
-
-     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure chkEnableTooltips_MouseMove of Form widgetPrefs"
-End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : chkShowTaskbar_Click
 ' Author    : beededea
 ' Date      : 19/07/2023
-' Purpose   :
+' Purpose   : toggle for showing the program in the taskbar
 '---------------------------------------------------------------------------------------
 '
 Private Sub chkShowTaskbar_Click()
@@ -2447,15 +3079,13 @@ End Sub
 
 
 
-Private Sub cmbTickSwitchPref_Click()
-   btnSave.Enabled = True ' enable the save button
-End Sub
+
 
 '---------------------------------------------------------------------------------------
 ' Procedure : btnResetMessages_Click
 ' Author    : beededea
 ' Date      : 01/10/2023
-' Purpose   :
+' Purpose   : reset the improved message boxes so that any hidden boxes will reappear
 '---------------------------------------------------------------------------------------
 '
 Private Sub btnResetMessages_Click()
@@ -2481,13 +3111,13 @@ End Sub
 ' Procedure : btnAboutDebugInfo_Click
 ' Author    : beededea
 ' Date      : 03/03/2020
-' Purpose   :
+' Purpose   : Enabling debug mode - not implemented
 '---------------------------------------------------------------------------------------
 '
 Private Sub btnAboutDebugInfo_Click()
 
    On Error GoTo btnAboutDebugInfo_Click_Error
-   'If debugflg = 1 Then Debug.Print "%btnAboutDebugInfo_Click"
+   'If gblDebugFlg = 1 Then Debug.Print "%btnAboutDebugInfo_Click"
 
     'mnuDebug_Click
     MsgBox "The debug mode is not yet enabled."
@@ -2504,7 +3134,7 @@ End Sub
 ' Procedure : btnDonate_Click
 ' Author    : beededea
 ' Date      : 13/06/2020
-' Purpose   :
+' Purpose   : Donate button
 '---------------------------------------------------------------------------------------
 '
 Private Sub btnDonate_Click()
@@ -2524,12 +3154,12 @@ End Sub
 ' Procedure : btnFacebook_Click
 ' Author    : beededea
 ' Date      : 29/02/2020
-' Purpose   :
+' Purpose   : FB button
 '---------------------------------------------------------------------------------------
 '
 Private Sub btnFacebook_Click()
    On Error GoTo btnFacebook_Click_Error
-   'If debugflg = 1 Then DebugPrint "%btnFacebook_Click"
+   'If gblDebugFlg = 1 Then DebugPrint "%btnFacebook_Click"
 
     Call menuForm.mnuFacebook_Click
     
@@ -2546,7 +3176,7 @@ End Sub
 ' Procedure : btnOpenFile_Click
 ' Author    : beededea
 ' Date      : 02/05/2023
-' Purpose   :
+' Purpose   : button for opening a target file for dblClicking
 '---------------------------------------------------------------------------------------
 '
 Private Sub btnOpenFile_Click()
@@ -2556,8 +3186,6 @@ Private Sub btnOpenFile_Click()
 
     On Error GoTo btnOpenFile_Click_Error
 
-
-    
     Call addTargetFile(txtOpenFile.Text, retFileName)
     
     If retFileName <> vbNullString Then
@@ -2599,12 +3227,12 @@ End Sub
 ' Procedure : btnUpdate_Click
 ' Author    : beededea
 ' Date      : 29/02/2020
-' Purpose   :
+' Purpose   : auto update button
 '---------------------------------------------------------------------------------------
 '
 Private Sub btnUpdate_Click()
    On Error GoTo btnUpdate_Click_Error
-   'If debugflg = 1 Then DebugPrint "%btnUpdate_Click"
+   'If gblDebugFlg = 1 Then DebugPrint "%btnUpdate_Click"
 
     'MsgBox "The update button is not yet enabled."
     menuForm.mnuLatest_Click
@@ -2617,38 +3245,35 @@ btnUpdate_Click_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure btnUpdate_Click of Form widgetPrefs"
 End Sub
 
+
+
+
+
 '---------------------------------------------------------------------------------------
-' Procedure : chkGaugeFunctions_Click
+' Procedure : chkGenStartup_Click
 ' Author    : beededea
 ' Date      : 30/09/2023
-' Purpose   :
+' Purpose   : Toggle automatic startup by writing to the registry on save
 '---------------------------------------------------------------------------------------
 '
-Private Sub chkGaugeFunctions_Click()
-    On Error GoTo chkGaugeFunctions_Click_Error
+Private Sub chkGenStartup_Click()
+    On Error GoTo chkGenStartup_Click_Error
 
     btnSave.Enabled = True ' enable the save button
-    overlayWidget.Ticking = chkGaugeFunctions.Value
 
     On Error GoTo 0
     Exit Sub
 
-chkGaugeFunctions_Click_Error:
+chkGenStartup_Click_Error:
 
-     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure chkGaugeFunctions_Click of Form widgetPrefs"
+     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure chkGenStartup_Click of Form widgetPrefs"
 End Sub
-
-Private Sub chkGenStartup_Click()
-    btnSave.Enabled = True ' enable the save button
-End Sub
-
-
 
 '---------------------------------------------------------------------------------------
 ' Procedure : btnDefaultEditor_Click
 ' Author    : beededea
 ' Date      : 02/05/2023
-' Purpose   :
+' Purpose   : button for selecting the default VB6 editor VBP project file
 '---------------------------------------------------------------------------------------
 '
 Private Sub btnDefaultEditor_Click()
@@ -2695,37 +3320,14 @@ btnDefaultEditor_Click_Error:
     
 End Sub
 
-'---------------------------------------------------------------------------------------
-' Procedure : chkEnableBalloonTooltips_Click
-' Author    : beededea
-' Date      : 09/05/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
-'
-Private Sub chkEnableBalloonTooltips_Click()
-   On Error GoTo chkEnableBalloonTooltips_Click_Error
 
-    btnSave.Enabled = True ' enable the save button
-    If chkEnableBalloonTooltips.Value = 1 Then
-        gblEnableBalloonTooltips = "1"
-    Else
-        gblEnableBalloonTooltips = "0"
-    End If
-
-   On Error GoTo 0
-   Exit Sub
-
-chkEnableBalloonTooltips_Click_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure chkEnableBalloonTooltips_Click of Form widgetPrefs"
-End Sub
 
 
 '---------------------------------------------------------------------------------------
 ' Procedure : chkIgnoreMouse_Click
 ' Author    : beededea
 ' Date      : 09/05/2023
-' Purpose   :
+' Purpose   : toggle to ignore any mouse clicks
 '---------------------------------------------------------------------------------------
 '
 Private Sub chkIgnoreMouse_Click()
@@ -2751,7 +3353,7 @@ End Sub
 ' Procedure : chkPreventDragging_Click
 ' Author    : beededea
 ' Date      : 02/05/2023
-' Purpose   :
+' Purpose   : lock the program in place, prevent dragging
 '---------------------------------------------------------------------------------------
 '
 Private Sub chkPreventDragging_Click()
@@ -2763,7 +3365,7 @@ Private Sub chkPreventDragging_Click()
         overlayWidget.Locked = False
         gblPreventDragging = "0"
         menuForm.mnuLockWidget.Checked = False
-        If aspectRatio = "landscape" Then
+        If gblAspectRatio = "landscape" Then
             txtLandscapeHoffset.Text = vbNullString
             txtLandscapeVoffset.Text = vbNullString
         Else
@@ -2774,12 +3376,12 @@ Private Sub chkPreventDragging_Click()
         overlayWidget.Locked = True
         gblPreventDragging = "1"
         menuForm.mnuLockWidget.Checked = True
-        If aspectRatio = "landscape" Then
-            txtLandscapeHoffset.Text = fAlpha.gaugeForm.Left
-            txtLandscapeVoffset.Text = fAlpha.gaugeForm.Top
+        If gblAspectRatio = "landscape" Then
+            txtLandscapeHoffset.Text = fGauge.gaugeForm.Left
+            txtLandscapeVoffset.Text = fGauge.gaugeForm.Top
         Else
-            txtPortraitHoffset.Text = fAlpha.gaugeForm.Left
-            txtPortraitYoffset.Text = fAlpha.gaugeForm.Top
+            txtPortraitHoffset.Text = fGauge.gaugeForm.Left
+            txtPortraitYoffset.Text = fGauge.gaugeForm.Top
         End If
     End If
 
@@ -2803,7 +3405,7 @@ End Sub
 ' Procedure : chkWidgetHidden_Click
 ' Author    : beededea
 ' Date      : 09/05/2023
-' Purpose   :
+' Purpose   : toggle to hide the program
 '---------------------------------------------------------------------------------------
 '
 Private Sub chkWidgetHidden_Click()
@@ -2811,13 +3413,13 @@ Private Sub chkWidgetHidden_Click()
 
     If chkWidgetHidden.Value = 0 Then
         'overlayWidget.Hidden = False
-        fAlpha.gaugeForm.Visible = True
+        fGauge.gaugeForm.Visible = True
 
         frmTimer.revealWidgetTimer.Enabled = False
         gblWidgetHidden = "0"
     Else
         'overlayWidget.Hidden = True
-        fAlpha.gaugeForm.Visible = False
+        fGauge.gaugeForm.Visible = False
 
 
         frmTimer.revealWidgetTimer.Enabled = True
@@ -2841,22 +3443,22 @@ End Sub
 ' Procedure : cmbAspectHidden_Click
 ' Author    : beededea
 ' Date      : 09/05/2023
-' Purpose   :
+' Purpose   : selector for hiding in portrait/landscape mode
 '---------------------------------------------------------------------------------------
 '
 Private Sub cmbAspectHidden_Click()
 
    On Error GoTo cmbAspectHidden_Click_Error
 
-    If cmbAspectHidden.ListIndex = 1 And aspectRatio = "portrait" Then
+    If cmbAspectHidden.ListIndex = 1 And gblAspectRatio = "portrait" Then
         'overlayWidget.Hidden = True
-        fAlpha.gaugeForm.Visible = False
-    ElseIf cmbAspectHidden.ListIndex = 2 And aspectRatio = "landscape" Then
+        fGauge.gaugeForm.Visible = False
+    ElseIf cmbAspectHidden.ListIndex = 2 And gblAspectRatio = "landscape" Then
         'overlayWidget.Hidden = True
-        fAlpha.gaugeForm.Visible = False
+        fGauge.gaugeForm.Visible = False
     Else
         'overlayWidget.Hidden = False
-        fAlpha.gaugeForm.Visible = True
+        fGauge.gaugeForm.Visible = True
     End If
 
     btnSave.Enabled = True ' enable the save button
@@ -2873,7 +3475,7 @@ End Sub
 ' Procedure : cmbDebug_Click
 ' Author    : beededea
 ' Date      : 02/05/2023
-' Purpose   :
+' Purpose   : debug selector
 '---------------------------------------------------------------------------------------
 '
 Private Sub cmbDebug_Click()
@@ -2881,13 +3483,17 @@ Private Sub cmbDebug_Click()
 
     btnSave.Enabled = True ' enable the save button
     If cmbDebug.ListIndex = 0 Then
-        txtDefaultEditor.Text = "eg. E:\vb6\Panzer CPU Gauge VB6\Panzer CPU Gauge.vbp"
+        txtDefaultEditor.Text = "eg. E:\vb6\Panzer-CPU-Gauge-VB6MkII\Panzer-CPU-Gauge-VB6.vbp"
         txtDefaultEditor.Enabled = False
         lblDebug(7).Enabled = False
         btnDefaultEditor.Enabled = False
         lblDebug(9).Enabled = False
     Else
-        txtDefaultEditor.Text = gblDefaultEditor
+        #If TWINBASIC Then
+            txtDefaultEditor.Text = gblDefaultTBEditor
+        #Else
+            txtDefaultEditor.Text = gblDefaultVB6Editor
+        #End If
         txtDefaultEditor.Enabled = True
         lblDebug(7).Enabled = True
         btnDefaultEditor.Enabled = True
@@ -2910,15 +3516,31 @@ End Sub
 
 
 
+'---------------------------------------------------------------------------------------
+' Procedure : cmbHidingTime_Click
+' Author    : beededea
+' Date      : 17/02/2025
+' Purpose   : enable the save button if a hiding time is selected
+'---------------------------------------------------------------------------------------
+'
 Private Sub cmbHidingTime_Click()
+   On Error GoTo cmbHidingTime_Click_Error
+
     btnSave.Enabled = True ' enable the save button
+
+   On Error GoTo 0
+   Exit Sub
+
+cmbHidingTime_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure cmbHidingTime_Click of Form widgetPrefs"
 End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : cmbScrollWheelDirection_Click
 ' Author    : beededea
 ' Date      : 09/05/2023
-' Purpose   :
+' Purpose   : selector for resizing using the mouse Scroll Wheel Direction
 '---------------------------------------------------------------------------------------
 '
 Private Sub cmbScrollWheelDirection_Click()
@@ -2937,19 +3559,51 @@ End Sub
 
 
 
+'---------------------------------------------------------------------------------------
+' Procedure : cmbWidgetLandscape_Click
+' Author    : beededea
+' Date      : 18/02/2025
+' Purpose   : option dropdown for locking in landscape mode after save
+'---------------------------------------------------------------------------------------
+'
 Private Sub cmbWidgetLandscape_Click()
+   On Error GoTo cmbWidgetLandscape_Click_Error
+
     btnSave.Enabled = True ' enable the save button
+
+   On Error GoTo 0
+   Exit Sub
+
+cmbWidgetLandscape_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure cmbWidgetLandscape_Click of Form widgetPrefs"
 End Sub
 
+'---------------------------------------------------------------------------------------
+' Procedure : cmbWidgetPortrait_Click
+' Author    : beededea
+' Date      : 18/02/2025
+' Purpose   : option dropdown for locking in portrait mode after save
+'---------------------------------------------------------------------------------------
+'
 Private Sub cmbWidgetPortrait_Click()
+   On Error GoTo cmbWidgetPortrait_Click_Error
+
     btnSave.Enabled = True ' enable the save button
+
+   On Error GoTo 0
+   Exit Sub
+
+cmbWidgetPortrait_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure cmbWidgetPortrait_Click of Form widgetPrefs"
 End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : cmbWidgetPosition_Click
 ' Author    : beededea
 ' Date      : 02/05/2023
-' Purpose   :
+' Purpose   : option dropdown to position by percent after save
 '---------------------------------------------------------------------------------------
 '
 Private Sub cmbWidgetPosition_Click()
@@ -2988,21 +3642,65 @@ cmbWidgetPosition_Click_Error:
     End With
 End Sub
 
+'---------------------------------------------------------------------------------------
+' Procedure : IsLoaded
+' Author    : beededea
+' Date      : 16/12/2024
+' Purpose   : property by val to manually determine whether the preference form is loaded. It does this without
+'             touching a VB6 intrinsic form property which would then load the form itself.
+'---------------------------------------------------------------------------------------
+'
+Public Property Get IsLoaded() As Boolean
+ 
+   On Error GoTo IsLoaded_Error
 
+    IsLoaded = mIsLoaded
+
+   On Error GoTo 0
+   Exit Property
+
+IsLoaded_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure IsLoaded of Form widgetPrefs"
+ 
+End Property
+
+'---------------------------------------------------------------------------------------
+' Procedure : IsLoaded
+' Author    : beededea
+' Date      : 16/12/2024
+' Purpose   : property by val to manually determine whether the preference form is loaded. It does this without
+'             touching a VB6 intrinsic form property which would then load the form itself.
+'---------------------------------------------------------------------------------------
+'
+Public Property Let IsLoaded(ByVal newValue As Boolean)
+ 
+   On Error GoTo IsLoaded_Error
+
+   If mIsLoaded <> newValue Then mIsLoaded = newValue Else Exit Property
+
+   On Error GoTo 0
+   Exit Property
+
+IsLoaded_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure IsLoaded of Form widgetPrefs"
+ 
+End Property
 
 
 '---------------------------------------------------------------------------------------
 ' Procedure : IsVisible
 ' Author    : beededea
 ' Date      : 08/05/2023
-' Purpose   : calling a manual property to a form allows external checks to the form to
+' Purpose   : calling a manual property  by val to a form in this manual property allows external checks to the form to
 '             determine whether it is loaded, without also activating the form automatically.
 '---------------------------------------------------------------------------------------
 '
 Public Property Get IsVisible() As Boolean
     On Error GoTo IsVisible_Error
 
-    If gblPrefsLoadedFlg Then
+    If IsLoaded = True Then
         If Me.WindowState = vbNormal Then
             IsVisible = Me.Visible
         Else
@@ -3025,6 +3723,28 @@ IsVisible_Error:
     End With
 End Property
 
+''---------------------------------------------------------------------------------------
+'' Procedure : IsVisible
+'' Author    : beededea
+'' Date      : 16/12/2024
+'' Purpose   : property by val to manually determine whether the preference form is visible. It does this without
+''             touching any VB6 intrinsic form property which would then load the form itself.
+''---------------------------------------------------------------------------------------
+''
+'Public Property Let IsVisible(ByVal newValue As Boolean)
+'
+'   On Error GoTo IsVisible_Error
+'
+'   If mIsVisible <> newValue Then mIsVisible = newValue Else Exit Property
+'
+'   On Error GoTo 0
+'   Exit Property
+'
+'IsVisible_Error:
+'
+'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure IsVisible of Form widgetPrefs"
+'
+'End Property
 
 '---------------------------------------------------------------------------------------
 ' Procedure : showLastTab
@@ -3046,7 +3766,9 @@ Private Sub showLastTab()
     If gblLastSelectedTab = "window" Then Call picButtonMouseUpEvent("window", imgWindow, imgWindowClicked, fraWindow, fraWindowButton)
     If gblLastSelectedTab = "about" Then Call picButtonMouseUpEvent("about", imgAbout, imgAboutClicked, fraAbout, fraAboutButton)
 
-   On Error GoTo 0
+    '' fGauge.RotateBusyTimer = True
+    
+  On Error GoTo 0
    Exit Sub
 
 showLastTab_Error:
@@ -3064,20 +3786,6 @@ End Sub
 '             arrays so the form can be converted to Cairo forms later.
 '---------------------------------------------------------------------------------------
 '
-' for the future, when reading multiple buttons from XML config.
-' read the XML prefs group and identify prefgroups - <prefGroup name="general" and count them.
-'
-' for each group read all the controls and identify those in the group - ie. preference group =
-' for each specific group, identify the group image, title and order
-' read those into an array
-' use a for-loop (can't use foreach unless you read the results into a collection, foreach requires use of variant
-'   elements as foreach needs an object or variant type to operate.
-' create a group, fraHiding, image and text element and order in a class of yWidgetGroup
-' create a button of yWidgetGroup for each group
-' loop through each line and identify the controls belonging to the group
-
-' for the moment though, we will do it manually
-'
 Private Sub positionPrefsFramesButtons()
     On Error GoTo positionPrefsFramesButtons_Error
 
@@ -3088,6 +3796,9 @@ Private Sub positionPrefsFramesButtons()
     'Dim currentFrameHeight As Integer: currentFrameHeight = 0
     Dim rightHandAlignment As Long: rightHandAlignment = 0
     Dim leftHandGutterWidth As Long: leftHandGutterWidth = 0
+       
+    ' constrain the height/width ratio
+    gblConstraintRatio = pvtcPrefsFormHeight / pvtcPrefsFormWidth
     
     ' align frames rightmost and leftmost to the buttons at the top
     buttonTop = -15
@@ -3097,7 +3808,10 @@ Private Sub positionPrefsFramesButtons()
     rightHandAlignment = fraAboutButton.Left + fraAboutButton.Width ' use final button rightmost as reference
     frameWidth = rightHandAlignment - frameLeft
     fraScrollbarCover.Left = rightHandAlignment - 690
-    Me.Width = rightHandAlignment + leftHandGutterWidth + 75 ' (not quite sure why we need the 75 twips padding)
+    
+    widgetPrefs.Width = rightHandAlignment + leftHandGutterWidth + 75 ' (not quite sure why we need the 75 twips padding) ' this triggers a resize '
+    
+    ' 9053 start
     
     ' align the top buttons
     fraGeneralButton.Top = buttonTop
@@ -3146,13 +3860,18 @@ Private Sub positionPrefsFramesButtons()
     fraWindow.Visible = False
     fraDevelopment.Visible = False
     fraAbout.Visible = False
-    
+            
     fraGeneralButton.BorderStyle = 1
+    
+    #If TWINBASIC Then
+        fraGeneralButton.Refresh
+    #End If
 
     btnClose.Left = fraWindow.Left + fraWindow.Width - btnClose.Width
     btnSave.Left = btnClose.Left - btnSave.Width - 50
     btnHelp.Left = frameLeft
     
+    '' fGauge.RotateBusyTimer = True
 
    On Error GoTo 0
    Exit Sub
@@ -3169,17 +3888,22 @@ End Sub
 ' Procedure : btnClose_Click
 ' Author    : beededea
 ' Date      : 02/05/2023
-' Purpose   :
+' Purpose   : VB6 button to close the prefs form
 '---------------------------------------------------------------------------------------
 '
 Private Sub btnClose_Click()
    On Error GoTo btnClose_Click_Error
+   
+    ' the sampler is stopped during the prefs running so we restart
+    If overlayWidget.Ticking = False Then overlayWidget.Ticking = True
 
     btnSave.Enabled = False ' disable the save button
     Me.Hide
     Me.themeTimer.Enabled = False
     
-    Call writePrefsPosition
+    Call writePrefsPositionAndSize
+    
+    Call adjustPrefsControls(True)
 
    On Error GoTo 0
    Exit Sub
@@ -3200,8 +3924,8 @@ Private Sub btnHelp_Click()
     
     On Error GoTo btnHelp_Click_Error
     
-        If fFExists(App.path & "\help\Help.chm") Then
-            Call ShellExecute(Me.hwnd, "Open", App.path & "\help\Help.chm", vbNullString, App.path, 1)
+        If fFExists(App.Path & "\help\Help.chm") Then
+            Call ShellExecute(Me.hWnd, "Open", App.Path & "\help\Help.chm", vbNullString, App.Path, 1)
         Else
             MsgBox ("%Err-I-ErrorNumber 11 - The help file - Help.chm - is missing from the help folder.")
         End If
@@ -3213,64 +3937,89 @@ btnHelp_Click_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure btnHelp_Click of Form widgetPrefs"
 End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : BCStr
+' Author    : beededea
+' Date      : 31/05/2025
+' Purpose   : This replacement of CStr is ONLY for non-numeric boolean casts to a string.
+'             NOTE: boolean values can be locale-sensitive when converted by CStr returning a local language result
+'             It might be best to stick with LTrim$(Str$()) for the moment.
+'             It is OK to convert checkboxes using cstr() as the boolean values are stored as 0 and -1
+'---------------------------------------------------------------------------------------
+'
+Function BCStr(ByVal booleanValue As Boolean) As String
+   On Error GoTo BCStr_Error
+
+    If booleanValue Then
+        BCStr = "True"
+    Else
+        BCStr = "False"
+    End If
+    
+   On Error GoTo 0
+   Exit Function
+
+BCStr_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure BCStr of Form widgetPrefs"
+End Function
 '
 '---------------------------------------------------------------------------------------
 ' Procedure : btnSave_Click
 ' Author    : beededea
 ' Date      : 02/05/2023
 ' Purpose   : save the values from all the tabs
-'             NOTE: the boolean values for check boxes are locale sensitive and true converted by CStr will return local language result
-'             stick with LTrim$(Str$()) for the moment
-'             It is OK to convert checkboxes usibng cstr() as the boolean values are stored as 0 and -1
+'             NOTE: boolean values can be locale-sensitive when converted by CStr returning a local language result
+'             It might be best to stick with LTrim$(Str$()) for the moment.
+'             It is OK to convert checkboxes using cstr() as the boolean values are stored as 0 and -1
 '---------------------------------------------------------------------------------------
 '
 Private Sub btnSave_Click()
-
-'    Dim btnCnt As Integer: btnCnt = 0
-'    Dim msgCnt As Integer: msgCnt = 0
-'    Dim useloop As Integer: useloop = 0
-'    Dim thisText As String: thisText = vbNullString
     
     On Error GoTo btnSave_Click_Error
 
     ' configuration
-    gblEnableTooltips = LTrim$(Str$(chkEnableTooltips.Value))
-    gblEnablePrefsTooltips = LTrim$(Str$(chkEnablePrefsTooltips.Value))
-    gblEnableBalloonTooltips = LTrim$(Str$(chkEnableBalloonTooltips.Value))
-    gblShowTaskbar = LTrim$(Str$(chkShowTaskbar.Value))
-    gblDpiAwareness = LTrim$(Str$(chkDpiAwareness.Value))
-    gblGaugeSize = LTrim$(Str$(sliGaugeSize.Value))
-    gblScrollWheelDirection = LTrim$(Str$(cmbScrollWheelDirection.ListIndex))
+    gblGaugeTooltips = CStr(optGaugeTooltips(0).Tag)
+    gblPrefsTooltips = CStr(optPrefsTooltips(0).Tag)
     
+    gblShowTaskbar = CStr(chkShowTaskbar.Value)
+    gblShowHelp = CStr(chkShowHelp.Value)
+    
+    gblDpiAwareness = CStr(chkDpiAwareness.Value)
+    gblGaugeSize = CStr(sliGaugeSize.Value)
+    gblScrollWheelDirection = CStr(cmbScrollWheelDirection.ListIndex)
+        
     ' general
-    gblGaugeFunctions = LTrim$(Str$(chkGaugeFunctions.Value))
-    gblStartup = LTrim$(Str$(chkGenStartup.Value))
-    
-    'gblClockFaceSwitchPref = cmbClockFaceSwitchPref.List(cmbClockFaceSwitchPref.ListIndex)
-'    gblMainGaugeTimeZone = cmbMainGaugeTimeZone.ListIndex
-'    gblMainDaylightSaving = cmbMainDaylightSaving.ListIndex
-    
-    gblPointerAnimate = cmbTickSwitchPref.ListIndex
-    gblSamplingInterval = LTrim$(Str$(sliSamplingInterval.Value))
+    gblGaugeFunctions = CStr(chkGaugeFunctions.Value)
+    gblStartup = CStr(chkGenStartup.Value)
+
+    gblPointerAnimate = LTrim$(Str$(cmbTickSwitchPref.ListIndex))
     gblMultiCoreEnable = LTrim$(Str$(chkMultiCoreEnable.Value))
-    
-    'gblSecondaryGaugeTimeZone = cmbSecondaryGaugeTimeZone.List(cmbSecondaryGaugeTimeZone.ListIndex)
-    'gblSecondaryDaylightSaving = cmbSecondaryDaylightSaving.List(cmbSecondaryDaylightSaving.ListIndex)
+    gblSamplingInterval = LTrim$(Str$(sliSamplingInterval.Value))
     
     ' sounds
-    gblEnableSounds = LTrim$(Str$(chkEnableSounds.Value))
+    gblEnableSounds = CStr(chkEnableSounds.Value)
+'    gblEnableTicks = CStr(chkEnableTicks.Value)
+'    gblEnableChimes = CStr(chkEnableChimes.Value)
+'    gblEnableAlarms = CStr(chkEnableAlarms.Value)
+'    gblVolumeBoost = CStr(chkVolumeBoost.Value)
     
     'development
-    gblDebug = LTrim$(Str$(cmbDebug.ListIndex))
+    gblDebug = CStr(cmbDebug.ListIndex)
     gblDblClickCommand = txtDblClickCommand.Text
     gblOpenFile = txtOpenFile.Text
-    gblDefaultEditor = txtDefaultEditor.Text
+    #If TWINBASIC Then
+        gblDefaultTBEditor = txtDefaultEditor.Text
+    #Else
+        gblDefaultVB6Editor = txtDefaultEditor.Text
+    #End If
     
     ' position
-    gblAspectHidden = LTrim$(Str$(cmbAspectHidden.ListIndex))
-    gblWidgetPosition = LTrim$(Str$(cmbWidgetPosition.ListIndex))
-    gblWidgetLandscape = LTrim$(Str$(cmbWidgetLandscape.ListIndex))
-    gblWidgetPortrait = LTrim$(Str$(cmbWidgetPortrait.ListIndex))
+    gblAspectHidden = CStr(cmbAspectHidden.ListIndex)
+    gblWidgetPosition = CStr(cmbWidgetPosition.ListIndex)
+    gblWidgetLandscape = CStr(cmbWidgetLandscape.ListIndex)
+    gblWidgetPortrait = CStr(cmbWidgetPortrait.ListIndex)
     gblLandscapeFormHoffset = txtLandscapeHoffset.Text
     gblLandscapeFormVoffset = txtLandscapeVoffset.Text
     gblPortraitHoffset = txtPortraitHoffset.Text
@@ -3281,8 +4030,15 @@ Private Sub btnSave_Click()
 
     ' fonts
     gblPrefsFont = txtPrefsFont.Text
-    gblClockFont = gblPrefsFont
+    gblGaugeFont = gblPrefsFont
     
+    gblDisplayScreenFont = txtDisplayScreenFont.Text
+    gblDisplayScreenFontSize = txtDisplayScreenFontSize.Text
+    
+'    gblDisplayScreenFontSize
+'    gblDisplayScreenFontItalics
+'    gblDisplayScreenFontColour
+
     ' the sizing is not saved here again as it saved during the setting phase.
     
 '    If gblDpiAwareness = "1" Then
@@ -3293,62 +4049,59 @@ Private Sub btnSave_Click()
     'gblPrefsFontItalics = txtFontSize.Text
 
     ' Windows
-    gblWindowLevel = LTrim$(Str$(cmbWindowLevel.ListIndex))
-    gblPreventDragging = LTrim$(Str$(chkPreventDragging.Value))
-    gblOpacity = LTrim$(Str$(sliOpacity.Value))
-    gblWidgetHidden = LTrim$(Str$(chkWidgetHidden.Value))
-    gblHidingTime = LTrim$(Str$(cmbHidingTime.ListIndex))
-    gblIgnoreMouse = LTrim$(Str$(chkIgnoreMouse.Value))
-            
-
-
-    'development
-    gblDebug = LTrim$(Str$(cmbDebug.ListIndex))
-    gblDblClickCommand = txtDblClickCommand.Text
-    gblOpenFile = txtOpenFile.Text
-    gblDefaultEditor = txtDefaultEditor.Text
+    gblWindowLevel = CStr(cmbWindowLevel.ListIndex)
+    gblPreventDragging = CStr(chkPreventDragging.Value)
+    gblOpacity = CStr(sliOpacity.Value)
+    gblWidgetHidden = CStr(chkWidgetHidden.Value)
+    gblHidingTime = CStr(cmbHidingTime.ListIndex)
+    gblIgnoreMouse = CStr(chkIgnoreMouse.Value)
+    
+    gblMultiMonitorResize = CStr(cmbMultiMonitorResize.ListIndex)
+     
             
     If gblStartup = "1" Then
-        Call savestring(HKEY_CURRENT_USER, "SOFTWARE\Microsoft\Windows\CurrentVersion\Run", "PzCPUGaugeWidget", """" & App.path & "\" & "Panzer CPU Gauge.exe""")
+        Call writeRegistry(HKEY_CURRENT_USER, "SOFTWARE\Microsoft\Windows\CurrentVersion\Run", "PanzerCPUGauge", """" & App.Path & "\" & "Panzer-CPU-Gauge-VB6.exe""")
     Else
-        Call savestring(HKEY_CURRENT_USER, "SOFTWARE\Microsoft\Windows\CurrentVersion\Run", "PzCPUGaugeWidget", vbNullString)
+        Call writeRegistry(HKEY_CURRENT_USER, "SOFTWARE\Microsoft\Windows\CurrentVersion\Run", "PanzerCPUGauge", vbNullString)
     End If
 
     ' save the values from the general tab
     If fFExists(gblSettingsFile) Then
-        sPutINISetting "Software\PzCPUGauge", "enableTooltips", gblEnableTooltips, gblSettingsFile
-        sPutINISetting "Software\PzCPUGauge", "enablePrefsTooltips", gblEnablePrefsTooltips, gblSettingsFile
-        sPutINISetting "Software\PzCPUGauge", "enableBalloonTooltips", gblEnableBalloonTooltips, gblSettingsFile
+        sPutINISetting "Software\PzCPUGauge", "gaugeTooltips", gblGaugeTooltips, gblSettingsFile
+        sPutINISetting "Software\PzCPUGauge", "prefsTooltips", gblPrefsTooltips, gblSettingsFile
+
         sPutINISetting "Software\PzCPUGauge", "showTaskbar", gblShowTaskbar, gblSettingsFile
+        sPutINISetting "Software\PzCPUGauge", "showHelp", gblShowHelp, gblSettingsFile
+        
         sPutINISetting "Software\PzCPUGauge", "dpiAwareness", gblDpiAwareness, gblSettingsFile
         
         
         sPutINISetting "Software\PzCPUGauge", "gaugeSize", gblGaugeSize, gblSettingsFile
         sPutINISetting "Software\PzCPUGauge", "scrollWheelDirection", gblScrollWheelDirection, gblSettingsFile
                 
-        sPutINISetting "Software\PzCPUGauge", "gaugeFunctions", gblGaugeFunctions, gblSettingsFile
+        sPutINISetting "Software\PzCPUGauge", "widgetFunctions", gblGaugeFunctions, gblSettingsFile
+        
         sPutINISetting "Software\PzCPUGauge", "pointerAnimate", gblPointerAnimate, gblSettingsFile
-        sPutINISetting "Software\PzCPUGauge", "samplingInterval", gblSamplingInterval, gblSettingsFile
         sPutINISetting "Software\PzCPUGauge", "multiCoreEnable", gblMultiCoreEnable, gblSettingsFile
-        
-        'sPutINISetting "Software\PzCPUGauge", "clockFaceSwitchPref", gblClockFaceSwitchPref, gblSettingsFile
-'        sPutINISetting "Software\PzCPUGauge", "mainGaugeTimeZone", gblMainGaugeTimeZone, gblSettingsFile
-'        sPutINISetting "Software\PzCPUGauge", "mainDaylightSaving", gblMainDaylightSaving, gblSettingsFile
-        'sPutINISetting "Software\PzCPUGauge", "secondaryGaugeTimeZone", gblSecondaryGaugeTimeZone, gblSettingsFile
-        'sPutINISetting "Software\PzCPUGauge", "secondaryDaylightSaving", gblSecondaryDaylightSaving, gblSettingsFile
-        
+        sPutINISetting "Software\PzCPUGauge", "samplingInterval", gblSamplingInterval, gblSettingsFile
+              
         sPutINISetting "Software\PzCPUGauge", "aspectHidden", gblAspectHidden, gblSettingsFile
         sPutINISetting "Software\PzCPUGauge", "widgetPosition", gblWidgetPosition, gblSettingsFile
         sPutINISetting "Software\PzCPUGauge", "widgetLandscape", gblWidgetLandscape, gblSettingsFile
         sPutINISetting "Software\PzCPUGauge", "widgetPortrait", gblWidgetPortrait, gblSettingsFile
 
         sPutINISetting "Software\PzCPUGauge", "prefsFont", gblPrefsFont, gblSettingsFile
-        sPutINISetting "Software\PzCPUGauge", "clockFont", gblClockFont, gblSettingsFile
+        sPutINISetting "Software\PzCPUGauge", "gaugeFont", gblGaugeFont, gblSettingsFile
         
         sPutINISetting "Software\PzCPUGauge", "prefsFontSizeHighDPI", gblPrefsFontSizeHighDPI, gblSettingsFile
         sPutINISetting "Software\PzCPUGauge", "prefsFontSizeLowDPI", gblPrefsFontSizeLowDPI, gblSettingsFile
         sPutINISetting "Software\PzCPUGauge", "prefsFontItalics", gblPrefsFontItalics, gblSettingsFile
         sPutINISetting "Software\PzCPUGauge", "prefsFontColour", gblPrefsFontColour, gblSettingsFile
+        
+        sPutINISetting "Software\PzCPUGauge", "displayScreenFont", gblDisplayScreenFont, gblSettingsFile
+        sPutINISetting "Software\PzCPUGauge", "displayScreenFontSize", gblDisplayScreenFontSize, gblSettingsFile
+        sPutINISetting "Software\PzCPUGauge", "displayScreenFontItalics", gblDisplayScreenFontItalics, gblSettingsFile
+        sPutINISetting "Software\PzCPUGauge", "displayScreenFontColour", gblDisplayScreenFontColour, gblSettingsFile
 
         'save the values from the Windows Config Items
         sPutINISetting "Software\PzCPUGauge", "windowLevel", gblWindowLevel, gblSettingsFile
@@ -3358,36 +4111,38 @@ Private Sub btnSave_Click()
         sPutINISetting "Software\PzCPUGauge", "widgetHidden", gblWidgetHidden, gblSettingsFile
         sPutINISetting "Software\PzCPUGauge", "hidingTime", gblHidingTime, gblSettingsFile
         sPutINISetting "Software\PzCPUGauge", "ignoreMouse", gblIgnoreMouse, gblSettingsFile
+        sPutINISetting "Software\PzCPUGauge", "multiMonitorResize", gblMultiMonitorResize, gblSettingsFile
         
         
         sPutINISetting "Software\PzCPUGauge", "startup", gblStartup, gblSettingsFile
 
         sPutINISetting "Software\PzCPUGauge", "enableSounds", gblEnableSounds, gblSettingsFile
+'        sPutINISetting "Software\PzCPUGauge", "enableTicks", gblEnableTicks, gblSettingsFile
+'        sPutINISetting "Software\PzCPUGauge", "enableChimes", gblEnableChimes, gblSettingsFile
+'        sPutINISetting "Software\PzCPUGauge", "enableAlarms", gblEnableAlarms, gblSettingsFile
+'        sPutINISetting "Software\PzCPUGauge", "volumeBoost", gblVolumeBoost, gblSettingsFile
+        
         sPutINISetting "Software\PzCPUGauge", "lastSelectedTab", gblLastSelectedTab, gblSettingsFile
         
         sPutINISetting "Software\PzCPUGauge", "debug", gblDebug, gblSettingsFile
         sPutINISetting "Software\PzCPUGauge", "dblClickCommand", gblDblClickCommand, gblSettingsFile
         sPutINISetting "Software\PzCPUGauge", "openFile", gblOpenFile, gblSettingsFile
-        sPutINISetting "Software\PzCPUGauge", "defaultEditor", gblDefaultEditor, gblSettingsFile
+        sPutINISetting "Software\PzCPUGauge", "defaultVB6Editor", gblDefaultVB6Editor, gblSettingsFile
+        sPutINISetting "Software\PzCPUGauge", "defaultTBEditor", gblDefaultTBEditor, gblSettingsFile
         
-        sPutINISetting "Software\PzCPUGauge", "clockHighDpiXPos", gblClockHighDpiXPos, gblSettingsFile
-        sPutINISetting "Software\PzCPUGauge", "clockHighDpiYPos", gblClockHighDpiYPos, gblSettingsFile
+        sPutINISetting "Software\PzCPUGauge", "gaugeHighDpiXPos", gblGaugeHighDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzCPUGauge", "gaugeHighDpiYPos", gblGaugeHighDpiYPos, gblSettingsFile
         
-        sPutINISetting "Software\PzCPUGauge", "clockLowDpiXPos", gblClockLowDpiXPos, gblSettingsFile
-        sPutINISetting "Software\PzCPUGauge", "clockLowDpiYPos", gblClockLowDpiYPos, gblSettingsFile
-        
-
-        'save the values from the Text Items
-
-'        btnCnt = 0
-'        msgCnt = 0
+        sPutINISetting "Software\PzCPUGauge", "gaugeLowDpiXPos", gblGaugeLowDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzCPUGauge", "gaugeLowDpiYPos", gblGaugeLowDpiYPos, gblSettingsFile
+                       
     End If
     
     ' set the tooltips on the prefs screen
     Call setPrefsTooltips
 
     ' sets the characteristics of the gauge and menus immediately after saving
-    Call adjustMainControls
+    Call adjustMainControls(1)
     
     Me.SetFocus
     btnSave.Enabled = False ' disable the save button showing it has successfully saved
@@ -3395,7 +4150,7 @@ Private Sub btnSave_Click()
     ' reload here if the gblWindowLevel Was Changed
     If gblWindowLevelWasChanged = True Then
         gblWindowLevelWasChanged = False
-        Call reloadWidget
+        Call reloadProgram
     End If
     
    On Error GoTo 0
@@ -3407,67 +4162,54 @@ btnSave_Click_Error:
 
 End Sub
 
-' set a var on a checkbox tick
+
 '---------------------------------------------------------------------------------------
-' Procedure : chkEnableTooltips_Click
+' Procedure : chkEnableSounds_Click
 ' Author    : beededea
-' Date      : 19/08/2023
-' Purpose   :
+' Date      : 18/02/2025
+' Purpose   : toggle to enable/disable sounds on save
 '---------------------------------------------------------------------------------------
 '
-Private Sub chkEnableTooltips_Click()
-    Dim answer As VbMsgBoxResult: answer = vbNo
-    Dim answerMsg As String: answerMsg = vbNullString
-    On Error GoTo chkEnableTooltips_Click_Error
+Private Sub chkEnableSounds_Click()
+   On Error GoTo chkEnableSounds_Click_Error
 
     btnSave.Enabled = True ' enable the save button
-    
-    If prefsStartupFlg = False Then
-        If chkEnableTooltips.Value = 1 Then
-            gblEnableTooltips = "1"
-        Else
-            gblEnableTooltips = "0"
-        End If
-        
-        sPutINISetting "Software\PzCPUGauge", "enableTooltips", gblEnableTooltips, gblSettingsFile
-
-        answer = vbYes
-        answerMsg = "You must soft reload this widget, in order to change the tooltip setting, do you want me to reload this widget? I can do it now for you."
-        answer = msgBoxA(answerMsg, vbYesNo, "Request to Enable Tooltips", True, "chkEnableTooltipsClick")
-        If answer = vbNo Then
-            Exit Sub
-        Else
-            Call reloadWidget
-        End If
-    End If
-
 
    On Error GoTo 0
    Exit Sub
 
-chkEnableTooltips_Click_Error:
+chkEnableSounds_Click_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure chkEnableTooltips_Click of Form widgetPrefs"
-
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure chkEnableSounds_Click of Form widgetPrefs"
 End Sub
 
-Private Sub chkEnableSounds_Click()
-    btnSave.Enabled = True ' enable the save button
-End Sub
 
-'Private Sub cmbRefreshInterval_Click()
-'    btnSave.Enabled = True ' enable the save button
-'End Sub
-
+' ----------------------------------------------------------------
+' Procedure Name: cmbWindowLevel_Click
+' Purpose: option to determine the windows Z order of the main program (not the prefs form)
+' Procedure Kind: Sub
+' Procedure Access: Private
+' Author: beededea
+' Date: 28/05/2024
+' ----------------------------------------------------------------
 Private Sub cmbWindowLevel_Click()
+    On Error GoTo cmbWindowLevel_Click_Error
     btnSave.Enabled = True ' enable the save button
-    If prefsStartupFlg = False Then gblWindowLevelWasChanged = True
+    If pvtPrefsStartupFlg = False Then gblWindowLevelWasChanged = True
+    
+    On Error GoTo 0
+    Exit Sub
+
+cmbWindowLevel_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure cmbWindowLevel_Click, line " & Erl & "."
+
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : btnPrefsFont_Click
 ' Author    : beededea
 ' Date      : 02/05/2023
-' Purpose   :
+' Purpose   : VB6 button to select the font dialog
 '---------------------------------------------------------------------------------------
 '
 Private Sub btnPrefsFont_Click()
@@ -3487,7 +4229,7 @@ Private Sub btnPrefsFont_Click()
     
     ' set the preliminary vars to feed and populate the changefont routine
     fntFont = gblPrefsFont
-    ' gblClockFont
+    ' gblGaugeFont
     
     If gblDpiAwareness = "1" Then
         fntSize = Val(gblPrefsFontSizeHighDPI)
@@ -3502,7 +4244,7 @@ Private Sub btnPrefsFont_Click()
     Call changeFont(widgetPrefs, True, fntFont, fntSize, fntWeight, fntStyle, fntColour, fntItalics, fntUnderline, fntFontResult)
     
     gblPrefsFont = CStr(fntFont)
-    gblClockFont = gblPrefsFont
+    gblGaugeFont = gblPrefsFont
     
     If gblDpiAwareness = "1" Then
         gblPrefsFontSizeHighDPI = CStr(fntSize)
@@ -3513,10 +4255,13 @@ Private Sub btnPrefsFont_Click()
     
     gblPrefsFontItalics = CStr(fntItalics)
     gblPrefsFontColour = CStr(fntColour)
+    
+    ' changes the displayed font to an adjusted base font size after a resize
+    Call PrefsForm_Resize_Event
 
     If fFExists(gblSettingsFile) Then ' does the tool's own settings.ini exist?
         sPutINISetting "Software\PzCPUGauge", "prefsFont", gblPrefsFont, gblSettingsFile
-        sPutINISetting "Software\PzCPUGauge", "clockFont", gblClockFont, gblSettingsFile
+        sPutINISetting "Software\PzCPUGauge", "gaugeFont", gblGaugeFont, gblSettingsFile
         sPutINISetting "Software\PzCPUGauge", "prefsFontSizeHighDPI", gblPrefsFontSizeHighDPI, gblSettingsFile
         sPutINISetting "Software\PzCPUGauge", "prefsFontSizeLowDPI", gblPrefsFontSizeLowDPI, gblSettingsFile
         sPutINISetting "Software\PzCPUGauge", "prefsFontItalics", gblPrefsFontItalics, gblSettingsFile
@@ -3531,8 +4276,6 @@ Private Sub btnPrefsFont_Click()
     txtPrefsFont.ForeColor = fntColour
     
     txtPrefsFontSize.Text = fntSize
-    
-
 
    On Error GoTo 0
    Exit Sub
@@ -3544,7 +4287,71 @@ btnPrefsFont_Click_Error:
 End Sub
 
 
+'---------------------------------------------------------------------------------------
+' Procedure : btnDisplayScreenFont_Click
+' Author    : beededea
+' Date      : 02/05/2023
+' Purpose   : VB6 button to select the font dialog for the display console
+'---------------------------------------------------------------------------------------
+'
+Private Sub btnDisplayScreenFont_Click()
 
+    Dim fntFont As String: fntFont = vbNullString
+    Dim fntSize As Integer: fntSize = 0
+    Dim fntWeight As Integer: fntWeight = 0
+    Dim fntStyle As Boolean: fntStyle = False
+    Dim fntColour As Long: fntColour = 0
+    Dim fntItalics As Boolean: fntItalics = False
+    Dim fntUnderline As Boolean: fntUnderline = False
+    Dim fntFontResult As Boolean: fntFontResult = False
+    
+    On Error GoTo btnDisplayScreenFont_Click_Error
+
+    btnSave.Enabled = True ' enable the save button
+    
+    ' set the preliminary vars to feed and populate the changefont routine
+    fntFont = gblDisplayScreenFont
+    
+    fntSize = Val(gblDisplayScreenFontSize)
+    If fntSize = 0 Then fntSize = 5
+    fntItalics = CBool(gblDisplayScreenFontItalics)
+    fntColour = CLng(gblDisplayScreenFontColour)
+    
+    displayFontSelector fntFont, fntSize, fntWeight, fntStyle, fntColour, fntItalics, fntUnderline, fntFontResult
+    If fntFontResult = False Then Exit Sub
+            
+    gblDisplayScreenFont = CStr(fntFont)
+    gblDisplayScreenFontSize = CStr(fntSize)
+    gblDisplayScreenFontItalics = CStr(fntItalics)
+    gblDisplayScreenFontColour = CStr(fntColour)
+    
+    If gblFGaugeAvailable = True Then
+        fGauge.gaugeForm.Widgets("lblTerminalText").Widget.FontSize = gblDisplayScreenFontSize
+        fGauge.gaugeForm.Widgets("lblTerminalText").Widget.FontName = gblDisplayScreenFont
+    End If
+
+    If fFExists(gblSettingsFile) Then ' does the tool's own settings.ini exist?
+        sPutINISetting "Software\PzCPUGauge", "displayScreenFont", gblDisplayScreenFont, gblSettingsFile
+        sPutINISetting "Software\PzCPUGauge", "displayScreenFontSize", gblDisplayScreenFontSize, gblSettingsFile
+        sPutINISetting "Software\PzCPUGauge", "displayScreenFontItalics", gblDisplayScreenFontItalics, gblSettingsFile
+        sPutINISetting "Software\PzCPUGauge", "displayScreenFontColour", gblDisplayScreenFontColour, gblSettingsFile
+    End If
+    
+    If fntFont = vbNullString Then fntFont = "courier new"
+    txtDisplayScreenFont.Text = fntFont
+    txtDisplayScreenFont.Font.Name = fntFont
+    txtDisplayScreenFont.Font.Italic = fntItalics
+    txtDisplayScreenFont.ForeColor = fntColour
+    txtDisplayScreenFontSize.Text = fntSize
+
+   On Error GoTo 0
+   Exit Sub
+
+btnDisplayScreenFont_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure btnDisplayScreenFont_Click of Form widgetPrefs"
+
+End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : adjustPrefsControls
@@ -3553,104 +4360,131 @@ End Sub
 ' Purpose   : adjust the controls so their startup position matches the last write of the config file
 '---------------------------------------------------------------------------------------
 '
-Private Sub adjustPrefsControls()
-    
+Private Sub adjustPrefsControls(Optional ByVal restartState As Boolean)
+    Dim I As Integer: I = 0
     Dim fntWeight As Integer: fntWeight = 0
     Dim fntStyle As Boolean: fntStyle = False
     Dim sliGaugeSizeOldValue As Long: sliGaugeSizeOldValue = 0
-    Dim testDST As Boolean: testDST = False
+    Dim prefsFormMonitorID As Long: prefsFormMonitorID = 0
     
     On Error GoTo adjustPrefsControls_Error
+    
+    ' note the monitor ID at PrefsForm form_load and store as the prefsFormMonitorID
+    'prefsMonitorStruct = formScreenProperties(widgetPrefs, prefsFormMonitorID)
+    
+    'widgetPrefs.Height = CLng(gblPrefsPrimaryHeightTwips)
             
     ' general tab
     chkGaugeFunctions.Value = Val(gblGaugeFunctions)
     chkGenStartup.Value = Val(gblStartup)
-'
-'    txtBias.Visible = False
-'    lblGeneral(1).Visible = False
-
-    'If testDST = True Then cmbMainDaylightSaving.ListIndex = 1
-    
-    'set the choice for four timezone comboboxes that were populated from file.
-'    cmbMainGaugeTimeZone.ListIndex = Val(gblMainGaugeTimeZone)
-'    cmbMainDaylightSaving.ListIndex = Val(gblMainDaylightSaving)
-        
-    'txtBias.Text = tzDelta
-
     cmbTickSwitchPref.ListIndex = Val(gblPointerAnimate)
-    
-    sliSamplingInterval.Value = Val(gblSamplingInterval)
     chkMultiCoreEnable.Value = Val(gblMultiCoreEnable)
-    
-    ' configuration tab
-   
-    ' check whether the size has been previously altered via ctrl+mousewheel on the widget
+    sliSamplingInterval.Value = Val(gblSamplingInterval)
+     
+     ' check whether the size has been previously altered via ctrl+mousewheel on the widget
     sliGaugeSizeOldValue = sliGaugeSize.Value
     sliGaugeSize.Value = Val(gblGaugeSize)
     If sliGaugeSize.Value <> sliGaugeSizeOldValue Then
         btnSave.Visible = True
     End If
-    
+        
     cmbScrollWheelDirection.ListIndex = Val(gblScrollWheelDirection)
-    chkEnableTooltips.Value = Val(gblEnableTooltips)
-    chkEnableBalloonTooltips.Value = Val(gblEnableBalloonTooltips)
+    
+    optGaugeTooltips(CStr(gblGaugeTooltips)).Value = True
+    optGaugeTooltips(0).Tag = CStr(gblGaugeTooltips)
+    optGaugeTooltips(1).Tag = CStr(gblGaugeTooltips)
+    optGaugeTooltips(2).Tag = CStr(gblGaugeTooltips)
+        
+    optPrefsTooltips(CStr(gblPrefsTooltips)).Value = True
+    optPrefsTooltips(0).Tag = CStr(gblPrefsTooltips)
+    optPrefsTooltips(1).Tag = CStr(gblPrefsTooltips)
+    optPrefsTooltips(2).Tag = CStr(gblPrefsTooltips)
+    
     chkShowTaskbar.Value = Val(gblShowTaskbar)
+    chkShowHelp.Value = Val(gblShowHelp)
+'    chkTogglePendulum.Value = Val(gblTogglePendulum)
+'    chk24HourGaugeMode.Value = Val(gbl24HourGaugeMode)
+    
     chkDpiAwareness.Value = Val(gblDpiAwareness)
-    
-    chkEnablePrefsTooltips.Value = Val(gblEnablePrefsTooltips)
-    
+    'chkNumericDisplayRotation.Value = Val(gblNumericDisplayRotation)
+        
     ' sounds tab
+    ' ' fGauge.RotateBusyTimer = True
+
     chkEnableSounds.Value = Val(gblEnableSounds)
+'    chkEnableTicks.Value = Val(gblEnableTicks)
+'    chkEnableChimes.Value = Val(gblEnableChimes)
+'    chkEnableAlarms.Value = Val(gblEnableAlarms)
+'    chkVolumeBoost.Value = Val(gblVolumeBoost)
+    
     
     ' development
+    ' ' fGauge.RotateBusyTimer = True
+    
     cmbDebug.ListIndex = Val(gblDebug)
     txtDblClickCommand.Text = gblDblClickCommand
     txtOpenFile.Text = gblOpenFile
-    txtDefaultEditor.Text = gblDefaultEditor
-    lblGitHub.Caption = "You can find the code for the Panzer CPU Gauge on github, visit by double-clicking this link https://github.com/yereverluvinunclebert/ Panzer-CPU-Gauge-VB6"
+    #If TWINBASIC Then
+        txtDefaultEditor.Text = gblDefaultTBEditor
+    #Else
+        txtDefaultEditor.Text = gblDefaultVB6Editor
+    #End If
     
-     ' fonts tab
-    If gblPrefsFont <> vbNullString Then
-        txtPrefsFont.Text = gblPrefsFont
-        If gblDpiAwareness = "1" Then
-            Call changeFormFont(widgetPrefs, gblPrefsFont, Val(gblPrefsFontSizeHighDPI), fntWeight, fntStyle, gblPrefsFontItalics, gblPrefsFontColour)
-            txtPrefsFontSize.Text = gblPrefsFontSizeHighDPI
-        Else
-            Call changeFormFont(widgetPrefs, gblPrefsFont, Val(gblPrefsFontSizeLowDPI), fntWeight, fntStyle, gblPrefsFontItalics, gblPrefsFontColour)
-            txtPrefsFontSize.Text = gblPrefsFontSizeLowDPI
+    lblGitHub.Caption = "You can find the code for the Panzer CPU Gauge on github, visit by double-clicking this link https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge"
+     
+     
+     If Not restartState = True Then
+        ' fonts tab
+        If gblPrefsFont <> vbNullString Then
+            txtPrefsFont.Text = gblPrefsFont
+            If gblDpiAwareness = "1" Then
+                Call changeFormFont(widgetPrefs, gblPrefsFont, Val(gblPrefsFontSizeHighDPI), fntWeight, fntStyle, gblPrefsFontItalics, gblPrefsFontColour)
+                txtPrefsFontSize.Text = gblPrefsFontSizeHighDPI
+            Else
+                Call changeFormFont(widgetPrefs, gblPrefsFont, Val(gblPrefsFontSizeLowDPI), fntWeight, fntStyle, gblPrefsFontItalics, gblPrefsFontColour)
+                txtPrefsFontSize.Text = gblPrefsFontSizeLowDPI
+            End If
         End If
+        
+        txtDisplayScreenFontSize.Text = gblDisplayScreenFontSize
+    
+        txtDisplayScreenFont.Font.Name = gblDisplayScreenFont
+        'txtDisplayScreenFont.Font.Size = Val(gblDisplayScreenFont)
     End If
     
-    
     ' position tab
+    ' ' fGauge.RotateBusyTimer = True
+    
     cmbAspectHidden.ListIndex = Val(gblAspectHidden)
     cmbWidgetPosition.ListIndex = Val(gblWidgetPosition)
         
     If gblPreventDragging = "1" Then
-        If aspectRatio = "landscape" Then
-'            txtLandscapeHoffset.Text = fAlpha.gaugeForm.Left
-'            txtLandscapeVoffset.Text = fAlpha.gaugeForm.Top
+        If gblAspectRatio = "landscape" Then
+'            txtLandscapeHoffset.Text = fGauge.gaugeForm.Left
+'            txtLandscapeVoffset.Text = fGauge.gaugeForm.Top
             If gblDpiAwareness = "1" Then
-                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblClockHighDpiXPos & "px"
-                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblClockHighDpiYPos & "px"
+                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblGaugeHighDpiXPos & "px"
+                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblGaugeHighDpiYPos & "px"
             Else
-                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblClockLowDpiXPos & "px"
-                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblClockLowDpiYPos & "px"
+                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblGaugeLowDpiXPos & "px"
+                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblGaugeLowDpiYPos & "px"
             End If
         Else
-'            txtPortraitHoffset.Text = fAlpha.gaugeForm.Left
-'            txtPortraitYoffset.Text = fAlpha.gaugeForm.Top
+'            txtPortraitHoffset.Text = fGauge.gaugeForm.Left
+'            txtPortraitYoffset.Text = fGauge.gaugeForm.Top
             If gblDpiAwareness = "1" Then
-                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblClockHighDpiXPos & "px"
-                txtPortraitYoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblClockHighDpiYPos & "px"
+                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblGaugeHighDpiXPos & "px"
+                txtPortraitYoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblGaugeHighDpiYPos & "px"
             Else
-                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblClockLowDpiXPos & "px"
-                txtPortraitYoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblClockLowDpiYPos & "px"
+                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblGaugeLowDpiXPos & "px"
+                txtPortraitYoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblGaugeLowDpiYPos & "px"
             End If
         End If
     End If
     
     'cmbWidgetLandscape
+    ' ' fGauge.RotateBusyTimer = True
+    
     cmbWidgetLandscape.ListIndex = Val(gblWidgetLandscape)
     cmbWidgetPortrait.ListIndex = Val(gblWidgetPortrait)
     txtLandscapeHoffset.Text = gblLandscapeFormHoffset
@@ -3659,14 +4493,28 @@ Private Sub adjustPrefsControls()
     txtPortraitYoffset.Text = gblPortraitYoffset
 
     ' Windows tab
+    ' ' fGauge.RotateBusyTimer = True
+    
     cmbWindowLevel.ListIndex = Val(gblWindowLevel)
     chkIgnoreMouse.Value = Val(gblIgnoreMouse)
     chkPreventDragging.Value = Val(gblPreventDragging)
     sliOpacity.Value = Val(gblOpacity)
     chkWidgetHidden.Value = Val(gblWidgetHidden)
     cmbHidingTime.ListIndex = Val(gblHidingTime)
+    cmbMultiMonitorResize.ListIndex = Val(gblMultiMonitorResize)
     
-        
+    If gblMonitorCount > 1 Then
+        cmbMultiMonitorResize.Visible = True
+        lblWindowLevel(10).Visible = True
+        lblWindowLevel(11).Visible = True
+    Else
+        cmbMultiMonitorResize.Visible = False
+        lblWindowLevel(10).Visible = False
+        lblWindowLevel(11).Visible = False
+    End If
+    
+    ' ' fGauge.RotateBusyTimer = True
+    
    On Error GoTo 0
    Exit Sub
 
@@ -3675,6 +4523,9 @@ adjustPrefsControls_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure adjustPrefsControls of Form widgetPrefs on line " & Erl
 
 End Sub
+
+'---------------------------------------------------------------------------------------
+
 '
 '---------------------------------------------------------------------------------------
 ' Procedure : populatePrefsComboBoxes
@@ -3685,18 +4536,22 @@ End Sub
 '---------------------------------------------------------------------------------------
 
 Private Sub populatePrefsComboBoxes()
-    'Dim ret As Boolean: ret = False
+
+    Dim I As Integer: I = 0
     
     On Error GoTo populatePrefsComboBoxes_Error
     
-    ' obtain the daylight savings time data from the system
-'    ret = fGetTimeZoneArray
-'    If ret = False Then MsgBox "Problem getting the Daylight Savings Time data from the system."
-
+'    With fGauge.gaugeForm.Widgets("busy1").Widget
+'        .Alpha = 1
+'        .Refresh
+'    End With
+    
     cmbScrollWheelDirection.AddItem "up", 0
     cmbScrollWheelDirection.ItemData(0) = 0
     cmbScrollWheelDirection.AddItem "down", 1
     cmbScrollWheelDirection.ItemData(1) = 1
+    
+    ' ' fGauge.RotateBusyTimer = True
     
     cmbAspectHidden.AddItem "none", 0
     cmbAspectHidden.ItemData(0) = 0
@@ -3705,10 +4560,14 @@ Private Sub populatePrefsComboBoxes()
     cmbAspectHidden.AddItem "landscape", 2
     cmbAspectHidden.ItemData(2) = 2
 
+    ' ' fGauge.RotateBusyTimer = True
+    
     cmbWidgetPosition.AddItem "disabled", 0
     cmbWidgetPosition.ItemData(0) = 0
     cmbWidgetPosition.AddItem "enabled", 1
     cmbWidgetPosition.ItemData(1) = 1
+    
+    ' ' fGauge.RotateBusyTimer = True
     
     cmbWidgetLandscape.AddItem "disabled", 0
     cmbWidgetLandscape.ItemData(0) = 0
@@ -3725,6 +4584,8 @@ Private Sub populatePrefsComboBoxes()
     cmbDebug.AddItem "Debug ON", 1
     cmbDebug.ItemData(1) = 1
     
+    ' ' fGauge.RotateBusyTimer = True
+    
     ' populate comboboxes in the windows tab
     cmbWindowLevel.AddItem "Keep on top of other windows", 0
     cmbWindowLevel.ItemData(0) = 0
@@ -3733,6 +4594,8 @@ Private Sub populatePrefsComboBoxes()
     cmbWindowLevel.AddItem "Keep below all other windows", 0
     cmbWindowLevel.ItemData(2) = 2
 
+    ' ' fGauge.RotateBusyTimer = True
+    
     ' populate the hiding timer combobox
     cmbHidingTime.AddItem "1 minute", 0
     cmbHidingTime.ItemData(0) = 1
@@ -3747,26 +4610,26 @@ Private Sub populatePrefsComboBoxes()
     cmbHidingTime.AddItem "I hour", 5
     cmbHidingTime.ItemData(5) = 60
     
-    ' populate the clock face to show
-'    cmbClockFaceSwitchPref.AddItem "standard", 0
-'    cmbClockFaceSwitchPref.AddItem "stopwatch", 1
- 
-    'populate one timezone combobox from file.
-'    Call readFileWriteComboBox(cmbMainGaugeTimeZone, App.path & "\Resources\txt\timezones.txt")
-'
-'    'populate one timezone combobox from file.
-'    Call readFileWriteComboBox(cmbMainDaylightSaving, App.path & "\Resources\txt\DLScodesWin.txt")
-  
-'    cmbMainDaylightSaving.AddItem "Daylight Savings Not used", 0
-'    cmbMainDaylightSaving.ItemData(0) = 0
-'    cmbMainDaylightSaving.AddItem "Daylight Savings Activated", 1
-'    cmbMainDaylightSaving.ItemData(0) = 1
-
+    ' ' fGauge.RotateBusyTimer = True
+    
+    ' populate the multi monitor combobox
+    cmbMultiMonitorResize.AddItem "Disabled", 0
+    cmbMultiMonitorResize.ItemData(0) = 0
+    cmbMultiMonitorResize.AddItem "Automatic Resizing Enabled", 1
+    cmbMultiMonitorResize.ItemData(1) = 1
+    cmbMultiMonitorResize.AddItem "Manual Sizing Stored Per Monitor", 2
+    cmbMultiMonitorResize.ItemData(2) = 2
+    
+    cmbTickSwitchPref.AddItem "Tick", 0
+    cmbTickSwitchPref.ItemData(0) = 0
+    cmbTickSwitchPref.AddItem "Smooth", 1
+    cmbTickSwitchPref.ItemData(1) = 1
+    
     cmbTickSwitchPref.AddItem "Flick", 0
     cmbTickSwitchPref.ItemData(0) = 0
     cmbTickSwitchPref.AddItem "Smooth", 1
     cmbTickSwitchPref.ItemData(1) = 1
-
+    
     On Error GoTo 0
     Exit Sub
 
@@ -3781,6 +4644,7 @@ populatePrefsComboBoxes_Error:
                 
 End Sub
 
+    
 '---------------------------------------------------------------------------------------
 ' Procedure : readFileWriteComboBox
 ' Author    : beededea
@@ -3847,6 +4711,17 @@ Private Sub clearBorderStyle()
     fraWindowButton.BorderStyle = 0
     fraSoundsButton.BorderStyle = 0
     fraAboutButton.BorderStyle = 0
+    
+    #If TWINBASIC Then
+        fraGeneralButton.Refresh
+        fraConfigButton.Refresh
+        fraDevelopmentButton.Refresh
+        fraPositionButton.Refresh
+        fraFontsButton.Refresh
+        fraWindowButton.Refresh
+        fraSoundsButton.Refresh
+        fraAboutButton.Refresh
+    #End If
 
    On Error GoTo 0
    Exit Sub
@@ -3857,50 +4732,26 @@ clearBorderStyle_Error:
 
 End Sub
 
+
+
 '---------------------------------------------------------------------------------------
 ' Procedure : Form_Resize
 ' Author    : beededea
 ' Date      : 30/05/2023
-' Purpose   : If the form is NOT to be resized then restrain the height/width. Otherwise,
-'             maintain the aspect ratio. When minimised and a resize is called then simply exit.
+' Purpose   : IMPORTANT: Called at every twip of resising, goodness knows what interval, we barely use this, instead we subclass and look for WM_EXITSIZEMOVE
 '---------------------------------------------------------------------------------------
 '
 Private Sub Form_Resize()
-    Dim ratio As Double: ratio = 0
-    Dim currentFont As Long: currentFont = 0
-    
-    On Error GoTo Form_Resize_Error
-    
-    If Me.WindowState = vbMinimized Then Exit Sub
-    
-    ' move the drag corner label along with the form's bottom right corner
-    lblDragCorner.Move Me.ScaleLeft + Me.ScaleWidth - (lblDragCorner.Width + 40), _
-               Me.ScaleTop + Me.ScaleHeight - (lblDragCorner.Height + 40)
 
-    ratio = cPrefsFormHeight / cPrefsFormWidth
-    
-    If prefsDynamicSizingFlg = True Then
+    pvtPrefsFormResizedByDrag = True
+         
+    ' do not call the resizing function when the form is resized by dragging the border
+    ' only call this if the resize is done in code
         
-        If gblDpiAwareness = "1" Then
-            currentFont = gblPrefsFontSizeHighDPI
-        Else
-            currentFont = gblPrefsFontSizeLowDPI
-        End If
-        Call resizeControls(Me, prefsControlPositions(), prefsCurrentWidth, prefsCurrentHeight, currentFont)
-        Call tweakPrefsControlPositions(Me, prefsCurrentWidth, prefsCurrentHeight)
-        
-        Me.Width = Me.Height / ratio ' maintain the aspect ratio
-
-    Else
-        If Me.WindowState = 0 Then ' normal
-            If Me.Width > 9090 Then Me.Width = 9090
-            If Me.Width < 9085 Then Me.Width = 9090
-            If lastFormHeight <> 0 Then Me.Height = lastFormHeight
-        End If
+    If InIDE Or gblPrefsFormResizedInCode = True Then
+        Call PrefsForm_Resize_Event
     End If
-        
-    'lblSize.Caption = "topIconWidth = " & topIconWidth & " imgGeneral width = " & imgGeneral.Width
-    
+            
     On Error GoTo 0
     Exit Sub
 
@@ -3914,6 +4765,223 @@ Form_Resize_Error:
     End With
 End Sub
 
+'---------------------------------------------------------------------------------------
+' Procedure : PrefsForm_Resize_Event
+' Author    : beededea
+' Date      : 10/10/2024
+' Purpose   : Called mostly by WM_EXITSIZEMOVE, the subclassed (intercepted) message that indicates that the window has just been moved.
+'             (and on a mouseUp during a bottom-right drag of the additional corner indicator). Also, in code as specifcally required with an indicator flag.
+'             This prevents a resize occurring during every twip movement and the controls resizing themselves continuously.
+'             They now only resize when the form resize has completed.
+'
+'---------------------------------------------------------------------------------------
+'
+Public Sub PrefsForm_Resize_Event()
+
+    Dim currentFontSize As Long: currentFontSize = 0
+    
+    On Error GoTo PrefsForm_Resize_Event_Error
+
+    ' When minimised and a resize is called then simply exit.
+    If Me.WindowState = vbMinimized Then Exit Sub
+        
+    If pvtPrefsDynamicSizingFlg = True And pvtPrefsFormResizedByDrag = True Then
+    
+        widgetPrefs.Width = widgetPrefs.Height / gblConstraintRatio ' maintain the aspect ratio, note: this change calls this routine again...
+        
+        If gblDpiAwareness = "1" Then
+            currentFontSize = gblPrefsFontSizeHighDPI
+        Else
+            currentFontSize = gblPrefsFontSizeLowDPI
+        End If
+
+        'make tab frames invisible so that the control resizing is not apparent to the user
+        Call makeFramesInvisible
+        Call resizeControls(Me, prefsControlPositions(), gblPrefsStartWidth, gblPrefsStartHeight, currentFontSize)
+
+        Call tweakPrefsControlPositions(Me, gblPrefsStartWidth, gblPrefsStartHeight)
+        'Call loadHigherResPrefsImages ' if you want higher res icons then load them here, current max. is 1010 twips or 67 pixels
+        Call makeFramesVisible
+        
+    Else
+        If Me.WindowState = 0 Then ' normal
+            If widgetPrefs.Width > 9090 Then widgetPrefs.Width = 9090
+            If widgetPrefs.Width < 9085 Then widgetPrefs.Width = 9090
+            If pvtLastFormHeight <> 0 Then
+               gblPrefsFormResizedInCode = True
+               widgetPrefs.Height = pvtLastFormHeight
+            End If
+        End If
+    End If
+    
+    gblPrefsFormResizedInCode = False
+    pvtPrefsFormResizedByDrag = False
+
+   On Error GoTo 0
+   Exit Sub
+
+PrefsForm_Resize_Event_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure PrefsForm_Resize_Event of Form widgetPrefs"
+
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : makeFramesInvisible
+' Author    : beededea
+' Date      : 23/06/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub makeFramesInvisible()
+    
+   On Error GoTo makeFramesInvisible_Error
+
+            If gblLastSelectedTab = "general" Then
+                fraGeneral.Visible = False
+                fraGeneralButton.Visible = False
+            End If
+            If gblLastSelectedTab = "config" Then
+                fraConfig.Visible = False
+                fraConfigButton.Visible = False
+            End If
+            If gblLastSelectedTab = "position" Then
+                fraPosition.Visible = False
+                fraPositionButton.Visible = False
+            End If
+                
+            If gblLastSelectedTab = "development" Then
+                fraDevelopment.Visible = False
+                fraDevelopmentButton.Visible = False
+            End If
+
+            If gblLastSelectedTab = "fonts" Then
+                fraFonts.Visible = False
+                fraFontsButton.Visible = False
+            End If
+
+            If gblLastSelectedTab = "sounds" Then
+                fraSounds.Visible = False
+                fraSoundsButton.Visible = False
+            End If
+
+            If gblLastSelectedTab = "window" Then
+                fraWindow.Visible = False
+                fraWindowButton.Visible = False
+            End If
+
+            If gblLastSelectedTab = "about" Then
+                fraAbout.Visible = False
+                fraAboutButton.Visible = False
+            End If
+
+   On Error GoTo 0
+   Exit Sub
+
+makeFramesInvisible_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure makeFramesInvisible of Form widgetPrefs"
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : makeFramesVisible
+' Author    : beededea
+' Date      : 23/06/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub makeFramesVisible()
+    
+   On Error GoTo makeFramesVisible_Error
+
+            If gblLastSelectedTab = "general" Then
+                fraGeneral.Visible = True
+                fraGeneralButton.Visible = True
+            End If
+            If gblLastSelectedTab = "config" Then
+                fraConfig.Visible = True
+                fraConfigButton.Visible = True
+            End If
+            If gblLastSelectedTab = "position" Then
+                fraPosition.Visible = True
+                fraPositionButton.Visible = True
+            End If
+                
+            If gblLastSelectedTab = "development" Then
+                fraDevelopment.Visible = True
+                fraDevelopmentButton.Visible = True
+            End If
+
+            If gblLastSelectedTab = "fonts" Then
+                fraFonts.Visible = True
+                fraFontsButton.Visible = True
+            End If
+
+            If gblLastSelectedTab = "sounds" Then
+                fraSounds.Visible = True
+                fraSoundsButton.Visible = True
+            End If
+
+            If gblLastSelectedTab = "window" Then
+                fraWindow.Visible = True
+                fraWindowButton.Visible = True
+            End If
+
+            If gblLastSelectedTab = "about" Then
+                fraAbout.Visible = True
+                fraAboutButton.Visible = True
+            End If
+
+   On Error GoTo 0
+   Exit Sub
+
+makeFramesVisible_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure makeFramesVisible of Form widgetPrefs"
+End Sub
+'---------------------------------------------------------------------------------------
+' Procedure : Form_Moved
+' Author    : beededea
+' Date      : 16/07/2024
+' Purpose   : Non VB6-standard event caught by subclassing and intercepting the WM_EXITSIZEMOVE (WM_MOVED) event
+'---------------------------------------------------------------------------------------
+'
+Public Sub Form_Moved(sForm As String)
+
+    On Error GoTo Form_Moved_Error
+        
+    'passing a form name as it allows us to potentially subclass another form's movement
+    Select Case sForm
+        Case "widgetPrefs"
+            ' call a resize of all controls only when the form resize (by dragging) has completed (mouseUP)
+            If pvtPrefsFormResizedByDrag = True Then
+            
+                ' test the current form height and width, if the same then it is a form_moved and not a form_resize.
+                If widgetPrefs.Height = widgetPrefsOldHeight And widgetPrefs.Width = widgetPrefsOldWidth Then
+                    Exit Sub
+                Else
+                    widgetPrefsOldHeight = widgetPrefs.Height
+                    widgetPrefsOldWidth = widgetPrefs.Width
+                    
+                    Call PrefsForm_Resize_Event
+                    pvtPrefsFormResizedByDrag = False
+                    
+                End If
+            End If
+            
+            ' call the procedure to resize the form automatically if it now resides on a different sized monitor
+            Call positionPrefsByMonitorSize
+           
+        Case Else
+    End Select
+    
+   On Error GoTo 0
+   Exit Sub
+
+Form_Moved_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Form_Moved of Form widgetPrefs"
+End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : tweakPrefsControlPositions
@@ -3954,7 +5022,7 @@ Private Sub tweakPrefsControlPositions(ByVal thisForm As Form, ByVal m_FormWid A
     
     ' final tweak the bottom button positions
     
-    btnHelp.Top = fraGeneral.Top + fraGeneral.Height + (200 * y_scale)
+    btnHelp.Top = fraGeneral.Top + fraGeneral.Height + (100 * y_scale)
     btnSave.Top = btnHelp.Top
     btnClose.Top = btnHelp.Top
     
@@ -3963,6 +5031,8 @@ Private Sub tweakPrefsControlPositions(ByVal thisForm As Form, ByVal m_FormWid A
     btnHelp.Left = fraGeneral.Left
 
     txtPrefsFontCurrentSize.Text = y_scale * txtPrefsFontCurrentSize.FontSize
+    
+    lblAsterix.Top = btnSave.Top + 50
     
    On Error GoTo 0
    Exit Sub
@@ -3979,15 +5049,21 @@ End Sub
 ' Procedure : Form_Unload
 ' Author    : beededea
 ' Date      : 27/05/2023
-' Purpose   :
+' Purpose   : standard form unload
 '---------------------------------------------------------------------------------------
 '
 Private Sub Form_Unload(Cancel As Integer)
    On Error GoTo Form_Unload_Error
 
-    gblPrefsLoadedFlg = False
+    ' the sampler is stopped during the prefs running so we restart
+    If overlayWidget.Ticking = False Then overlayWidget.Ticking = True
     
-    Call writePrefsPosition
+    ' Release the subclass hook for dialog forms
+    If Not InIDE Then ReleaseHook
+    
+    IsLoaded = False
+    
+    Call writePrefsPositionAndSize
     
     Call DestroyToolTip
 
@@ -3998,213 +5074,81 @@ Form_Unload_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Form_Unload of Form widgetPrefs"
 End Sub
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    fraScrollbarCover.Visible = True
-
-End Sub
-Private Sub fraAbout_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    If Button = 2 Then
-        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
-    End If
-End Sub
-Private Sub fraAbout_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    fraScrollbarCover.Visible = True
-    If gblEnableBalloonTooltips = "1" Then CreateToolTip fraAbout.hwnd, "The About tab tells you all about this program and its creation using VB6.", _
-                  TTIconInfo, "Help on the About Tab", , , , True
-End Sub
-Private Sub fraConfigInner_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    If Button = 2 Then
-        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
-    End If
-End Sub
-Private Sub fraConfigInner_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    If gblEnableBalloonTooltips = "1" Then CreateToolTip fraConfigInner.hwnd, "The configuration panel is the location for optional configuration items. These items change how Pz CPU gauge operates, configure them to suit your needs and your mode of operation.", _
-                  TTIconInfo, "Help on Configuration", , , , True
-
-End Sub
-Private Sub fraConfig_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    If Button = 2 Then
-        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
-    End If
-End Sub
-Private Sub fraConfig_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    If gblEnableBalloonTooltips = "1" Then CreateToolTip fraConfig.hwnd, "The configuration panel is the location for optional configuration items. These items change how Pz CPU gauge operates, configure them to suit your needs and your mode of operation.", _
-                  TTIconInfo, "Help on Configuration", , , , True
-
-End Sub
-
-Private Sub fraDefaultEditor_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    lblGitHub.ForeColor = &H80000012
-End Sub
-
-Private Sub fraDevelopment_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    If Button = 2 Then
-        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
-    End If
-End Sub
-Private Sub fraDevelopment_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    If gblEnableBalloonTooltips = "1" Then CreateToolTip fraDevelopment.hwnd, "This tab contains elements that will assist in debugging and developing this program further. ", _
-                  TTIconInfo, "Help on the Development Tab", , , , True
-End Sub
-
-
-Private Sub fraDevelopmentInner_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    If Button = 2 Then
-        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
-    End If
-End Sub
-Private Sub fraDevelopmentInner_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    If gblEnableBalloonTooltips = "1" Then CreateToolTip fraDevelopmentInner.hwnd, "This tab contains elements that will assist in debugging and developing this program further. ", _
-                  TTIconInfo, "Help on the Development Tab", , , , True
-
-End Sub
-Private Sub fraFonts_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    If gblEnableBalloonTooltips = "1" Then CreateToolTip fraFonts.hwnd, "This tab allows you to set a specific font for the preferences only as there are no textual elements in the main program. We suggest Centurion Light SF at 8pt, which you will find bundled in the gbl program folder. Choose a small 8pt font for each.", _
-                  TTIconInfo, "Help on Setting the Fonts", , , , True
-
-End Sub
-Private Sub fraFontsInner_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    If Button = 2 Then
-        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
-    End If
-End Sub
-Private Sub fraFontsInner_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    If gblEnableBalloonTooltips = "1" Then CreateToolTip fraFontsInner.hwnd, "This tab allows you to set a specific font for the preferences only as there are no textual elements in the main program. We suggest Centurion Light SF at 8pt, which you will find bundled in the gbl program folder. Choose a small 8pt font for each.", _
-                  TTIconInfo, "Help on Setting the Fonts", , , , True
-End Sub
-'Private Sub fraConfigurationButtonInner_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-'    If Button = 2 Then
-'        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
-'    End If
-'End Sub
-Private Sub fraGeneral_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    If Button = 2 Then
-        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
-    End If
-End Sub
-Private Sub fraGeneral_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    If gblEnableBalloonTooltips = "1" Then CreateToolTip fraGeneral.hwnd, "The General Panel contains the most important user-configurable items required for the program to operate correctly.", _
-                  TTIconInfo, "Help on Essential Configuration", , , , True
-End Sub
-
-Private Sub fraGeneralInner_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    If Button = 2 Then
-        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
-    End If
-End Sub
-Private Sub fraGeneralInner_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    If gblEnableBalloonTooltips = "1" Then CreateToolTip fraGeneralInner.hwnd, "The General Panel contains the most important user-configurable items required for the program to operate correctly.", _
-                  TTIconInfo, "Help on Essential Configuration", , , , True
-End Sub
-
-Private Sub fraPosition_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
-     If gblEnableBalloonTooltips = "1" Then CreateToolTip fraPosition.hwnd, "This tab allows you to determine the X and Y positioning of your widget in landscape and portrait screen modes. Best left well alone unless you use Windows on a tablet.", _
-                  TTIconInfo, "Help on Tablet Positioning", , , , True
-End Sub
-Private Sub fraPositionInner_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    If Button = 2 Then
-        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
-    End If
-End Sub
-Private Sub fraPositionInner_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    If gblEnableBalloonTooltips = "1" Then CreateToolTip fraPositionInner.hwnd, "This tab allows you to determine the X and Y positioning of your widget in landscape and portrait screen modes. Best left well alone unless you use Windows on a tablet.", _
-                  TTIconInfo, "Help on Tablet Positioning", , , , True
-End Sub
-
-Private Sub fraScrollbarCover_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    fraScrollbarCover.Visible = False
-
-End Sub
-Private Sub fraSounds_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    If Button = 2 Then
-        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
-    End If
-End Sub
-Private Sub fraSounds_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
- If gblEnableBalloonTooltips = "1" Then CreateToolTip fraSounds.hwnd, "The sound panel allows you to configure the sounds that occur within gbl. Some of the animations have associated sounds, you can control these here..", _
-                  TTIconInfo, "Help on Configuring Sounds", , , , True
-End Sub
-Private Sub fraSoundsInner_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    If Button = 2 Then
-        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
-    End If
-End Sub
-Private Sub fraSoundsInner_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
-     If gblEnableBalloonTooltips = "1" Then CreateToolTip fraSoundsInner.hwnd, "The sound panel allows you to configure the sounds that occur within gbl. Some of the animations have associated sounds, you can control these here..", _
-                  TTIconInfo, "Help on Configuring Sounds", , , , True
-End Sub
-
-Private Sub fraWindow_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    If Button = 2 Then
-        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
-    End If
-End Sub
-Private Sub fraWindow_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
-     If gblEnableBalloonTooltips = "1" Then CreateToolTip fraWindow.hwnd, "The Opacity and Window Level of the program are rather strange characteristics to change in a Windows program, however this widget is a copy of a Yahoo Widget of the same name. All widgets have similar window tab options including the capability to change the opacity and window level. Whether these options are useful to you or anyone is a moot point but as this tool aims to replicate the YWE version functionality it has been reproduced here. It is here as more of an experiment as to how to implement a feature, one carried over from the Yahoo Widget (javascript) version of this program.", _
-                  TTIconInfo, "Help on YWE Quirk Mode Options", , , , True
-End Sub
-Private Sub fraWindowInner_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    If Button = 2 Then
-        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
-    End If
-End Sub
-Private Sub fraWindowInner_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
-     If gblEnableBalloonTooltips = "1" Then CreateToolTip fraWindowInner.hwnd, "The Opacity and Window Level of the program are rather strange characteristics to change in a Windows program, however this widget is a copy of a Yahoo Widget of the same name. All widgets have similar window tab options including the capability to change the opacity and window level. Whether these options are useful to you or anyone is a moot point but as this tool aims to replicate the YWE version functionality it has been reproduced here. It is here as more of an experiment as to how to implement a feature, one carried over from the Yahoo Widget (javascript) version of this program.", _
-                  TTIconInfo, "Help on YWE Quirk Mode Options", , , , True
-End Sub
-
-
-
-
-
-Private Sub imgGeneral_Click()
-    imgGeneral.Visible = False
-    imgGeneralClicked.Visible = True
-End Sub
-
-Private Sub imgGeneral_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    Call picButtonMouseUpEvent("general", imgGeneral, imgGeneralClicked, fraGeneral, fraGeneralButton) ' was imgGeneralMouseUpEvent
-End Sub
-
-
 
 '---------------------------------------------------------------------------------------
-' Procedure : lblGitHub_dblClick
+' Procedure : various _MouseMove
 ' Author    : beededea
-' Date      : 14/08/2023
-' Purpose   :
+' Date      : 10/01/2025
+' Purpose   : setting the balloon tooltip text for several controls
+'---------------------------------------------------------------------------------------
+
+'---------------------------------------------------------------------------------------
+' Procedure : optGaugeTooltips_MouseMove
+' Author    : beededea
+' Date      : 10/01/2025
+' Purpose   : setting the tooltip text for the specific radio button for selecting the gauge/cal tooltip style
 '---------------------------------------------------------------------------------------
 '
-Private Sub lblGitHub_dblClick()
-    Dim answer As VbMsgBoxResult: answer = vbNo
-    Dim answerMsg As String: answerMsg = vbNullString
-    
-    On Error GoTo lblGitHub_dblClick_Error
+Private Sub optGaugeTooltips_MouseMove(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
+    Dim thisToolTip As String: thisToolTip = vbNullString
+    On Error GoTo optGaugeTooltips_MouseMove_Error
 
-    answer = vbYes
-    answerMsg = "This option opens a browser window and take you straight to Github. Proceed?"
-    answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Proceed to Github? ", True, "lblGitHubDblClick")
-    If answer = vbYes Then
-       Call ShellExecute(Me.hwnd, "Open", "https://github.com/yereverluvinunclebert/Panzer-JustClock-VB6", vbNullString, App.path, 1)
+    If gblPrefsTooltips = "0" Then
+        If Index = 0 Then
+            thisToolTip = "This setting enables the balloon tooltips for elements within the Steampunk GUI. These tooltips are multi-line and in general more attractive than standard windows style tooltips, note that their font size will match the Windows system font size."
+            CreateToolTip optGaugeTooltips(Index).hWnd, thisToolTip, _
+                  TTIconInfo, "Help on Balloon Tooltips on the GUI", , , , True
+        ElseIf Index = 1 Then
+            thisToolTip = "This setting enables the RichClient square tooltips for elements within the Steampunk GUI. These tooltips are multi-line and in general more attractive than standard windows style tooltips."
+            CreateToolTip optGaugeTooltips(Index).hWnd, thisToolTip, _
+                  TTIconInfo, "Help on RichClient Tooltips on the GUI", , , , True
+        ElseIf Index = 2 Then
+            thisToolTip = "This setting disables the balloon tooltips for elements within the Steampunk GUI."
+            CreateToolTip optGaugeTooltips(Index).hWnd, thisToolTip, _
+                  TTIconInfo, "Help on Disabling Tooltips on the GUI", , , , True
+        End If
+    
     End If
 
    On Error GoTo 0
    Exit Sub
 
-lblGitHub_dblClick_Error:
+optGaugeTooltips_MouseMove_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure lblGitHub_dblClick of Form widgetPrefs"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure optGaugeTooltips_MouseMove of Form widgetPrefs"
+End Sub
+    
+'---------------------------------------------------------------------------------------
+' Procedure : btnResetMessages_MouseMove
+' Author    : beededea
+' Date      : 01/10/2023
+' Purpose   : reset message boxes mouseOver
+'---------------------------------------------------------------------------------------
+'
+Private Sub btnResetMessages_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error GoTo btnResetMessages_MouseMove_Error
+
+    If gblPrefsTooltips = "0" Then CreateToolTip btnResetMessages.hWnd, "The various pop-up messages that this program generates can be manually hidden. This button restores them to their original visible state.", _
+                  TTIconInfo, "Help on the message reset button", , , , True
+
+    On Error GoTo 0
+    Exit Sub
+
+btnResetMessages_MouseMove_Error:
+
+     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure btnResetMessages_MouseMove of Form widgetPrefs"
 End Sub
 
-Private Sub lblGitHub_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    lblGitHub.ForeColor = &H8000000D
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    fraScrollbarCover.Visible = True
+End Sub
+
+Private Sub chkEnableResizing_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip chkEnableResizing.hWnd, "This allows you to resize the whole prefs window by dragging the bottom right corner of the window. It provides an alternative method of supporting high DPI screens.", _
+                  TTIconInfo, "Help on Resizing", , , , True
 End Sub
 
 
-
-Private Sub sliOpacity_Change()
-    btnSave.Enabled = True ' enable the save button
-End Sub
 
 ' ----------------------------------------------------------------
 ' Procedure Name: sliSamplingInterval_Click
@@ -4219,10 +5163,9 @@ Private Sub sliSamplingInterval_Click()
     btnSave.Enabled = True ' enable the save button
 
  
-    If prefsStartupFlg = False Then
+    If pvtPrefsStartupFlg = False Then
         gblSamplingInterval = LTrim$(Str$(sliSamplingInterval.Value))
         overlayWidget.samplingInterval = sliSamplingInterval.Value
-        frmMultiCore.tmrMultiCore.Interval = Val(gblSamplingInterval) * 1000
         sPutINISetting "Software\PzCPUGauge", "samplingInterval", gblSamplingInterval, gblSettingsFile
         
     End If
@@ -4236,14 +5179,561 @@ sliSamplingInterval_Click_Error:
 
 End Sub
 
+Private Sub sliSamplingInterval_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip sliSamplingInterval.hWnd, "Setting the sampling interval affects the frequency of the pointer updates.", _
+                  TTIconInfo, "Help on the Sampling Interval", , , , True
+End Sub
+
+Private Sub txtPrefsFont_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip txtPrefsFont.hWnd, "This is a read-only text box. It displays the current font as set when you click the font selector button. This is in operation for informational purposes only. When resizing the form (drag bottom right) the font size will change in relation to form height. The base font determines the initial size, the resulting resized font will dynamically change.  My preferred font for this utility is Centurion Light SF at 8pt size.", _
+                  TTIconInfo, "Help on the Currently Selected Font", , , , True
+End Sub
+
+Private Sub txtPrefsFontCurrentSize_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip txtPrefsFontCurrentSize.hWnd, "This is a read-only text box. It displays the current font size as set when dynamic form resizing is enabled. Drag the right hand corner of the window downward and the form will auto-resize. This text box will display the resized font currently in operation for informational purposes only.", _
+                  TTIconInfo, "Help on Setting the Font size Dynamically", , , , True
+End Sub
+
+Private Sub txtPrefsFontSize_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip txtPrefsFontSize.hWnd, "This is a read-only text box. It displays the current base font size as set when dynamic form resizing is enabled. The adjacent text box will display the automatically resized font currently in operation, for informational purposes only.", _
+                  TTIconInfo, "Help on the Base Font Size", , , , True
+End Sub
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : lblDragCorner_MouseMove
+' Author    : beededea
+' Date      : 07/10/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub lblDragCorner_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+    On Error GoTo lblDragCorner_MouseMove_Error
+
+    lblDragCorner.MousePointer = 8
+
+    On Error GoTo 0
+    Exit Sub
+
+lblDragCorner_MouseMove_Error:
+
+     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure lblDragCorner_MouseMove of Form widgetPrefs"
+   
+End Sub
+
+
+Private Sub btnAboutDebugInfo_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip btnAboutDebugInfo.hWnd, "Here you can switch on Debug mode, not yet functional for this widget.", _
+                  TTIconInfo, "Help on the Debug Info. Buttton", , , , True
+End Sub
+
+
+
+Private Sub btnClose_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip btnClose.hWnd, "Close the Preference Utility", _
+                  TTIconInfo, "Help on the Close Buttton", , , , True
+End Sub
+
+Private Sub btnDefaultVB6Editor_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip btnDefaultEditor.hWnd, "Clicking on this button will cause a file explorer window to appear allowing you to select a Visual Basic Project (VBP) file for opening via the right click menu edit option. Once selected the adjacent text field will be automatically filled with the chosen path and file.", _
+                  TTIconInfo, "Help on the VBP File Explorer Button", , , , True
+End Sub
+
+Private Sub btnDisplayScreenFont_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip btnDisplayScreenFont.hWnd, "This is the font selector button, if you click it the font selection window will pop up for you to select your chosen font. When resizing the main gauge the display screen font size will change in relation to gauge size. The base font determines the initial size, the resulting resized font will dynamically change. ", _
+                  TTIconInfo, "Help on the Font Selector Button", , , , True
+End Sub
+
+Private Sub btnDonate_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip btnDonate.hWnd, "Here you can visit my KofI page and donate a Coffee if you like my creations.", _
+                  TTIconInfo, "Help on the Donate Buttton", , , , True
+End Sub
+
+Private Sub btnFacebook_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip btnFacebook.hWnd, "Here you can visit the Facebook page for the steampunk Widget community.", _
+                  TTIconInfo, "Help on the Update Buttton", , , , True
+End Sub
+
+Private Sub btnGithubHome_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip btnGithubHome.hWnd, "Here you can visit the widget's home page on github, when you click the button it will open a browser window and take you to the github home page.", _
+                  TTIconInfo, "Help on the Update Buttton", , , , True
+End Sub
+
+Private Sub btnHelp_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip btnHelp.hWnd, "Opens the help document, this will open as a compiled HTML file.", _
+                  TTIconInfo, "Help on the Help Buttton", , , , True
+End Sub
+
+
+
+Private Sub btnOpenFile_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip btnOpenFile.hWnd, "Clicking on this button will cause a file explorer window to appear allowing you to select any file you would like to execute on a shift+DBlClick. Once selected the adjacent text field will be automatically filled with the chosen path and file.", _
+                  TTIconInfo, "Help on the shift+DBlClick File Explorer Button", , , , True
+End Sub
+
+Private Sub btnPrefsFont_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip btnPrefsFont.hWnd, "This is the font selector button, if you click it the font selection window will pop up for you to select your chosen font. Centurion Light SF is a good one and my personal favourite. When resizing the form (drag bottom right) the font size will change in relation to form height. The base font determines the initial size, the resulting resized font will dynamically change. ", _
+                  TTIconInfo, "Help on Setting the Font Selector Button", , , , True
+End Sub
+
+Private Sub btnSave_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip btnSave.hWnd, "Save the changes you have made to the preferences", _
+                  TTIconInfo, "Help on the Save Buttton", , , , True
+End Sub
+
+Private Sub btnUpdate_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip btnUpdate.hWnd, "Here you can able to download a new version of the program from github, when you click the button it will open a browser window and take you to the github page.", _
+                  TTIconInfo, "Help on the Update Buttton", , , , True
+End Sub
+
+
+Private Sub chkDpiAwareness_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip chkDpiAwareness.hWnd, "Check here to make the program DPI aware. NOT required on small to medium screens that are less than 1920 bytes wide. Try it and see which suits your system. RESTART required.", _
+                  TTIconInfo, "Help on DPI Awareness Mode", , , , True
+End Sub
+
+
+
+Private Sub chkEnableSounds_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip chkEnableSounds.hWnd, "Check this box to enable or disable all of the sounds used during any animation on the main steampunk GUI, as well as all other chimes, tick sounds &c.", _
+                  TTIconInfo, "Help on Enabling/Disabling Sounds", , , , True
+End Sub
+
+
+
+Private Sub chkGenStartup_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip chkGenStartup.hWnd, "Check this box to enable the automatic start of the program when Windows is started.", _
+                  TTIconInfo, "Help on the Widget Automatic Start Toggle", , , , True
+End Sub
+
+Private Sub chkIgnoreMouse_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip chkIgnoreMouse.hWnd, "Checking this box causes the program to ignore all mouse events. A strange option, a left-over from the Yahoo Widgets days that offered this additional option. Replicated here as a homage to the old widget platform.", _
+                  TTIconInfo, "Help on the Ignore Mouse optGaugeTooltips", , , , True
+End Sub
+
+Private Sub chkPreventDragging_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip chkPreventDragging.hWnd, "Checking this box causes the program to lock in place and ignore all attempts to move it with the mouse. " & vbCrLf & vbCrLf & _
+        "The widget can be locked into a certain position in either landscape/portrait mode, ensuring that the widget always appears exactly where you want it to.  " & vbCrLf & vbCrLf & _
+        "Using the fields adjacent, you can assign a default x/y position for both Landscape or Portrait mode.  " & vbCrLf & vbCrLf & _
+        "When the widget is locked in place (using the Widget Position Locked option in the Window Tab), this value is set automatically.  " & vbCrLf & vbCrLf & _
+        "A strange option, a left-over from the Yahoo Widgets days that offered this additional option. Replicated here as a homage to the old widget platform.", _
+                  TTIconInfo, "Help on the Lock in Place option", , , , True
+End Sub
+
+Private Sub chkShowHelp_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip chkShowHelp.hWnd, "Checking this box causes the rather attractive help canvas to appear every time the widget is started.", _
+                  TTIconInfo, "Help on the Ignore Mouse option", , , , True
+End Sub
+
+Private Sub chkShowTaskbar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip chkShowTaskbar.hWnd, "Check the box to show the widget in the Windows taskbar. A typical user may have multiple desktop widgets and it makes no sense to fill the taskbar with taskbar entries, this option allows you to enable a single one or two at your whim.", _
+                  TTIconInfo, "Help on the Showing Entries in the Taskbar", , , , True
+End Sub
+
+
+
+
+Private Sub chkGaugeFunctions_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip chkGaugeFunctions.hWnd, "When checked this box enables the gauge overall functionality. Any adjustment takes place instantly.", _
+                  TTIconInfo, "Help on the Widget Function Toggle", , , , True
+End Sub
+
+Private Sub chkWidgetHidden_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip chkWidgetHidden.hWnd, "Checking this box causes the program to hide for a certain number of minutes. More useful from the widget's right click menu where you can hide the widget at will. Seemingly, a strange option, a left-over from the Yahoo Widgets days that offered this additional option. Replicated here as a homage to the old widget platform.", _
+                  TTIconInfo, "Help on the Hidden option", , , , True
+End Sub
+Private Sub fraAbout_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    fraScrollbarCover.Visible = True
+    If gblPrefsTooltips = "0" Then CreateToolTip fraAbout.hWnd, "The About tab tells you all about this program and its creation using " & gblCodingEnvironment & ".", _
+                  TTIconInfo, "Help on the About Tab", , , , True
+End Sub
+Private Sub fraConfigInner_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip fraConfigInner.hWnd, "The configuration panel is the location for optional configuration items. These items change how the widget operates, configure them to suit your needs and your mode of operation.", _
+                  TTIconInfo, "Help on Configuration", , , , True
+End Sub
+Private Sub fraConfig_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip fraConfig.hWnd, "The configuration panel is the location for important configuration items. These items change how the widget operates, configure them to suit your needs and your mode of operation.", _
+                  TTIconInfo, "Help on Configuration", , , , True
+End Sub
+Private Sub fraDevelopment_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip fraDevelopment.hWnd, "This tab contains elements that will assist in debugging and developing this program further. ", _
+                  TTIconInfo, "Help on the Development Tab", , , , True
+End Sub
+Private Sub fraDefaultVB6Editor_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    lblGitHub.ForeColor = &H80000012
+End Sub
+Private Sub fraDevelopmentInner_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip fraDevelopmentInner.hWnd, "This tab contains elements that will assist in debugging and developing this program further. ", _
+                  TTIconInfo, "Help on the Development Tab", , , , True
+
+End Sub
+Private Sub fraFonts_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip fraFonts.hWnd, "This tab allows you to set a specific font for the preferences only as there are no textual elements in the main program. We suggest Centurion Light SF at 8pt, which you will find bundled in the gbl program folder. Choose a small 8pt font for each.", _
+                  TTIconInfo, "Help on Setting the Fonts", , , , True
+End Sub
+
+Private Sub fraFontsInner_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip fraFontsInner.hWnd, "This tab allows you to set a specific font for the preferences only as there are no textual elements in the main program. We suggest Centurion Light SF at 8pt, which you will find bundled in the gbl program folder. Choose a small 8pt font for each.", _
+                  TTIconInfo, "Help on Setting the Fonts", , , , True
+End Sub
+
+
+Private Sub fraGeneral_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip fraGeneral.hWnd, "The General Panel contains the most important user-configurable items required for the program to operate correctly.", _
+                  TTIconInfo, "Help on Essential Configuration", , , , True
+End Sub
+
+Private Sub fraGeneralInner_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip fraGeneralInner.hWnd, "The General Panel contains the most important user-configurable items required for the program to operate correctly.", _
+                  TTIconInfo, "Help on Essential Configuration", , , , True
+End Sub
+
+Private Sub fraPosition_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+     If gblPrefsTooltips = "0" Then CreateToolTip fraPosition.hWnd, "This tab allows you to determine the X and Y positioning of your widget in landscape and portrait screen modes. Best left well alone unless you use Windows on a tablet.", _
+                  TTIconInfo, "Help on Tablet Positioning", , , , True
+End Sub
+Private Sub fraPositionInner_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip fraPositionInner.hWnd, "This tab allows you to determine the X and Y positioning of your widget in landscape and portrait screen modes. Best left well alone unless you use Windows on a tablet.", _
+                  TTIconInfo, "Help on Tablet Positioning", , , , True
+End Sub
+
+Private Sub fraScrollbarCover_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    fraScrollbarCover.Visible = False
+
+End Sub
+Private Sub fraSounds_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+ If gblPrefsTooltips = "0" Then CreateToolTip fraSounds.hWnd, "The sound panel allows you to configure the sounds that occur within gbl. Some of the animations have associated sounds, you can control these here..", _
+                  TTIconInfo, "Help on Configuring Sounds", , , , True
+End Sub
+Private Sub fraSoundsInner_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+     If gblPrefsTooltips = "0" Then CreateToolTip fraSoundsInner.hWnd, "The sound panel allows you to configure the sounds that occur within gbl. Some of the animations have associated sounds, you can control these here..", _
+                  TTIconInfo, "Help on Configuring Sounds", , , , True
+End Sub
+Private Sub fraWindow_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+     If gblPrefsTooltips = "0" Then CreateToolTip fraWindow.hWnd, "The Opacity and Window Level of the program are rather strange characteristics to change in a Windows program, however this widget is a copy of a Yahoo Widget of the same name. All widgets have similar window tab options including the capability to change the opacity and window level. Whether these options are useful to you or anyone is a moot point but as this tool aims to replicate the YWE version functionality it has been reproduced here. It is here as more of an experiment as to how to implement a feature, one carried over from the Yahoo Widget (javascript) version of this program.", _
+                  TTIconInfo, "Help on YWE Quirk Mode Options", , , , True
+End Sub
+Private Sub fraWindowInner_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+     If gblPrefsTooltips = "0" Then CreateToolTip fraWindowInner.hWnd, "The Opacity and Window Level of the program are rather strange characteristics to change in a Windows program, however this widget is a copy of a Yahoo Widget of the same name. All widgets have similar window tab options including the capability to change the opacity and window level. Whether these options are useful to you or anyone is a moot point but as this tool aims to replicate the YWE version functionality it has been reproduced here. It is here as more of an experiment as to how to implement a feature, one carried over from the Yahoo Widget (javascript) version of this program.", _
+                  TTIconInfo, "Help on YWE Quirk Mode Options", , , , True
+End Sub
+
+
+Private Sub fraGeneralButton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip fraGeneralButton.hWnd, "Clicking on the General icon reveals the General Tab where the essential items can be configured, alarms, startup &c.", _
+                  TTIconInfo, "Help on the General Tab Icon", , , , True
+End Sub
+
+Private Sub fraConfigButton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip fraConfigButton.hWnd, "Clicking on the Config icon reveals the Configuration Tab where the optional items can be configured, DPI, tooltips &c.", _
+                  TTIconInfo, "Help on the Configuration Tab Icon", , , , True
+End Sub
+
+Private Sub fraFontsButton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip fraFontsButton.hWnd, "Clicking on the Fonts icon reveals the Fonts Tab where the font related items can be configured, size, type, popups &c.", _
+                  TTIconInfo, "Help on the Font Tab Icon", , , , True
+End Sub
+Private Sub fraSoundsButton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip fraSoundsButton.hWnd, "Clicking on the Sounds icon reveals the Sounds Tab where sound related items can be configured, volume, type &c.", _
+                  TTIconInfo, "Help on the Sounds Tab Icon", , , , True
+End Sub
+Private Sub fraPositionButton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip fraPositionButton.hWnd, "Clicking on the Position icon reveals the Position Tab where items related to Positioning can be configured, aspect ratios, landscape, &c.", _
+                  TTIconInfo, "Help on the Position Tab Icon", , , , True
+End Sub
+Private Sub fraDevelopmentButton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip fraDevelopmentButton.hWnd, "Clicking on the Development icon reveals the Development Tab where items relating to Development can be configured, debug, VBP location, &c.", _
+                  TTIconInfo, "Help on the Development Tab Icon", , , , True
+End Sub
+Private Sub fraWindowButton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip fraWindowButton.hWnd, "Clicking on the Window icon reveals the Window Tab where items relating to window sizing and layering can be configured &c.", _
+                  TTIconInfo, "Help on the Window Tab Icon", , , , True
+End Sub
+Private Sub fraAboutButton_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip fraAboutButton.hWnd, "Clicking on the About icon reveals the About Tab where information about this desktop widget can be revealed.", _
+                  TTIconInfo, "Help on the About Tab Icon", , , , True
+End Sub
+Private Sub lblGitHub_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    lblGitHub.ForeColor = &H8000000D
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : optPrefsTooltips_MouseMove
+' Author    : beededea
+' Date      : 10/01/2025
+' Purpose   : series of radio buttons to set the tooltip type for the prefs utility
+'---------------------------------------------------------------------------------------
+'
+Private Sub optPrefsTooltips_MouseMove(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
+    Dim thisToolTip As String: thisToolTip = vbNullString
+
+    On Error GoTo optPrefsTooltips_MouseMove_Error
+
+    If gblPrefsTooltips = "0" Then
+        If Index = 0 Then
+            thisToolTip = "This setting enables the balloon tooltips for elements within the Steampunk GUI. These tooltips are multi-line and in general more attractive than standard windows style tooltips, note that their font size will match the Windows system font size."
+            CreateToolTip optPrefsTooltips(Index).hWnd, thisToolTip, _
+                  TTIconInfo, "Help on Balloon Tooltips on the Preference Utility", , , , True
+        ElseIf Index = 1 Then
+            thisToolTip = "This setting enables the standard Windows-style square tooltips for elements within the Steampunk GUI. These tooltips are single-line and the font size is limited to the Windows font size."
+            CreateToolTip optPrefsTooltips(Index).hWnd, thisToolTip, _
+                  TTIconInfo, "Help on  VB6 Native Tooltips on the Preference Utility", , , , True
+        ElseIf Index = 2 Then
+            thisToolTip = "This setting disables the balloon tooltips for elements within the Steampunk GUI."
+            CreateToolTip optPrefsTooltips(Index).hWnd, thisToolTip, _
+                  TTIconInfo, "Help on Disabling Tooltips on the Preference Utility", , , , True
+        End If
+    End If
+
+   On Error GoTo 0
+   Exit Sub
+
+optPrefsTooltips_MouseMove_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure optPrefsTooltips_MouseMove of Form widgetPrefs"
+End Sub
+
+Private Sub sliGaugeSize_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip sliGaugeSize.hWnd, "Adjust to a percentage of the original size. Any adjustment in size made here takes place instantly (you can also use Ctrl+Mousewheel when hovering over the gauge itself).", _
+                  TTIconInfo, "Help on the Size Slider", , , , True
+End Sub
+
+Private Sub sliOpacity_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip sliOpacity.hWnd, "Sliding this causes the program's opacity to change from solidly opaque to fully transparent or some way in-between. Seemingly, a strange option for a windows program, a useful left-over from the Yahoo Widgets days that offered this additional option. Replicated here as a homage to the old widget platform.", _
+                  TTIconInfo, "Help on the Opacity Slider", , , , True
+
+End Sub
+Private Sub txtAboutText_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    fraScrollbarCover.Visible = False
+End Sub
+
+
+
+Private Sub txtDblClickCommand_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip txtDblClickCommand.hWnd, "Field to hold the any double click command that you have assigned to this widget. For example: taskmgr or %systemroot%\syswow64\ncpa.cpl", _
+                  TTIconInfo, "Help on the Double Click Command", , , , True
+End Sub
+
+Private Sub txtDefaultEditor_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip txtDefaultEditor.hWnd, "Field to hold the path to a Visual Basic Project (VBP) file you would like to execute on a right click menu, edit option, if you select the adjacent button a file explorer will appear allowing you to select the VBP file, this field is automatically filled with the chosen file.", _
+                  TTIconInfo, "Help on the Default Editor Field", , , , True
+End Sub
+
+Private Sub txtDisplayScreenFont_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip txtDisplayScreenFont.hWnd, "This is a read-only text box. It displays the current font - as set when you click the font selector button. This field is in operation for informational purposes only. When resizing the main gauge (CTRL+ mouse scroll wheel) the font size will change in relation to gauge size. The base font determines the initial size, the resulting resized font will dynamically change. My preferred font for the display screen is Courier New at 6pt size.", _
+                  TTIconInfo, "Help on the Display Screen Font", , , , True
+End Sub
+
+Private Sub txtDisplayScreenFontSize_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip txtDisplayScreenFontSize.hWnd, "This is a read-only text box. It displays the current base font size as set when dynamic form resizing is enabled. The adjacent text box will display the automatically resized font currently in operation, for informational purposes only.", _
+                  TTIconInfo, "Help on the Base Font Size for Display Screen", , , , True
+End Sub
+
+Private Sub txtLandscapeHoffset_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip txtLandscapeHoffset.hWnd, "Field to hold the horizontal offset for the widget position in landscape mode. When you lock the widget using the lock button above, this field is automatically filled.", _
+                  TTIconInfo, "Help on the Landscape X Horizontal Field", , , , True
+End Sub
+
+Private Sub txtLandscapeVoffset_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip txtLandscapeVoffset.hWnd, "Field to hold the vertical offset for the widget position in landscape mode. When you lock the widget using the lock button above, this field is automatically filled.", _
+                  TTIconInfo, "Help on the Landscape Y Vertical Field", , , , True
+End Sub
+
+Private Sub txtOpenFile_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip txtOpenFile.hWnd, "Field to hold the path to a file you would like to execute on a shift+DBlClick, if you select the adjacent button a file explorer will appear allowing you to select any file, this field is automatically filled with the chosen file.", _
+                  TTIconInfo, "Help on the shift+DBlClick Field", , , , True
+End Sub
+
+Private Sub txtPortraitHoffset_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip txtPortraitHoffset.hWnd, "Field to hold the horizontal offset for the widget position in Portrait mode. When you lock the widget using the lock button above, this field is automatically filled.", _
+                  TTIconInfo, "Help on the Portrait X Horizontal Field", , , , True
+End Sub
+
+Private Sub txtPortraitYoffset_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If gblPrefsTooltips = "0" Then CreateToolTip txtPortraitYoffset.hWnd, "Field to hold the vertical offset for the widget position in Portrait mode. When you lock the widget using the lock button above, this field is automatically filled.", _
+                  TTIconInfo, "Help on the Portrait Y Vertical Field", , , , True
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : General _MouseDown events to generate menu pop-ups across the form
+' Author    : beededea
+' Date      : 14/08/2023
+' Purpose   : due to a bug/difference with TwinBasic versus VB6
+'---------------------------------------------------------------------------------------
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : Form_MouseDown
+' Author    : beededea
+' Date      : 14/08/2023
+' Purpose   : standard form down event to generate the menu across the board
+'---------------------------------------------------------------------------------------
+'
+Private Sub Form_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+   On Error GoTo Form_MouseDown_Error
+
+    If Button = 2 Then
+
+        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
+        
+    End If
+
+   On Error GoTo 0
+   Exit Sub
+
+Form_MouseDown_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Form_MouseDown of Form widgetPrefs"
+End Sub
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : lblDragCorner_MouseDown
+' Author    : beededea
+' Date      : 07/10/2023
+' Purpose   : the label corner mouse down
+'---------------------------------------------------------------------------------------
+'
+Private Sub lblDragCorner_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+    On Error GoTo lblDragCorner_MouseDown_Error
+    
+    If Button = vbLeftButton Then
+        pvtPrefsFormResizedByDrag = True
+        ReleaseCapture
+        SendMessage Me.hWnd, WM_NCLBUTTONDOWN, HTBOTTOMRIGHT, 0
+    End If
+    
+    On Error GoTo 0
+    Exit Sub
+
+lblDragCorner_MouseDown_Error:
+
+     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure lblDragCorner_MouseDown of Form widgetPrefs"
+
+End Sub
+
+Private Sub fraFonts_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+    If Button = 2 Then
+        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
+    End If
+End Sub
+'
+Private Sub fraFontsInner_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If Button = 2 Then
+        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
+    End If
+End Sub
+
+Private Sub fraGeneral_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If Button = 2 Then
+        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
+    End If
+End Sub
+
+Private Sub fraAbout_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If Button = 2 Then
+        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
+    End If
+End Sub
+
+Private Sub fraConfigInner_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If Button = 2 Then
+        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
+    End If
+End Sub
+Private Sub fraConfig_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If Button = 2 Then
+        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
+    End If
+End Sub
+
+Private Sub fraDevelopment_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If Button = 2 Then
+        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
+    End If
+End Sub
+Private Sub fraDevelopmentInner_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If Button = 2 Then
+        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
+    End If
+End Sub
+
+Private Sub fraGeneralInner_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If Button = 2 Then
+        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
+    End If
+End Sub
+Private Sub fraPositionInner_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If Button = 2 Then
+        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
+    End If
+End Sub
+
+Private Sub fraSounds_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If Button = 2 Then
+        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
+    End If
+End Sub
+Private Sub fraSoundsInner_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If Button = 2 Then
+        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
+    End If
+End Sub
+
+Private Sub fraWindow_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If Button = 2 Then
+        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
+    End If
+End Sub
+Private Sub fraWindowInner_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If Button = 2 Then
+        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
+    End If
+End Sub
+Private Sub imgGeneral_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    imgGeneral.Visible = False
+    imgGeneralClicked.Visible = True
+End Sub
+Private Sub imgAbout_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    imgAbout.Visible = False
+    imgAboutClicked.Visible = True
+End Sub
+Private Sub imgDevelopment_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    imgDevelopment.Visible = False
+    imgDevelopmentClicked.Visible = True
+End Sub
+Private Sub imgFonts_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    imgFonts.Visible = False
+    imgFontsClicked.Visible = True
+End Sub
+Private Sub imgConfig_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    imgConfig.Visible = False
+    imgConfigClicked.Visible = True
+End Sub
+Private Sub imgPosition_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    imgPosition.Visible = False
+    imgPositionClicked.Visible = True
+End Sub
+Private Sub imgSounds_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    imgSounds.Visible = False
+    imgSoundsClicked.Visible = True
+End Sub
+Private Sub imgWindow_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    imgWindow.Visible = False
+    imgWindowClicked.Visible = True
+End Sub
+
+
 '---------------------------------------------------------------------------------------
 ' Procedure : txtAboutText_MouseDown
 ' Author    : beededea
 ' Date      : 30/09/2023
-' Purpose   :
+' Purpose   : make a pop up menu appear on the text box by being tricky and clever
 '---------------------------------------------------------------------------------------
 '
-Private Sub txtAboutText_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub txtAboutText_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     On Error GoTo txtAboutText_MouseDown_Error
 
     If Button = vbRightButton Then
@@ -4260,123 +5750,282 @@ txtAboutText_MouseDown_Error:
      MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure txtAboutText_MouseDown of Form widgetPrefs"
 End Sub
 
-Private Sub txtAboutText_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    fraScrollbarCover.Visible = False
-End Sub
-
-Private Sub imgAbout_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    imgAbout.Visible = False
-    imgAboutClicked.Visible = True
-End Sub
-Private Sub imgAbout_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    Call picButtonMouseUpEvent("about", imgAbout, imgAboutClicked, fraAbout, fraAboutButton)
-End Sub
-
-Private Sub imgDevelopment_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    imgDevelopment.Visible = False
-    imgDevelopmentClicked.Visible = True
-End Sub
-
-Private Sub imgDevelopment_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    Call picButtonMouseUpEvent("development", imgDevelopment, imgDevelopmentClicked, fraDevelopment, fraDevelopmentButton)
-End Sub
-
-Private Sub imgFonts_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    imgFonts.Visible = False
-    imgFontsClicked.Visible = True
-End Sub
-
-Private Sub imgFonts_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    Call picButtonMouseUpEvent("fonts", imgFonts, imgFontsClicked, fraFonts, fraFontsButton)
-End Sub
-
-Private Sub imgConfig_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    imgConfig.Visible = False
-    imgConfigClicked.Visible = True
-End Sub
-
-Private Sub imgConfig_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    Call picButtonMouseUpEvent("config", imgConfig, imgConfigClicked, fraConfig, fraConfigButton) ' was imgConfigMouseUpEvent
-End Sub
-
-Private Sub imgGeneral_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    imgGeneral.Visible = False
-    imgGeneralClicked.Visible = True
-End Sub
 
 
-Private Sub imgPosition_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    imgPosition.Visible = False
-    imgPositionClicked.Visible = True
-End Sub
-
-Private Sub imgPosition_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    Call picButtonMouseUpEvent("position", imgPosition, imgPositionClicked, fraPosition, fraPositionButton)
-End Sub
-
-Private Sub imgSounds_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    '
-    imgSounds.Visible = False
-    imgSoundsClicked.Visible = True
-End Sub
-
-Private Sub imgSounds_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    'Call imgSoundsMouseUpEvent
-    Call picButtonMouseUpEvent("sounds", imgSounds, imgSoundsClicked, fraSounds, fraSoundsButton)
-End Sub
-
-Private Sub imgWindow_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    imgWindow.Visible = False
-    imgWindowClicked.Visible = True
-End Sub
-
-Private Sub imgWindow_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    Call picButtonMouseUpEvent("window", imgWindow, imgWindowClicked, fraWindow, fraWindowButton)
-End Sub
-
-'Private Sub sliAnimationInterval_Change()
-'    'overlayWidget.RotationSpeed = sliAnimationInterval.Value
-'    btnSave.Enabled = True ' enable the save button
-'
-'End Sub
-
-
-
-Private Sub sliGaugeSize_GotFocus()
-    gblAllowSizeChangeFlg = True
-End Sub
-
-Private Sub sliGaugeSize_LostFocus()
-    gblAllowSizeChangeFlg = False
-End Sub
 '---------------------------------------------------------------------------------------
-' Procedure : sliGaugeSize_Change
+' Procedure : lblGitHub_dblClick
 ' Author    : beededea
-' Date      : 30/09/2023
-' Purpose   :
+' Date      : 14/08/2023
+' Purpose   : label to allow a link to github to be clicked
 '---------------------------------------------------------------------------------------
 '
-Private Sub sliGaugeSize_Change()
-    On Error GoTo sliGaugeSize_Change_Error
-
-    btnSave.Enabled = True ' enable the save button
+Private Sub lblGitHub_dblClick()
+    Dim answer As VbMsgBoxResult: answer = vbNo
+    Dim answerMsg As String: answerMsg = vbNullString
     
-    If gblAllowSizeChangeFlg = True Then Call fAlpha.AdjustZoom(sliGaugeSize.Value / 100)
+    On Error GoTo lblGitHub_dblClick_Error
+    
+    If gblGaugeFunctions = "0" Or gblIgnoreMouse = "1" Then Exit Sub
 
+    answer = vbYes
+    answerMsg = "This option opens a browser window and take you straight to Github. Proceed?"
+    answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Proceed to Github? ", True, "lblGitHubDblClick")
+    If answer = vbYes Then
+        Call ShellExecute(Me.hWnd, "Open", "https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-" & gblCodingEnvironment, vbNullString, App.Path, 1)
+    End If
+
+   On Error GoTo 0
+   Exit Sub
+
+lblGitHub_dblClick_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure lblGitHub_dblClick of Form widgetPrefs"
+End Sub
+
+
+
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : tmrPrefsScreenResolution_Timer
+' Author    : beededea
+' Date      : 05/05/2023
+' Purpose   : for handling rotation of the screen in tablet mode or a resolution change
+'             possibly due to an old game in full screen mode.
+            ' when the timer frequency is reduced caused some weird async. effects, 500 ms seems fine, disable the timer first
+'---------------------------------------------------------------------------------------
+'
+Private Sub tmrPrefsScreenResolution_Timer()
+
+'    Static oldWidgetPrefsLeft As Long
+'    Static oldWidgetPrefsTop As Long
+'    Static beenMovingFlg As Boolean
+'
+'    Static oldPrefsFormMonitorID As Long
+''    Static oldPrefsFormMonitorPrimary As Long
+'    Static oldPrefsMonitorStructWidthTwips As Long
+'    Static oldPrefsMonitorStructHeightTwips As Long
+'    Static oldPrefsGaugeLeftPixels As Long
+'
+'    Dim prefsFormMonitorID As Long: prefsFormMonitorID = 0
+'    'Dim prefsFormMonitorPrimary As Long: prefsFormMonitorPrimary = 0
+'    Dim monitorStructWidthTwips As Long: monitorStructWidthTwips = 0
+'    Dim monitorStructHeightTwips As Long: monitorStructHeightTwips = 0
+'    Dim resizeProportion As Double: resizeProportion = 0
+'
+'    Dim answer As VbMsgBoxResult: answer = vbNo
+'    Dim answerMsg As String: answerMsg = vbNullString
+'
+'    On Error GoTo tmrPrefsScreenResolution_Timer_Error
+'
+'    ' calls a routine that tests for a change in the monitor upon which the form sits, if so, resizes
+'    If widgetPrefs.IsVisible = False Then Exit Sub
+'
+'    ' prefs hasn't moved at all
+'    If widgetPrefs.Left = oldWidgetPrefsLeft Then Exit Sub  ' this can only work if the reposition is being performed by the timer
+'    ' we are also hopefully calling this routine on a mouseUP event after a form move, where the above line will not apply.
+'
+'    ' if just one monitor or the global switch is off then exit
+'    If monitorCount > 1 And (LTrim$(gblMultiMonitorResize) = "1" Or LTrim$(gblMultiMonitorResize) = "2") Then
+'
+'        ' turn off the timer that saves the prefs height and position
+'        tmrPrefsMonitorSaveHeight.Enabled = False
+'        tmrWritePosition.Enabled = False
+'        tmrPrefsScreenResolution.Enabled = False ' turn off this very timer here
+'
+'        ' populate the OLD vars if empty, to allow valid comparison next run
+'        If oldWidgetPrefsLeft <= 0 Then oldWidgetPrefsLeft = widgetPrefs.Left
+'        If oldWidgetPrefsTop <= 0 Then oldWidgetPrefsTop = widgetPrefs.Top
+'
+'        ' test whether the form has been moved (VB6 has no FORM_MOVING nor FORM_MOVED EVENTS)
+'        If widgetPrefs.Left <> oldWidgetPrefsLeft Or widgetPrefs.Top <> oldWidgetPrefsTop Then
+'
+'               ' note the monitor ID at PrefsForm form_load and store as the prefsFormMonitorID
+'                prefsMonitorStruct = formScreenProperties(widgetPrefs, prefsFormMonitorID)
+'
+'                'prefsFormMonitorPrimary = prefsMonitorStruct.IsPrimary ' -1 true
+'
+'                ' sample the physical monitor resolution
+'                monitorStructWidthTwips = prefsMonitorStruct.Width
+'                monitorStructHeightTwips = prefsMonitorStruct.Height
+'
+'                'if the old monitor ID has not been stored already (form load) then do so now
+'                If oldPrefsFormMonitorID = 0 Then oldPrefsFormMonitorID = prefsFormMonitorID
+'
+'                ' same with other 'old' vars
+'                If oldPrefsMonitorStructWidthTwips = 0 Then oldPrefsMonitorStructWidthTwips = monitorStructWidthTwips
+'                If oldPrefsMonitorStructHeightTwips = 0 Then oldPrefsMonitorStructHeightTwips = monitorStructHeightTwips
+'                If oldPrefsGaugeLeftPixels = 0 Then oldPrefsGaugeLeftPixels = widgetPrefs.Left
+'
+'                ' if the monitor ID has changed
+'                If oldPrefsFormMonitorID <> prefsFormMonitorID Then
+'                'If oldPrefsFormMonitorPrimary <> prefsFormMonitorPrimary Then
+'
+''                    ' screenWrite ("Prefs Stored monitor primary status = " & CBool(oldPrefsFormMonitorPrimary))
+''                    ' screenWrite ("Prefs Current monitor primary status = " & CBool(prefsFormMonitorPrimary))
+'
+'                    If LTrim$(gblMultiMonitorResize) = "1" Then
+'                        'if the resolution is different then calculate new size proportion
+'                        If monitorStructWidthTwips <> oldPrefsMonitorStructWidthTwips Or monitorStructHeightTwips <> oldPrefsMonitorStructHeightTwips Then
+'                            'now calculate the size of the widget according to the screen HeightTwips.
+'                            resizeProportion = prefsMonitorStruct.Height / oldPrefsMonitorStructHeightTwips
+'                            newPrefsHeight = widgetPrefs.Height * resizeProportion
+'                            widgetPrefs.Height = newPrefsHeight
+'                        End If
+'                    ElseIf LTrim$(gblMultiMonitorResize) = "2" Then
+'                        ' set the size according to saved values
+'                        If prefsMonitorStruct.IsPrimary = True Then
+'                            widgetPrefs.Height = Val(gblPrefsPrimaryHeightTwips)
+'                        Else
+'                            'gblPrefsSecondaryHeightTwips = "15000"
+'                            widgetPrefs.Height = Val(gblPrefsSecondaryHeightTwips)
+'                        End If
+'                    End If
+'
+'                End If
+'
+'                ' set the current values as 'old' for comparison on next run
+'                'oldPrefsFormMonitorPrimary = prefsFormMonitorPrimary
+'                oldPrefsFormMonitorID = prefsFormMonitorID
+'                oldPrefsMonitorStructWidthTwips = monitorStructWidthTwips
+'                oldPrefsMonitorStructHeightTwips = monitorStructHeightTwips
+'                oldPrefsGaugeLeftPixels = widgetPrefs.Left
+'            End If
+'
+'    End If
+'
+'    oldWidgetPrefsLeft = widgetPrefs.Left
+'    oldWidgetPrefsTop = widgetPrefs.Top
+'
+'    tmrPrefsScreenResolution.Enabled = True
+'    tmrPrefsMonitorSaveHeight.Enabled = True
+'    tmrWritePosition.Enabled = True
+    
     On Error GoTo 0
     Exit Sub
 
-sliGaugeSize_Change_Error:
+tmrPrefsScreenResolution_Timer_Error:
 
-     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure sliGaugeSize_Change of Form widgetPrefs"
-
+    With Err
+         If .Number <> 0 Then
+            MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrPrefsScreenResolution_Timer of Form frmTimer"
+            Resume Next
+          End If
+    End With
 End Sub
 
+
+
+
+
 '---------------------------------------------------------------------------------------
-' Procedure : sliOpacity_Click
+' Procedure : General _MouseUp events to generate menu pop-ups across the form
+' Author    : beededea
+' Date      : 14/08/2023
+' Purpose   : due to a bug/difference with TwinBasic versus VB6
+'---------------------------------------------------------------------------------------
+#If TWINBASIC Then
+    Private Sub imgAboutClicked_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+        Call picButtonMouseUpEvent("about", imgAbout, imgAboutClicked, fraAbout, fraAboutButton)
+    End Sub
+#Else
+    Private Sub imgAbout_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+        Call picButtonMouseUpEvent("about", imgAbout, imgAboutClicked, fraAbout, fraAboutButton)
+    End Sub
+#End If
+
+#If TWINBASIC Then
+    Private Sub imgDevelopmentClicked_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+        Call picButtonMouseUpEvent("development", imgDevelopment, imgDevelopmentClicked, fraDevelopment, fraDevelopmentButton)
+    End Sub
+#Else
+    Private Sub imgDevelopment_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+        Call picButtonMouseUpEvent("development", imgDevelopment, imgDevelopmentClicked, fraDevelopment, fraDevelopmentButton)
+    End Sub
+#End If
+
+#If TWINBASIC Then
+    Private Sub imgFontsClicked_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+        Call picButtonMouseUpEvent("fonts", imgFonts, imgFontsClicked, fraFonts, fraFontsButton)
+    End Sub
+#Else
+    Private Sub imgFonts_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+        Call picButtonMouseUpEvent("fonts", imgFonts, imgFontsClicked, fraFonts, fraFontsButton)
+    End Sub
+#End If
+
+#If TWINBASIC Then
+    Private Sub imgConfigClicked_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+        Call picButtonMouseUpEvent("config", imgConfig, imgConfigClicked, fraConfig, fraConfigButton) ' was imgConfigMouseUpEvent
+    End Sub
+#Else
+    Private Sub imgConfig_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+        Call picButtonMouseUpEvent("config", imgConfig, imgConfigClicked, fraConfig, fraConfigButton) ' was imgConfigMouseUpEvent
+    End Sub
+#End If
+
+#If TWINBASIC Then
+    Private Sub imgPositionClicked_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+        Call picButtonMouseUpEvent("position", imgPosition, imgPositionClicked, fraPosition, fraPositionButton)
+    End Sub
+#Else
+    Private Sub imgPosition_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+        Call picButtonMouseUpEvent("position", imgPosition, imgPositionClicked, fraPosition, fraPositionButton)
+    End Sub
+#End If
+
+#If TWINBASIC Then
+    Private Sub imgSoundsClicked_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+        Call picButtonMouseUpEvent("sounds", imgSounds, imgSoundsClicked, fraSounds, fraSoundsButton)
+    End Sub
+#Else
+    Private Sub imgSounds_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+        Call picButtonMouseUpEvent("sounds", imgSounds, imgSoundsClicked, fraSounds, fraSoundsButton)
+    End Sub
+#End If
+
+#If TWINBASIC Then
+    Private Sub imgWindowClicked_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+        Call picButtonMouseUpEvent("window", imgWindow, imgWindowClicked, fraWindow, fraWindowButton)
+    End Sub
+#Else
+    Private Sub imgWindow_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+        Call picButtonMouseUpEvent("window", imgWindow, imgWindowClicked, fraWindow, fraWindowButton)
+    End Sub
+#End If
+
+#If TWINBASIC Then
+    Private Sub imgGeneralClicked_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+        Call picButtonMouseUpEvent("general", imgGeneral, imgGeneralClicked, fraGeneral, fraGeneralButton) ' was imgGeneralMouseUpEvent
+    End Sub
+#Else
+    Private Sub imgGeneral_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+        Call picButtonMouseUpEvent("general", imgGeneral, imgGeneralClicked, fraGeneral, fraGeneralButton) ' was imgGeneralMouseUpEvent
+    End Sub
+#End If
+
+
+Private Sub sliGaugeSize_GotFocus()
+    pvtAllowSizeChangeFlg = True
+End Sub
+
+Private Sub sliGaugeSize_LostFocus()
+    pvtAllowSizeChangeFlg = False
+End Sub
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : Various Change events below
 ' Author    : beededea
 ' Date      : 15/08/2023
-' Purpose   :
+'---------------------------------------------------------------------------------------
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : sliOpacity_Change
+' Author    : beededea
+' Date      : 15/08/2023
+' Purpose   : save the slider opacity values as they change
 '---------------------------------------------------------------------------------------
 '
 Private Sub sliOpacity_Click()
@@ -4387,10 +6036,9 @@ Private Sub sliOpacity_Click()
 
     btnSave.Enabled = True ' enable the save button
 
-    If prefsStartupFlg = False Then
-        gblOpacity = LTrim$(Str$(sliOpacity.Value))
-        overlayWidget.thisOpacity = sliOpacity.Value
-        
+    If pvtPrefsStartupFlg = False Then
+        gblOpacity = CStr(sliOpacity.Value)
+    
         sPutINISetting "Software\PzCPUGauge", "opacity", gblOpacity, gblSettingsFile
         
         'Call setOpacity(sliOpacity.Value) ' this works but reveals the background form itself
@@ -4415,50 +6063,93 @@ End Sub
 
 
 
-
 '---------------------------------------------------------------------------------------
-' Procedure : Form_MouseDown
+' Procedure : sliOpacity_Change
 ' Author    : beededea
-' Date      : 14/08/2023
-' Purpose   :
+' Date      : 18/02/2025
+' Purpose   : slider to change opacity of the whole gauge.
 '---------------------------------------------------------------------------------------
 '
-Private Sub Form_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef Y As Single)
-   On Error GoTo Form_MouseDown_Error
+Private Sub sliOpacity_Change()
+   On Error GoTo sliOpacity_Change_Error
 
-    If Button = 2 Then
-
-        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
-        
-    End If
+    btnSave.Enabled = True ' enable the save button
 
    On Error GoTo 0
    Exit Sub
 
-Form_MouseDown_Error:
+sliOpacity_Change_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Form_MouseDown of Form widgetPrefs"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure sliOpacity_Change of Form widgetPrefs"
 End Sub
 
-'Private Sub fraEmail_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
-'    If Button = 2 Then
-'        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
-'    End If
-'End Sub
+'---------------------------------------------------------------------------------------
+' Procedure : sliGaugeSize_Change
+' Author    : beededea
+' Date      : 30/09/2023
+' Purpose   : slider to change the size of the whole gauge.
+'---------------------------------------------------------------------------------------
+'
+Public Sub sliGaugeSize_Change()
+    On Error GoTo sliGaugeSize_Change_Error
 
-'Private Sub fraEmojis_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
-'    If Button = 2 Then
-'        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
-'    End If
-'End Sub
+    btnSave.Enabled = True ' enable the save button
+    
+    'If pvtAllowSizeChangeFlg = True Then Call fGauge.AdjustZoom(sliGaugeSize.Value / 100)
+    If pvtAllowSizeChangeFlg = True Then Me.GaugeSize = sliGaugeSize.Value / 100
+    
+    Call saveMainRCFormSize
 
-Private Sub fraFonts_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef Y As Single)
-    If Button = 2 Then
-        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
-    End If
+    On Error GoTo 0
+    Exit Sub
+
+sliGaugeSize_Change_Error:
+
+     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure sliGaugeSize_Change of Form widgetPrefs"
+
 End Sub
 
+'---------------------------------------------------------------------------------------
+' Property  : GaugeSize
+' Author    : beededea
+' Date      : 17/05/2023
+' Purpose   : property to determine (by value) the GaugeSize of the whole widget
+'---------------------------------------------------------------------------------------
+'
+Public Property Get GaugeSize() As Single
+   On Error GoTo gaugeSizeGet_Error
 
+   GaugeSize = mGaugeSize
+
+   On Error GoTo 0
+   Exit Property
+
+gaugeSizeGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property GaugeSize of Class Module cwoverlay"
+End Property
+
+'---------------------------------------------------------------------------------------
+' Property  : GaugeSize
+' Author    : beededea
+' Date      : 10/05/2023
+' Purpose   : property to determine (by value) the GaugeSize value of the whole widget
+'---------------------------------------------------------------------------------------
+'
+Public Property Let GaugeSize(ByVal newValue As Single)
+   On Error GoTo gaugeSizeLet_Error
+
+    If mGaugeSize <> newValue Then mGaugeSize = newValue Else Exit Property
+        
+    Call fGauge.AdjustZoom(mGaugeSize)
+
+   On Error GoTo 0
+   Exit Property
+
+gaugeSizeLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property GaugeSize of Class Module cwoverlay"
+End Property
 
 
 Private Sub txtDblClickCommand_Change()
@@ -4478,17 +6169,13 @@ End Sub
 
 Private Sub txtLandscapeVoffset_Change()
     btnSave.Enabled = True ' enable the save button
-
 End Sub
-
 Private Sub txtOpenFile_Change()
     btnSave.Enabled = True ' enable the save button
-
 End Sub
 
 Private Sub txtPortraitHoffset_Change()
     btnSave.Enabled = True ' enable the save button
-
 End Sub
 
 Private Sub txtPortraitYoffset_Change()
@@ -4500,11 +6187,13 @@ Private Sub txtPrefsFont_Change()
     btnSave.Enabled = True ' enable the save button
 End Sub
 
+
+
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuAbout_Click
 ' Author    : beededea
 ' Date      : 13/02/2019
-' Purpose   :
+' Purpose   : right click about option from the pop-up menu
 '---------------------------------------------------------------------------------------
 '
 Private Sub mnuAbout_Click()
@@ -4532,8 +6221,57 @@ End Sub
 Public Sub setPrefsTooltips()
 
    On Error GoTo setPrefsTooltips_Error
-
-    If chkEnablePrefsTooltips.Value = 1 Then
+    
+    ' here we set the variables used for the comboboxes, each combobox has to be sub classed and these variables are used during that process
+    
+    If optPrefsTooltips(0).Value = True Then
+        ' module level balloon tooltip variables for subclassed comboBoxes ONLY.
+        pCmbMultiMonitorResizeBalloonTooltip = "This option will only appear on multi-monitor systems. This dropdown has three choices that affect the automatic sizing of both the main gauge and the preference utility. " & vbCrLf & vbCrLf & _
+            "For monitors of different sizes, this allows you to resize the widget to suit the monitor it is currently sitting on. The automatic option resizes according to the relative proportions of the two screens.  " & vbCrLf & vbCrLf & _
+            "The manual option resizes according to sizes that you set manually. Just resize the gauge on the monitor of your choice and the program will store it. This option only works for no more than TWO monitors."
+   
+        pCmbScrollWheelDirectionBalloonTooltip = "This option will allow you to change the direction of the mouse scroll wheel when resizing the gauge gauge. IF you want to resize the gauge on your desktop, hold the CTRL key along with moving the scroll wheel UP/DOWN. Some prefer scrolling UP rather than DOWN. You configure that here."
+        pCmbWindowLevelBalloonTooltip = "You can determine the window level here. You can keep it above all other windows or you can set it to bottom to keep the widget below all other windows."
+        pCmbHidingTimeBalloonTooltip = "The hiding time that you can set here determines how long the widget will disappear when you click the menu option to hide the widget."
+        
+        pCmbWidgetLandscapeBalloonTooltip = "The widget can be locked into landscape mode, it ensures that the widget always appears where you want it to. Using the fields below, you can assign a default x/y position for Landscape mode. "
+        pCmbWidgetPortraitBalloonTooltip = "The widget can be locked into portrait mode, it ensures that the widget always appears where you want it to. Using the fields below, you can assign a default x/y position for portrait mode. "
+        pCmbWidgetPositionBalloonTooltip = "Tablets only. The widget can be positioned proportionally when switching between portrait/landscape. If you want to enable this, disable the options below."
+        pCmbAspectHiddenBalloonTooltip = "Here you can choose whether the widget is hidden by default in either landscape or portrait mode or not at all. This allows you to have certain widgets that do not obscure the screen in one mode or another. If you accidentally set it so you can't find it on screen then change the setting here to none."
+        
+        pCmbDebugBalloonTooltip = "Here you can set debug mode. This will enable the editor field and allow you to assign a VBP/TwinProj file for the " & gblCodingEnvironment & " IDE editor"
+        pCmbTickSwitchPrefBalloonTooltip = "Here you can set the pointer to animate smoothly or flick from one value to another, smooth movement useds more CPU especially when coupled with a short sampling interval."
+    
+    Else
+        ' module level balloon tooltip variables for subclassed comboBoxes ONLY.
+        
+        pCmbMultiMonitorResizeBalloonTooltip = vbNullString
+        pCmbScrollWheelDirectionBalloonTooltip = vbNullString
+        pCmbWindowLevelBalloonTooltip = vbNullString
+        pCmbHidingTimeBalloonTooltip = vbNullString
+        
+        pCmbWidgetLandscapeBalloonTooltip = vbNullString
+        pCmbWidgetPortraitBalloonTooltip = vbNullString
+        pCmbWidgetPositionBalloonTooltip = vbNullString
+        pCmbAspectHiddenBalloonTooltip = vbNullString
+        pCmbDebugBalloonTooltip = vbNullString
+        
+        ' for some reason, the balloon tooltip on the checkbox used to dismiss the balloon tooltips does not disappear, this forces it go away.
+        CreateToolTip optPrefsTooltips(0).hWnd, "", _
+                  TTIconInfo, "Help", , , , True
+        CreateToolTip optPrefsTooltips(1).hWnd, "", _
+                  TTIconInfo, "Help", , , , True
+        CreateToolTip optPrefsTooltips(2).hWnd, "", _
+                  TTIconInfo, "Help", , , , True
+                  
+        pCmbTickSwitchPrefBalloonTooltip = vbNullString
+        
+    End If
+    
+    
+    ' next we just do the native VB6 tooltips
+     If optPrefsTooltips(1).Value = True Then
+        sliSamplingInterval.ToolTipText = "Setting the sampling interval affects the frequency of the pointer updates."
         imgConfig.ToolTipText = "Opens the configuration tab"
         imgConfigClicked.ToolTipText = "Opens the configuration tab"
         imgDevelopment.ToolTipText = "Opens the Development tab"
@@ -4553,10 +6291,10 @@ Public Sub setPrefsTooltips()
         imgFontsClicked.ToolTipText = "Opens the Fonts tab"
         imgGeneral.ToolTipText = "Opens the general tab"
         imgGeneralClicked.ToolTipText = "Opens the general tab"
-        lblPosition(6).ToolTipText = "Tablets only. Don't fiddle with this unless you really know what you are doing. Here you can choose whether this Pz CPU gauge widget is hidden by default in either landscape or portrait mode or not at all. This option allows you to have certain widgets that do not obscure the screen in either landscape or portrait. If you accidentally set it so you can't find your widget on screen then change the setting here to NONE."
+        lblPosition(6).ToolTipText = "Tablets only. Don't fiddle with this unless you really know what you are doing. Here you can choose whether this the widget widget is hidden by default in either landscape or portrait mode or not at all. This option allows you to have certain widgets that do not obscure the screen in either landscape or portrait. If you accidentally set it so you can't find your widget on screen then change the setting here to NONE."
         chkGenStartup.ToolTipText = "Check this box to enable the automatic start of the program when Windows is started."
-        chkGaugeFunctions.ToolTipText = "When checked this box enables the pointer. Any adjustment takes place instantly. "
-'        sliAnimationInterval.ToolTipText = "Adjust to make the animation smooth or choppy. Any adjustment in the interval takes place instantly. Lower values are smoother but the smoother it runs the more CPU it uses."
+        chkGaugeFunctions.ToolTipText = "When checked this box enables the gauge's functionality. Any adjustment takes place instantly. "
+        
         txtPortraitYoffset.ToolTipText = "Field to hold the vertical offset for the widget position in portrait mode."
         txtPortraitHoffset.ToolTipText = "Field to hold the horizontal offset for the widget position in portrait mode."
         txtLandscapeVoffset.ToolTipText = "Field to hold the horizontal offset for the widget position in landscape mode."
@@ -4565,51 +6303,74 @@ Public Sub setPrefsTooltips()
         cmbWidgetPortrait.ToolTipText = "The widget can be locked into portrait mode, it ensures that the widget always appears where you want it to. Using the fields below, you can assign a default x/y position for portrait mode. "
         cmbWidgetPosition.ToolTipText = "Tablets only. The widget can be positioned proportionally when switching between portrait/landscape. If you want to enable this, disable the options below."
         cmbAspectHidden.ToolTipText = " Here you can choose whether the widget is hidden by default in either landscape or portrait mode or not at all. This allows you to have certain widgets that do not obscure the screen in one mode or another. If you accidentally set it so you can't find it on screen then change the setting here to none."
-        chkEnableSounds.ToolTipText = "Check this box to enable or disable all of the sounds used during any animation on the main screen."
+        chkEnableSounds.ToolTipText = "Check this box to enable or disable all of the sounds used during any animation on the main steampunk GUI as well as all other chimes, tick sounds."
+'        chkEnableTicks.ToolTipText = "Enables or disables just the sound of the gauge ticking."
+'        chkEnableChimes.ToolTipText = "Enables or disables just the gauge chimes."
+'        chkEnableAlarms.ToolTipText = "Enables or disables the gauge alarm chimes. Please note disabling this means your alarms will not alert you audibly!"
+        
+'        chkVolumeBoost.ToolTipText = "Sets the volume of the various sound elements, you can boost from quiet to loud."
         btnDefaultEditor.ToolTipText = "Click to select the .vbp file to edit the program - You need to have access to the source!"
         txtDblClickCommand.ToolTipText = "Enter a Windows command for the gauge to operate when double-clicked."
         btnOpenFile.ToolTipText = "Click to select a particular file for the gauge to run or open when double-clicked."
         txtOpenFile.ToolTipText = "Enter a particular file for the gauge to run or open when double-clicked."
         cmbDebug.ToolTipText = "Choose to set debug mode."
+        
         txtPrefsFontSize.ToolTipText = "Disabled for manual input. Choose a font size using the font selector to be used within this preferences window only"
         btnPrefsFont.ToolTipText = "The Font Selector."
         txtPrefsFont.ToolTipText = "Disabled for manual input. Choose a font via the font selector to be used only for this preferences window"
         txtPrefsFontSize.ToolTipText = "Disabled for manual input. Choose a font size via the font selector that fits the text boxes"
+        
+        lblFontsTab(0).ToolTipText = "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
+        lblFontsTab(6).ToolTipText = "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
+        lblFontsTab(7).ToolTipText = "Choose a font size that fits the text boxes"
+        
+        txtDisplayScreenFontSize.ToolTipText = "Disabled for manual input. Choose a font size using the font selector to be used within the gauge display screen only"
+        btnDisplayScreenFont.ToolTipText = "The Font Selector."
+        txtDisplayScreenFont.ToolTipText = "Disabled for manual input. Choose a font size using the font selector to be used within the gauge display screen only"
+        
         cmbWindowLevel.ToolTipText = "You can determine the window position here. Set to bottom to keep the widget below other windows."
-        cmbHidingTime.ToolTipText = "."
+        cmbHidingTime.ToolTipText = "The hiding time that you can set here determines how long the widget will disappear when you click the menu option to hide the widget."
+        cmbMultiMonitorResize.ToolTipText = "When you have a multi-monitor set-up, the widget can auto-resize on a smaller secondary monitor. Here you determine the proportion of the resize."
+        
         chkEnableResizing.ToolTipText = "Provides an alternative method of supporting high DPI screens."
         chkPreventDragging.ToolTipText = "Checking this box turns off the ability to drag the program with the mouse. The locking in position effect takes place instantly."
         chkIgnoreMouse.ToolTipText = "Checking this box causes the program to ignore all mouse events."
         sliOpacity.ToolTipText = "Set the transparency of the program. Any change in opacity takes place instantly."
-        sliSamplingInterval.ToolTipText = "Setting the sampling interval affects the frequency of the pointer updates."
-        cmbScrollWheelDirection.ToolTipText = "To change the direction of the mouse scroll wheel when resizing the gauge."
-        chkEnableBalloonTooltips.ToolTipText = "Check the box to enable larger balloon tooltips for all controls on the main program"
+        cmbScrollWheelDirection.ToolTipText = "To change the direction of the mouse scroll wheel when resizing the gauge gauge."
+        
+        optGaugeTooltips(0).ToolTipText = "Check the box to enable larger balloon tooltips for all controls on the main program"
+        optGaugeTooltips(1).ToolTipText = "Check the box to enable RichClient square tooltips for all controls on the main program"
+        optGaugeTooltips(2).ToolTipText = "Check the box to disable tooltips for all controls on the main program"
+        
         chkShowTaskbar.ToolTipText = "Check the box to show the widget in the taskbar"
-        chkEnableTooltips.ToolTipText = "Check the box to enable tooltips for all controls on the main program"
+        chkShowHelp.ToolTipText = "Check the box to show the help page on startup"
+        
         sliGaugeSize.ToolTipText = "Adjust to a percentage of the original size. Any adjustment in size takes place instantly (you can also use Ctrl+Mousewheel hovering over the gauge itself)."
-        'sliWidgetSkew.ToolTipText = "Adjust to a degree skew of the original position. Any adjustment in direction takes place instantly (you can also use the Mousewheel hovering over the gauge itself."
         btnFacebook.ToolTipText = "This will link you to the our Steampunk/Dieselpunk program users Group."
         imgAbout.ToolTipText = "Opens the About tab"
         btnAboutDebugInfo.ToolTipText = "This gives access to the debugging tool"
         btnDonate.ToolTipText = "Buy me a Kofi! This button opens a browser window and connects to Kofi donation page"
         btnUpdate.ToolTipText = "Here you can visit the update location where you can download new versions of the programs."
-        lblFontsTab(0).ToolTipText = "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
-'        lblFontsTab(1).ToolTipText = "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
-'        lblFontsTab(2).ToolTipText = "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
-        lblFontsTab(6).ToolTipText = "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
-        lblFontsTab(7).ToolTipText = "Choose a font size that fits the text boxes"
+        
+        btnGithubHome.ToolTipText = "Here you can visit the widget's home page on github, when you click the button it will open a browser window and take you to the github home page."
+
         txtPrefsFontCurrentSize.ToolTipText = "Disabled for manual input. Shows the current font size when form resizing is enabled."
-        lblCurrentFontsTab.ToolTipText = "Disabled for manual input. Shows the current font size when form resizing is enabled."
-'        cmbMainGaugeTimeZone.ToolTipText = "Select the timezone of your choice."
-'        cmbMainDaylightSaving.ToolTipText = "Select and activate Daylight Savings Time for your area."
+        'lblCurrentFontsTab.ToolTipText = "Disabled for manual input. Shows the current font size when form resizing is enabled."
         
-        cmbTickSwitchPref.ToolTipText = "The movement of the hand can be set to smooth or regular flicks, the smooth movement uses slightly more CPU."
-        
-        'lstTimezoneRegions.ToolTipText = "These are the regions associated with the chosen timezone."
         chkDpiAwareness.ToolTipText = " Check the box to make the program DPI aware. RESTART required."
-        chkEnablePrefsTooltips.ToolTipText = "Check the box to enable tooltips for all controls in the preferences utility"
+        'optEnablePrefsTooltips.ToolTipText = "Check the box to enable tooltips for all controls in the preferences utility"
+        
+        optPrefsTooltips(0).ToolTipText = "Check the box to enable larger balloon tooltips for all controls within this Preference Utility. These tooltips are multi-line and in general more attractive, note that their font size will match the Windows system font size."
+        optPrefsTooltips(1).ToolTipText = "Check the box to enable Windows-style square tooltips for all controls within this Preference Utility. Note that their font size will match the Windows system font size."
+        optPrefsTooltips(2).ToolTipText = "This setting enables/disables the tooltips for all elements within this Preference Utility."
+
         btnResetMessages.ToolTipText = "This button restores the pop-up messages to their original visible state."
+        cmbTickSwitchPref.ToolTipText = "Here you can set the pointer to animate smoothly or flick from one value to another, smooth movement useds more CPU especially when coupled with a short sampling interval."
+        chkMultiCoreEnable.ToolTipText = "Click here to display the multi-CPU form. The change will take place immediately."
     Else
+    
+        sliSamplingInterval.ToolTipText = vbNullString
+        
         imgConfig.ToolTipText = vbNullString
         imgConfigClicked.ToolTipText = vbNullString
         imgDevelopment.ToolTipText = vbNullString
@@ -4629,7 +6390,7 @@ Public Sub setPrefsTooltips()
         imgGeneralClicked.ToolTipText = vbNullString
         chkGenStartup.ToolTipText = vbNullString
         chkGaugeFunctions.ToolTipText = vbNullString
-'        sliAnimationInterval.ToolTipText = vbNullString
+                
         txtPortraitYoffset.ToolTipText = vbNullString
         txtPortraitHoffset.ToolTipText = vbNullString
         txtLandscapeVoffset.ToolTipText = vbNullString
@@ -4639,6 +6400,11 @@ Public Sub setPrefsTooltips()
         cmbWidgetPosition.ToolTipText = vbNullString
         cmbAspectHidden.ToolTipText = vbNullString
         chkEnableSounds.ToolTipText = vbNullString
+'        chkEnableTicks.ToolTipText = vbNullString
+'        chkEnableChimes.ToolTipText = vbNullString
+'        chkEnableAlarms.ToolTipText = vbNullString
+        'chkVolumeBoost.ToolTipText = vbNullString
+        
         btnDefaultEditor.ToolTipText = vbNullString
         txtDblClickCommand.ToolTipText = vbNullString
         btnOpenFile.ToolTipText = vbNullString
@@ -4647,40 +6413,48 @@ Public Sub setPrefsTooltips()
         txtPrefsFontSize.ToolTipText = vbNullString
         btnPrefsFont.ToolTipText = vbNullString
         txtPrefsFont.ToolTipText = vbNullString
+        txtPrefsFontCurrentSize.ToolTipText = vbNullString
+        
+        
+        txtDisplayScreenFontSize.ToolTipText = vbNullString
+        btnDisplayScreenFont.ToolTipText = vbNullString
+        txtDisplayScreenFont.ToolTipText = vbNullString
+        
         cmbWindowLevel.ToolTipText = vbNullString
         cmbHidingTime.ToolTipText = vbNullString
-        chkEnableResizing.ToolTipText = ""
+        cmbMultiMonitorResize.ToolTipText = vbNullString
+        
+        chkEnableResizing.ToolTipText = vbNullString
         chkPreventDragging.ToolTipText = vbNullString
         chkIgnoreMouse.ToolTipText = vbNullString
         sliOpacity.ToolTipText = vbNullString
-        sliSamplingInterval.ToolTipText = vbNullString
         cmbScrollWheelDirection.ToolTipText = vbNullString
-        chkEnableBalloonTooltips.ToolTipText = vbNullString
+        
+        optGaugeTooltips(0).ToolTipText = vbNullString
+        optGaugeTooltips(1).ToolTipText = vbNullString
+        optGaugeTooltips(2).ToolTipText = vbNullString
+        
         chkShowTaskbar.ToolTipText = vbNullString
-        chkEnableTooltips.ToolTipText = vbNullString
+        chkShowHelp.ToolTipText = vbNullString
+
         sliGaugeSize.ToolTipText = vbNullString
-        'sliWidgetSkew.ToolTipText = ""
         btnFacebook.ToolTipText = vbNullString
         imgAbout.ToolTipText = vbNullString
         btnAboutDebugInfo.ToolTipText = vbNullString
         btnDonate.ToolTipText = vbNullString
         btnUpdate.ToolTipText = vbNullString
-        lblFontsTab(0).ToolTipText = vbNullString
-'        lblFontsTab(1).ToolTipText = vbNullString
-'        lblFontsTab(2).ToolTipText = vbNullString
-        lblFontsTab(6).ToolTipText = vbNullString
-        lblFontsTab(7).ToolTipText = vbNullString
-        txtPrefsFontCurrentSize.ToolTipText = vbNullString
-        lblCurrentFontsTab.ToolTipText = vbNullString
-'        cmbMainGaugeTimeZone.ToolTipText = vbNullString
-'        cmbMainDaylightSaving.ToolTipText = vbNullString
+        btnGithubHome.ToolTipText = vbNullString
         
-        cmbTickSwitchPref.ToolTipText = vbNullString
-        
-'        lstTimezoneRegions.ToolTipText = vbNullString
         chkDpiAwareness.ToolTipText = vbNullString
-        chkEnablePrefsTooltips.ToolTipText = vbNullString
+        'optEnablePrefsTooltips.ToolTipText = vbNullString
+        
+        optPrefsTooltips(0).ToolTipText = vbNullString
+        optPrefsTooltips(1).ToolTipText = vbNullString
+        optPrefsTooltips(2).ToolTipText = vbNullString
+        
         btnResetMessages.ToolTipText = vbNullString
+        cmbTickSwitchPref.ToolTipText = vbNullString
+        chkMultiCoreEnable.ToolTipText = vbNullString
     End If
 
    On Error GoTo 0
@@ -4704,7 +6478,6 @@ Private Sub setPrefsLabels()
     On Error GoTo setPrefsLabels_Error
 
     lblFontsTab(0).Caption = "When resizing the form (drag bottom right) the font size will in relation to form height. The base font determines the initial size, the resulting resized font will dynamically change." & vbCrLf & vbCrLf & _
-        "Next time you open the prefs it will revert to the default." & vbCrLf & vbCrLf & _
         "My preferred font for this utility is Centurion Light SF at 8pt size."
 
     On Error GoTo 0
@@ -4724,7 +6497,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Sub DestroyToolTip()
-    '
+    
    On Error GoTo DestroyToolTip_Error
 
     If hwndTT <> 0& Then DestroyWindow hwndTT
@@ -4746,14 +6519,18 @@ End Sub
 '
 Private Sub loadPrefsAboutText()
     On Error GoTo loadPrefsAboutText_Error
-    'If debugflg = 1 Then Debug.Print "%loadPrefsAboutText"
+    'If gblDebugFlg = 1 Then Debug.Print "%loadPrefsAboutText"
     
     lblMajorVersion.Caption = App.Major
     lblMinorVersion.Caption = App.Minor
     lblRevisionNum.Caption = App.Revision
     
-    Call LoadFileToTB(txtAboutText, App.path & "\resources\txt\about.txt", False)
-
+    lblAbout(1).Caption = "(32bit WoW64 using " & gblCodingEnvironment & ")"
+    
+    Call LoadFileToTB(txtAboutText, App.Path & "\resources\txt\about.txt", False)
+    
+    ' ' fGauge.RotateBusyTimer = True
+    
    On Error GoTo 0
    Exit Sub
 
@@ -4776,7 +6553,7 @@ Private Sub picButtonMouseUpEvent(ByVal thisTabName As String, ByRef thisPicName
     On Error GoTo picButtonMouseUpEvent_Error
     
     Dim padding As Long: padding = 0
-    Dim borderWidth As Long: borderWidth = 0
+    Dim BorderWidth As Long: BorderWidth = 0
     Dim captionHeight As Long: captionHeight = 0
     Dim y_scale As Single: y_scale = 0
     
@@ -4793,13 +6570,18 @@ Private Sub picButtonMouseUpEvent(ByVal thisTabName As String, ByRef thisPicName
     sPutINISetting "Software\PzCPUGauge", "lastSelectedTab", gblLastSelectedTab, gblSettingsFile
 
     thisFraName.Visible = True
+    
     thisFraButtonName.BorderStyle = 1
 
+    #If TWINBASIC Then
+        thisFraButtonName.Refresh
+    #End If
+
     ' Get the form's current scale factors.
-    y_scale = Me.ScaleHeight / prefsCurrentHeight
+    y_scale = Me.ScaleHeight / gblPrefsStartHeight
     
     If gblDpiAwareness = "1" Then
-        btnHelp.Top = fraGeneral.Top + fraGeneral.Height + (200 * y_scale)
+        btnHelp.Top = fraGeneral.Top + fraGeneral.Height + (100 * y_scale)
     Else
         btnHelp.Top = thisFraName.Top + thisFraName.Height + (200 * y_scale)
     End If
@@ -4817,15 +6599,16 @@ Private Sub picButtonMouseUpEvent(ByVal thisTabName As String, ByRef thisPicName
     chkEnableResizing.Top = btnSave.Top + 50
     'chkEnableResizing.Left = lblAsterix.Left
     
-    borderWidth = (Me.Width - Me.ScaleWidth) / 2
-    captionHeight = Me.Height - Me.ScaleHeight - borderWidth
+    BorderWidth = (widgetPrefs.Width - Me.ScaleWidth) / 2
+    captionHeight = widgetPrefs.Height - Me.ScaleHeight - BorderWidth
         
     ' under windows 10+ the internal window calcs are all wrong due to the bigger title bars
-    If prefsDynamicSizingFlg = False Then
+    If pvtPrefsDynamicSizingFlg = False Then
         padding = 200 ' add normal padding below the help button to position the bottom of the form
 
-        lastFormHeight = btnHelp.Top + btnHelp.Height + captionHeight + borderWidth + padding
-        Me.Height = lastFormHeight
+        pvtLastFormHeight = btnHelp.Top + btnHelp.Height + captionHeight + BorderWidth + padding
+        gblPrefsFormResizedInCode = True
+        widgetPrefs.Height = pvtLastFormHeight
     End If
     
     If gblDpiAwareness = "0" Then
@@ -4850,73 +6633,6 @@ End Sub
 
 
 
-
-''---------------------------------------------------------------------------------------
-'' Procedure : scrollFrameDownward
-'' Author    : beededea
-'' Date      : 02/05/2023
-'' Purpose   : unused as the scrolling causes blinking, will reduce the interval and re-test
-''---------------------------------------------------------------------------------------
-''
-'Private Sub scrollFrameDownward(ByVal frameToextend As Frame, ByVal fromPosition As Integer, ByVal toPosition As Integer)
-'
-'    Dim useloop As Integer: useloop = 0
-'    Dim currentHeight As Long: currentHeight = 0
-'    Dim loopEnd As Long: loopEnd = 0
-'    Dim frmCount  As Integer: frmCount = 0
-'    Dim frameCount  As Integer: frameCount = 0
-'    Dim stepAmount  As Integer: stepAmount = 0
-'
-'   On Error GoTo scrollFrameDownward_Error
-'
-'    currentHeight = fromPosition
-'    If toPosition > fromPosition Then
-'            loopEnd = toPosition - fromPosition
-'            stepAmount = 1
-'    Else
-'            loopEnd = fromPosition - toPosition
-'            stepAmount = -1
-'    End If
-'    For useloop = 1 To loopEnd
-'        frameToextend.Height = currentHeight
-'        If stepAmount = 1 Then
-'            currentHeight = currentHeight + 1
-'            If currentHeight >= toPosition Then
-'                currentHeight = toPosition
-'                Exit For
-'            End If
-'        End If
-'        If stepAmount = -1 Then
-'            currentHeight = currentHeight - 1
-'            If currentHeight <= toPosition Then
-'                currentHeight = toPosition
-'                Exit For
-'            End If
-'        End If
-'
-'        frameCount = frameCount + 1
-'        If frameCount >= 50 Then
-'            frameCount = 0
-'            frameToextend.Refresh
-'        End If
-'
-'        frmCount = frmCount + 1
-'        If frmCount >= 500 Then
-'            frmCount = 0
-'            widgetPrefs.Refresh
-'        End If
-'    Next useloop
-'
-'   On Error GoTo 0
-'   Exit Sub
-'
-'scrollFrameDownward_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure scrollFrameDownward of Form widgetPrefs"
-'
-'End Sub
-
-
 '---------------------------------------------------------------------------------------
 ' Procedure : themeTimer_Timer
 ' Author    : beededea
@@ -4929,10 +6645,12 @@ Private Sub themeTimer_Timer()
     Dim SysClr As Long: SysClr = 0
 
     On Error GoTo themeTimer_Timer_Error
+    
+    If widgetPrefs.IsVisible = False Then Exit Sub
 
     SysClr = GetSysColor(COLOR_BTNFACE)
 
-    If SysClr <> storeThemeColour Then
+    If SysClr <> gblStoreThemeColour Then
         Call setThemeColour
     End If
 
@@ -4951,7 +6669,7 @@ End Sub
 ' Procedure : mnuCoffee_Click
 ' Author    : beededea
 ' Date      : 13/02/2019
-' Purpose   : main menu item to buy the developer a coffee
+' Purpose   : main menu item to buy the developer a coffee from the prefs-specific pop-up menu
 '---------------------------------------------------------------------------------------
 '
 Private Sub mnuCoffee_Click()
@@ -4972,7 +6690,7 @@ End Sub
 ' Procedure : mnuLicenceA_Click
 ' Author    : beededea
 ' Date      : 17/08/2022
-' Purpose   : menu option to show licence
+' Purpose   : menu option to show licence from the prefs-specific pop-up menu
 '---------------------------------------------------------------------------------------
 '
 Private Sub mnuLicenceA_Click()
@@ -5000,7 +6718,7 @@ End Sub
 ' Procedure : mnuSupport_Click
 ' Author    : beededea
 ' Date      : 13/02/2019
-' Purpose   : menu option to open support page
+' Purpose   : menu option to open support page from the prefs-specific pop-up menu
 '---------------------------------------------------------------------------------------
 '
 Private Sub mnuSupport_Click()
@@ -5020,8 +6738,24 @@ End Sub
 
 
 
+'---------------------------------------------------------------------------------------
+' Procedure : mnuClosePreferences_Click
+' Author    : beededea
+' Date      : 06/09/2024
+' Purpose   : right click close option from the prefs-specific pop-up menu
+'---------------------------------------------------------------------------------------
+'
 Private Sub mnuClosePreferences_Click()
+   On Error GoTo mnuClosePreferences_Click_Error
+
     Call btnClose_Click
+
+   On Error GoTo 0
+   Exit Sub
+
+mnuClosePreferences_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure mnuClosePreferences_Click of Form widgetPrefs"
 End Sub
 
 
@@ -5029,7 +6763,7 @@ End Sub
 ' Procedure : mnuAuto_Click
 ' Author    : beededea
 ' Date      : 19/05/2020
-' Purpose   :
+' Purpose   : right click auto theme option from the prefs-specific pop-up menu
 '---------------------------------------------------------------------------------------
 '
 Private Sub mnuAuto_Click()
@@ -5063,7 +6797,7 @@ End Sub
 ' Procedure : mnuDark_Click
 ' Author    : beededea
 ' Date      : 19/05/2020
-' Purpose   :
+' Purpose   : right click dark theme option from the prefs-specific pop-up menu
 '---------------------------------------------------------------------------------------
 '
 Private Sub mnuDark_Click()
@@ -5091,7 +6825,7 @@ End Sub
 ' Procedure : mnuLight_Click
 ' Author    : beededea
 ' Date      : 19/05/2020
-' Purpose   :
+' Purpose   : right click light theme option from the prefs-specific pop-up menu
 '---------------------------------------------------------------------------------------
 '
 Private Sub mnuLight_Click()
@@ -5124,7 +6858,7 @@ End Sub
 ' Procedure : setThemeShade
 ' Author    : beededea
 ' Date      : 06/05/2023
-' Purpose   : set the theme shade, Windows classic dark/new lighter theme colours
+' Purpose   : set the theme shade, Windows classic dark/new lighter theme colours from the prefs-specific pop-up menu
 '---------------------------------------------------------------------------------------
 '
 Private Sub setThemeShade(ByVal redC As Integer, ByVal greenC As Integer, ByVal blueC As Integer)
@@ -5168,8 +6902,6 @@ Private Sub setThemeShade(ByVal redC As Integer, ByVal greenC As Integer, ByVal 
     txtAboutText.BackColor = RGB(redC, greenC, blueC)
     sliSamplingInterval.BackColor = RGB(redC, greenC, blueC)
     
-    frmMultiCore.BackColor = RGB(redC, greenC, blueC)
-    
     sPutINISetting "Software\PzCPUGauge", "skinTheme", gblSkinTheme, gblSettingsFile
 
     On Error GoTo 0
@@ -5201,7 +6933,7 @@ Private Sub setThemeColour()
     Dim SysClr As Long: SysClr = 0
     
    On Error GoTo setThemeColour_Error
-   'If debugflg = 1  Then Debug.Print "%setThemeColour"
+   'If gblDebugFlg = 1  Then Debug.Print "%setThemeColour"
 
     If IsThemeActive() = False Then
         'MsgBox "Windows Classic Theme detected"
@@ -5219,7 +6951,7 @@ Private Sub setThemeColour()
         mnuLight.Caption = "Light Theme Enabled"
     End If
 
-    storeThemeColour = SysClr
+    gblStoreThemeColour = SysClr
 
    On Error GoTo 0
    Exit Sub
@@ -5245,7 +6977,7 @@ Private Sub adjustPrefsTheme()
             Call setThemeShade(240, 240, 240)
         End If
     Else
-        If classicThemeCapable = True Then
+        If gblClassicThemeCapable = True Then
             mnuAuto.Caption = "Auto Theme Enabled - Click to Disable"
             themeTimer.Enabled = True
         Else
@@ -5253,6 +6985,8 @@ Private Sub adjustPrefsTheme()
             Call setModernThemeColours
         End If
     End If
+    
+    ' ' fGauge.RotateBusyTimer = True
 
    On Error GoTo 0
    Exit Sub
@@ -5267,7 +7001,7 @@ End Sub
 ' Procedure : setModernThemeColours
 ' Author    : beededea
 ' Date      : 02/05/2023
-' Purpose   :
+' Purpose   : by 'modern theme' we mean the very light indeed almost white background to standard Windows forms...
 '---------------------------------------------------------------------------------------
 '
 Private Sub setModernThemeColours()
@@ -5276,7 +7010,7 @@ Private Sub setModernThemeColours()
     
     On Error GoTo setModernThemeColours_Error
     
-    'Pz EarthPrefs.mnuAuto.Caption = "Auto Theme Selection Cannot be Enabled"
+    'the widgetPrefs.mnuAuto.Caption = "Auto Theme Selection Cannot be Enabled"
 
     'MsgBox "Windows Alternate Theme detected"
     SysClr = GetSysColor(COLOR_BTNFACE)
@@ -5301,7 +7035,7 @@ End Sub
 ' Procedure : loadHigherResPrefsImages
 ' Author    : beededea
 ' Date      : 18/06/2023
-' Purpose   :
+' Purpose   : load the images for the classic or high brightness themes
 '---------------------------------------------------------------------------------------
 '
 Private Sub loadHigherResPrefsImages()
@@ -5309,12 +7043,39 @@ Private Sub loadHigherResPrefsImages()
     On Error GoTo loadHigherResPrefsImages_Error
       
     If Me.WindowState = vbMinimized Then Exit Sub
+    
+'
+'    If dynamicSizingFlg = False Then
+'        Exit Sub
+'    End If
+'
+'    If Me.Width < 10500 Then
+'        topIconWidth = 600
+'    End If
+'
+'    If Me.Width >= 10500 And Me.Width < 12000 Then 'Me.Height / ratio ' maintain the aspect ratio
+'        topIconWidth = 730
+'    End If
+'
+'    If Me.Width >= 12000 And Me.Width < 13500 Then 'Me.Height / ratio ' maintain the aspect ratio
+'        topIconWidth = 834
+'    End If
+'
+'    If Me.Width >= 13500 And Me.Width < 15000 Then 'Me.Height / ratio ' maintain the aspect ratio
+'        topIconWidth = 940
+'    End If
+'
+'    If Me.Width >= 15000 Then 'Me.Height / ratio ' maintain the aspect ratio
+'        topIconWidth = 1010
+'    End If
         
     If mnuDark.Checked = True Then
         Call setPrefsIconImagesDark
     Else
         Call setPrefsIconImagesLight
     End If
+    
+    ' ' fGauge.RotateBusyTimer = True
     
    On Error GoTo 0
    Exit Sub
@@ -5327,24 +7088,24 @@ End Sub
 
 
 '---------------------------------------------------------------------------------------
-' Procedure : positionTimer_Timer
+' Procedure : tmrWritePosition_Timer
 ' Author    : beededea
 ' Date      : 27/05/2023
 ' Purpose   : periodically read the prefs form position and store
 '---------------------------------------------------------------------------------------
 '
-Private Sub positionTimer_Timer()
+Private Sub tmrWritePosition_Timer()
     ' save the current X and y position of this form to allow repositioning when restarting
-    On Error GoTo positionTimer_Timer_Error
+    On Error GoTo tmrWritePosition_Timer_Error
    
-    If widgetPrefs.IsVisible = True Then Call writePrefsPosition
+    If widgetPrefs.IsVisible = True Then Call writePrefsPositionAndSize
 
    On Error GoTo 0
    Exit Sub
 
-positionTimer_Timer_Error:
+tmrWritePosition_Timer_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure positionTimer_Timer of Form widgetPrefs"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrWritePosition_Timer of Form widgetPrefs"
 
 End Sub
 
@@ -5354,22 +7115,22 @@ End Sub
 ' Procedure : chkEnableResizing_Click
 ' Author    : beededea
 ' Date      : 27/05/2023
-' Purpose   :
+' Purpose   : toggle to enable sizing when in low DPI aware mode
 '---------------------------------------------------------------------------------------
 '
 Private Sub chkEnableResizing_Click()
    On Error GoTo chkEnableResizing_Click_Error
 
     If chkEnableResizing.Value = 1 Then
-        prefsDynamicSizingFlg = True
+        pvtPrefsDynamicSizingFlg = True
         txtPrefsFontCurrentSize.Visible = True
-        lblCurrentFontsTab.Visible = True
-        'Call writePrefsPosition
+        'lblCurrentFontsTab.Visible = True
+        'Call writePrefsPositionAndSize
         chkEnableResizing.Caption = "Disable Corner Resizing"
     Else
-        prefsDynamicSizingFlg = False
+        pvtPrefsDynamicSizingFlg = False
         txtPrefsFontCurrentSize.Visible = False
-        lblCurrentFontsTab.Visible = False
+        'lblCurrentFontsTab.Visible = False
         Unload widgetPrefs
         Me.Show
         Call readPrefsPosition
@@ -5387,10 +7148,7 @@ chkEnableResizing_Click_Error:
 
 End Sub
 
-Private Sub chkEnableResizing_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    If gblEnableBalloonTooltips = "1" Then CreateToolTip chkEnableResizing.hwnd, "This allows you to resize the whole prefs window by dragging the bottom right corner of the window. It provides an alternative method of supporting high DPI screens.", _
-                  TTIconInfo, "Help on Resizing", , , , True
-End Sub
+
  
 
 
@@ -5399,13 +7157,13 @@ End Sub
 ' Procedure : setframeHeights
 ' Author    : beededea
 ' Date      : 28/05/2023
-' Purpose   :
+' Purpose   : set the frame heights to manual sizes for the low DPI mode as per the YWE prefs
 '---------------------------------------------------------------------------------------
 '
 Private Sub setframeHeights()
    On Error GoTo setframeHeights_Error
 
-    If prefsDynamicSizingFlg = True Then
+    If pvtPrefsDynamicSizingFlg = True Then
         fraGeneral.Height = fraAbout.Height
         fraFonts.Height = fraAbout.Height
         fraConfig.Height = fraAbout.Height
@@ -5424,22 +7182,28 @@ Private Sub setframeHeights()
     
         'If gblDpiAwareness = "1" Then
             ' save the initial positions of ALL the controls on the prefs form
-            Call SaveSizes(widgetPrefs, prefsControlPositions(), prefsCurrentWidth, prefsCurrentHeight)
+            Call SaveSizes(widgetPrefs, prefsControlPositions(), gblPrefsStartWidth, gblPrefsStartHeight)
         'End If
     Else
-        fraGeneral.Height = 5400
-        fraConfig.Height = 6632
-        fraSounds.Height = 1992
+        fraGeneral.Height = 7737
+        fraConfig.Height = 8259
+        fraSounds.Height = 3985
         fraPosition.Height = 7544
-        fraFonts.Height = 4481
-        fraWindow.Height = 6388
+        fraFonts.Height = 4533
+        
+        ' the lowest window controls are not displayed on a single monitor
+        If gblMonitorCount > 1 Then
+            fraWindow.Height = 8138
+            fraWindowInner.Height = 7500
+        Else
+            fraWindow.Height = 6586
+            fraWindowInner.Height = 6000
+        End If
+
         fraDevelopment.Height = 6297
         fraAbout.Height = 8700
     End If
     
-    
-
-
    On Error GoTo 0
    Exit Sub
 
@@ -5455,30 +7219,123 @@ End Sub
 ' Procedure : setPrefsIconImagesDark
 ' Author    : beededea
 ' Date      : 22/06/2023
-' Purpose   :
+' Purpose   : set the bright images for the grey classic theme
 '---------------------------------------------------------------------------------------
 '
 Private Sub setPrefsIconImagesDark()
     
     On Error GoTo setPrefsIconImagesDark_Error
     
-    Set imgGeneral.Picture = Cairo.ImageList("general-icon-dark").Picture
-    Set imgConfig.Picture = Cairo.ImageList("config-icon-dark").Picture
-    Set imgFonts.Picture = Cairo.ImageList("font-icon-dark").Picture
-    Set imgSounds.Picture = Cairo.ImageList("sounds-icon-dark").Picture
-    Set imgPosition.Picture = Cairo.ImageList("position-icon-dark").Picture
-    Set imgDevelopment.Picture = Cairo.ImageList("development-icon-dark").Picture
-    Set imgWindow.Picture = Cairo.ImageList("windows-icon-dark").Picture
-    Set imgAbout.Picture = Cairo.ImageList("about-icon-dark").Picture
+'    #If TWINBASIC Then
 '
-    Set imgGeneralClicked.Picture = Cairo.ImageList("general-icon-dark-clicked").Picture
-    Set imgConfigClicked.Picture = Cairo.ImageList("config-icon-dark-clicked").Picture
-    Set imgFontsClicked.Picture = Cairo.ImageList("font-icon-dark-clicked").Picture
-    Set imgSoundsClicked.Picture = Cairo.ImageList("sounds-icon-dark-clicked").Picture
-    Set imgPositionClicked.Picture = Cairo.ImageList("position-icon-dark-clicked").Picture
-    Set imgDevelopmentClicked.Picture = Cairo.ImageList("development-icon-dark-clicked").Picture
-    Set imgWindowClicked.Picture = Cairo.ImageList("windows-icon-dark-clicked").Picture
-    Set imgAboutClicked.Picture = Cairo.ImageList("about-icon-dark-clicked").Picture
+'        Set imgGeneral.Picture = LoadPicture(App.path & "\Resources\images\general-icon-dark-1010.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgConfig.Picture = LoadPicture(App.path & "\Resources\images\config-icon-dark-1010.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgFonts.Picture = LoadPicture(App.path & "\Resources\images\font-icon-dark-1010.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgSounds.Picture = LoadPicture(App.path & "\Resources\images\sounds-icon-dark-1010.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgPosition.Picture = LoadPicture(App.path & "\Resources\images\position-icon-dark-1010.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgDevelopment.Picture = LoadPicture(App.path & "\Resources\images\development-icon-dark-1010.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgWindow.Picture = LoadPicture(App.path & "\Resources\images\windows-icon-dark-1010.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgAbout.Picture = LoadPicture(App.path & "\Resources\images\about-icon-dark-1010.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'    '
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgGeneralClicked.Picture = LoadPicture(App.path & "\Resources\images\general-icon-dark-600-clicked.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgConfigClicked.Picture = LoadPicture(App.path & "\Resources\images\config-icon-dark-600-clicked.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgFontsClicked.Picture = LoadPicture(App.path & "\Resources\images\font-icon-dark-600-clicked.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgSoundsClicked.Picture = LoadPicture(App.path & "\Resources\images\sounds-icon-dark-600-clicked.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgPositionClicked.Picture = LoadPicture(App.path & "\Resources\images\position-icon-dark-600-clicked.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgDevelopmentClicked.Picture = LoadPicture(App.path & "\Resources\images\development-icon-dark-600-clicked.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgWindowClicked.Picture = LoadPicture(App.path & "\Resources\images\windows-icon-dark-600-clicked.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgAboutClicked.Picture = LoadPicture(App.path & "\Resources\images\about-icon-dark-600-clicked.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'
+'    #Else
+        
+        Set imgGeneral.Picture = Cairo.ImageList("general-icon-dark").Picture
+        ' fGauge.RotateBusyTimer = True
+    
+        Set imgConfig.Picture = Cairo.ImageList("config-icon-dark").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+'        Set imgConfig.Picture = LoadPicture(App.path & "\Resources\images\config-icon-dark-1010.jpg")
+'        ' fGauge.RotateBusyTimer = True
+        
+        Set imgFonts.Picture = Cairo.ImageList("font-icon-dark").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgSounds.Picture = Cairo.ImageList("sounds-icon-dark").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgPosition.Picture = Cairo.ImageList("position-icon-dark").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgDevelopment.Picture = Cairo.ImageList("development-icon-dark").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgWindow.Picture = Cairo.ImageList("windows-icon-dark").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgAbout.Picture = Cairo.ImageList("about-icon-dark").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+    '
+        Set imgGeneralClicked.Picture = Cairo.ImageList("general-icon-dark-clicked").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgConfigClicked.Picture = Cairo.ImageList("config-icon-dark-clicked").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgFontsClicked.Picture = Cairo.ImageList("font-icon-dark-clicked").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgSoundsClicked.Picture = Cairo.ImageList("sounds-icon-dark-clicked").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgPositionClicked.Picture = Cairo.ImageList("position-icon-dark-clicked").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgDevelopmentClicked.Picture = Cairo.ImageList("development-icon-dark-clicked").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgWindowClicked.Picture = Cairo.ImageList("windows-icon-dark-clicked").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgAboutClicked.Picture = Cairo.ImageList("about-icon-dark-clicked").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+    
+'    #End If
 
    On Error GoTo 0
    Exit Sub
@@ -5494,55 +7351,120 @@ End Sub
 ' Procedure : setPrefsIconImagesLight
 ' Author    : beededea
 ' Date      : 22/06/2023
-' Purpose   :
+' Purpose   : set the bright images for the bright 'modern' theme
 '---------------------------------------------------------------------------------------
 '
 Private Sub setPrefsIconImagesLight()
     
-    'Dim resourcePath As String: resourcePath = vbNullString
-    
     On Error GoTo setPrefsIconImagesLight_Error
     
-    'resourcePath = App.path & "\resources\images"
-    
-'    If fFExists(resourcePath & "\config-icon-light-" & thisIconWidth & ".jpg") Then imgConfig.Picture = LoadPicture(resourcePath & "\config-icon-light-" & thisIconWidth & ".jpg")
-'    If fFExists(resourcePath & "\general-icon-light-" & thisIconWidth & ".jpg") Then imgGeneral.Picture = LoadPicture(resourcePath & "\general-icon-light-" & thisIconWidth & ".jpg")
-'    If fFExists(resourcePath & "\position-icon-light-" & thisIconWidth & ".jpg") Then imgPosition.Picture = LoadPicture(resourcePath & "\position-icon-light-" & thisIconWidth & ".jpg")
-'    If fFExists(resourcePath & "\font-icon-light-" & thisIconWidth & ".jpg") Then imgFonts.Picture = LoadPicture(resourcePath & "\font-icon-light-" & thisIconWidth & ".jpg")
-'    If fFExists(resourcePath & "\development-icon-light-" & thisIconWidth & ".jpg") Then imgDevelopment.Picture = LoadPicture(resourcePath & "\development-icon-light-" & thisIconWidth & ".jpg")
-'    If fFExists(resourcePath & "\sounds-icon-light-" & thisIconWidth & ".jpg") Then imgSounds.Picture = LoadPicture(resourcePath & "\sounds-icon-light-" & thisIconWidth & ".jpg")
-'    If fFExists(resourcePath & "\windows-icon-light-" & thisIconWidth & ".jpg") Then imgWindow.Picture = LoadPicture(resourcePath & "\windows-icon-light-" & thisIconWidth & ".jpg")
-'    If fFExists(resourcePath & "\about-icon-light-" & thisIconWidth & ".jpg") Then imgAbout.Picture = LoadPicture(resourcePath & "\about-icon-light-" & thisIconWidth & ".jpg")
+'    #If TWINBASIC Then
 '
-'    ' I may yet create clicked versions of all the icons but not now!
-'    If fFExists(resourcePath & "\config-icon-light-600-clicked.jpg") Then imgConfigClicked.Picture = LoadPicture(resourcePath & "\config-icon-light-600-clicked.jpg")
-'    If fFExists(resourcePath & "\general-icon-light-600-clicked.jpg") Then imgGeneralClicked.Picture = LoadPicture(resourcePath & "\general-icon-light-600-clicked.jpg")
-'    If fFExists(resourcePath & "\position-icon-light-600-clicked.jpg") Then imgPositionClicked.Picture = LoadPicture(resourcePath & "\position-icon-light-600-clicked.jpg")
-'    If fFExists(resourcePath & "\font-icon-light-600-clicked.jpg") Then imgFontsClicked.Picture = LoadPicture(resourcePath & "\font-icon-light-600-clicked.jpg")
-'    If fFExists(resourcePath & "\development-icon-light-600-clicked.jpg") Then imgDevelopmentClicked.Picture = LoadPicture(resourcePath & "\development-icon-light-600-clicked.jpg")
-'    If fFExists(resourcePath & "\sounds-icon-light-600-clicked.jpg") Then imgSoundsClicked.Picture = LoadPicture(resourcePath & "\sounds-icon-light-600-clicked.jpg")
-'    If fFExists(resourcePath & "\windows-icon-light-600-clicked.jpg") Then imgWindowClicked.Picture = LoadPicture(resourcePath & "\windows-icon-light-600-clicked.jpg")
-'    If fFExists(resourcePath & "\about-icon-light-600-clicked.jpg") Then imgAboutClicked.Picture = LoadPicture(resourcePath & "\about-icon-light-600-clicked.jpg")
-
-    
-    Set imgGeneral.Picture = Cairo.ImageList("general-icon-light").Picture
-    Set imgConfig.Picture = Cairo.ImageList("config-icon-light").Picture
-    Set imgFonts.Picture = Cairo.ImageList("font-icon-light").Picture
-    Set imgSounds.Picture = Cairo.ImageList("sounds-icon-light").Picture
-    Set imgPosition.Picture = Cairo.ImageList("position-icon-light").Picture
-    Set imgDevelopment.Picture = Cairo.ImageList("development-icon-light").Picture
-    Set imgWindow.Picture = Cairo.ImageList("windows-icon-light").Picture
-    Set imgAbout.Picture = Cairo.ImageList("about-icon-light").Picture
+'        Set imgGeneral.Picture = LoadPicture(App.path & "\Resources\images\general-icon-light-1010.jpg")
+'        ' fGauge.RotateBusyTimer = True
 '
-    Set imgGeneralClicked.Picture = Cairo.ImageList("general-icon-light-clicked").Picture
-    Set imgConfigClicked.Picture = Cairo.ImageList("config-icon-light-clicked").Picture
-    Set imgFontsClicked.Picture = Cairo.ImageList("font-icon-light-clicked").Picture
-    Set imgSoundsClicked.Picture = Cairo.ImageList("sounds-icon-light-clicked").Picture
-    Set imgPositionClicked.Picture = Cairo.ImageList("position-icon-light-clicked").Picture
-    Set imgDevelopmentClicked.Picture = Cairo.ImageList("development-icon-light-clicked").Picture
-    Set imgWindowClicked.Picture = Cairo.ImageList("windows-icon-light-clicked").Picture
-    Set imgAboutClicked.Picture = Cairo.ImageList("about-icon-light-clicked").Picture
-
+'        Set imgConfig.Picture = LoadPicture(App.path & "\Resources\images\config-icon-light-1010.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgFonts.Picture = LoadPicture(App.path & "\Resources\images\font-icon-light-1010.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgSounds.Picture = LoadPicture(App.path & "\Resources\images\sounds-icon-light-1010.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgPosition.Picture = LoadPicture(App.path & "\Resources\images\position-icon-light-1010.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgDevelopment.Picture = LoadPicture(App.path & "\Resources\images\development-icon-light-1010.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgWindow.Picture = LoadPicture(App.path & "\Resources\images\windows-icon-light-1010.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgAbout.Picture = LoadPicture(App.path & "\Resources\images\about-icon-light-1010.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgGeneralClicked.Picture = LoadPicture(App.path & "\Resources\images\general-icon-light-600-clicked.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgConfigClicked.Picture = LoadPicture(App.path & "\Resources\images\config-icon-light-600-clicked.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgFontsClicked.Picture = LoadPicture(App.path & "\Resources\images\font-icon-light-600-clicked.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgSoundsClicked.Picture = LoadPicture(App.path & "\Resources\images\sounds-icon-light-600-clicked.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgPositionClicked.Picture = LoadPicture(App.path & "\Resources\images\position-icon-light-600-clicked.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgDevelopmentClicked.Picture = LoadPicture(App.path & "\Resources\images\development-icon-light-600-clicked.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgWindowClicked.Picture = LoadPicture(App.path & "\Resources\images\windows-icon-light-600-clicked.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'        Set imgAboutClicked.Picture = LoadPicture(App.path & "\Resources\images\about-icon-light-600-clicked.jpg")
+'        ' fGauge.RotateBusyTimer = True
+'
+'
+'    #Else
+        
+        Set imgGeneral.Picture = Cairo.ImageList("general-icon-light").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgConfig.Picture = Cairo.ImageList("config-icon-light").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        
+'        Set imgConfig.Picture = LoadPicture(App.path & "\Resources\images\config-icon-light-1010.jpg")
+'        ' fGauge.RotateBusyTimer = True
+        
+        Set imgFonts.Picture = Cairo.ImageList("font-icon-light").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgSounds.Picture = Cairo.ImageList("sounds-icon-light").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgPosition.Picture = Cairo.ImageList("position-icon-light").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgDevelopment.Picture = Cairo.ImageList("development-icon-light").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgWindow.Picture = Cairo.ImageList("windows-icon-light").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgAbout.Picture = Cairo.ImageList("about-icon-light").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgGeneralClicked.Picture = Cairo.ImageList("general-icon-light-clicked").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgConfigClicked.Picture = Cairo.ImageList("config-icon-light-clicked").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgFontsClicked.Picture = Cairo.ImageList("font-icon-light-clicked").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgSoundsClicked.Picture = Cairo.ImageList("sounds-icon-light-clicked").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgPositionClicked.Picture = Cairo.ImageList("position-icon-light-clicked").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgDevelopmentClicked.Picture = Cairo.ImageList("development-icon-light-clicked").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgWindowClicked.Picture = Cairo.ImageList("windows-icon-light-clicked").Picture
+        ' fGauge.RotateBusyTimer = True
+        
+        Set imgAboutClicked.Picture = Cairo.ImageList("about-icon-light-clicked").Picture
+        ' fGauge.RotateBusyTimer = True
+            
+'    #End If
+        
    On Error GoTo 0
    Exit Sub
 
@@ -5552,432 +7474,46 @@ setPrefsIconImagesLight_Error:
 
 End Sub
 
-Private Sub txtPrefsFontCurrentSize_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
-    If gblEnableBalloonTooltips = "1" Then CreateToolTip txtPrefsFontCurrentSize.hwnd, "This is a read-only text box. It displays the current font as set when dynamic form resizing is enabled. Drag the right hand corner of the window downward and the form will auto-resize. This text box will display the resized font currently in operation for informational purposes only.", _
-                  TTIconInfo, "Help on Setting the Font size Dynamically", , , , True
-End Sub
 
 
 
 
 '---------------------------------------------------------------------------------------
-' Procedure : populateTimeZoneRegions
+' Procedure : tmrPrefsMonitorSaveHeight_Timer
 ' Author    : beededea
-' Date      : 13/08/2023
-' Purpose   :
+' Date      : 26/08/2024
+' Purpose   : save the current height of this form to allow resizing when restarting or placing on another monitor
 '---------------------------------------------------------------------------------------
 '
-'Private Sub populateTimeZoneRegions()
-'
-'   Dim cnt As Long: cnt = 0
-'
-'  'do a lookup for the Bias entered
-'   On Error GoTo populateTimeZoneRegions_Error
-'
-'   With lstTimezoneRegions
-'      .Clear
-'
-'      For cnt = LBound(tzinfo) To UBound(tzinfo)
-'
-'         If tzinfo(cnt).bias = txtBias.Text Then
-'
-'            .AddItem tzinfo(cnt).TimeZoneName
-'            'Debug.Print tzinfo(cnt).TimeZoneName
-'         End If
-'
-'      Next
-'
-'   End With
-'
-'   On Error GoTo 0
-'   Exit Sub
-'
-'populateTimeZoneRegions_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure populateTimeZoneRegions of Form widgetPrefs"
-'
-'End Sub
+Private Sub tmrPrefsMonitorSaveHeight_Timer()
 
-' Randy Birch for his timezone code - http://vbnet.mvps.org/index.html?code/locale/timezonebiaslookup.htm
-
-'---------------------------------------------------------------------------------------
-' Procedure : fGetTimeZoneArray
-' Author    : Randy Birch for his timezone code - http://vbnet.mvps.org/index.html?code/locale/timezonebiaslookup.htm
-' Date      : 13/08/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
-'
-'Private Function fGetTimeZoneArray() As Boolean
-'
-'   Dim success As Long
-'   Dim dwIndex As Long
-'   Dim cbName As Long
-'   Dim hKey As Long
-'   Dim sName As String
-'   Dim dwSubKeys As Long
-'   Dim dwMaxSubKeyLen As Long
-'   Dim ft As FILETIME
-'
-'  'Win9x and WinNT have a slightly
-'  'different registry structure.
-'  'Determine the operating system and
-'  'set a module variable to the
-'  'correct key.
-'
-'  'assume OS is win9x
-'   On Error GoTo fGetTimeZoneArray_Error
-'
-'   sTzKey = SKEY_9X
-'
-'  'see if OS is NT, and if so,
-'  'use assign the correct key
-'   If IsWinNTPlus Then sTzKey = SKEY_NT
-'
-'  'BiasAdjust is used when calculating the
-'  'bias values retrieved from the registry.
-'  'If True, the reg value retrieved represents
-'  'the location's bias with the bias for
-'  'daylight saving time added. If false, the
-'  'location's bias is returned with the
-'  'standard bias adjustment applied (this
-'  'is usually 0). Doing this allows us to
-'  'use the bias returned from a TIME_OF_DAY_INFO
-'  'call as the correct lookup value dependant
-'  'on whether the world is currently on
-'  'daylight saving time or not. For those
-'  'countries not recognizing daylight saving
-'  'time, the registry daylight bias will be 0,
-'  'therefore proper lookup will not be affected.
-'  'Not considered (nor can such be coded) are those
-'  'special areas within a given country that do
-'  'not recognize daylight saving time, even
-'  'when the rest of the country does (like
-'  'Saskatchewan in Canada).
-'   BiasAdjust = IsDaylightSavingTime()
-'
-'  'open the timezone registry key
-'   hKey = OpenRegKey(HKEY_LOCAL_MACHINE, sTzKey)
-'
-'   If hKey <> 0 Then
-'
-'     'query registry for the number of
-'     'entries under that key
-'      If RegQueryInfoKey(hKey, _
-'                         0&, _
-'                         0&, _
-'                         0, _
-'                         dwSubKeys, _
-'                         dwMaxSubKeyLen&, _
-'                         0&, _
-'                         0&, _
-'                         0&, _
-'                         0&, _
-'                         0&, _
-'                         ft) = ERROR_SUCCESS Then
-'
-'
-'        'create a UDT array for the time zone info
-'         ReDim tzinfo(0 To dwSubKeys - 1) As TZ_LOOKUP_DATA
-'
-'         dwIndex = 0
-'         cbName = 32
-'
-'         Do
-'
-'           'pad a string for the returned value
-'            sName = Space$(cbName)
-'            success = RegEnumKey(hKey, dwIndex, sName, cbName)
-'
-'            If success = ERROR_SUCCESS Then
-'
-'              'add the data to the appropriate
-'              'tzinfo UDT array members
-'               With tzinfo(dwIndex)
-'
-'                  .TimeZoneName = TrimNull(sName)
-'                  .bias = GetTZBiasByName(.TimeZoneName)
-'                  .IsDST = BiasAdjust
-'
-'                 'is also added to a list
-'                  'cmbMainDaylightSaving.AddItem .bias & vbTab & .TimeZoneName
-'
-'               End With
-'
-'            End If
-'
-'           'increment the loop...
-'            dwIndex = dwIndex + 1
-'
-'        '...and continue while the reg
-'        'call returns success.
-'         Loop While success = ERROR_SUCCESS
-'
-'        'clean up
-'         RegCloseKey hKey
-'
-'        'return success if, well, successful
-'         fGetTimeZoneArray = dwIndex > 0
-'
-'      End If  'If RegQueryInfoKey
-'
-'   Else
-'
-'     'could not open reg key
-'      fGetTimeZoneArray = False
-'
-'   End If  'If hKey
-'
-'   On Error GoTo 0
-'   Exit Function
-'
-'fGetTimeZoneArray_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure fGetTimeZoneArray of Form widgetPrefs"
-'
-'End Function
-
-
-'---------------------------------------------------------------------------------------
-' Procedure : IsDaylightSavingTime
-' Author    : Randy Birch for his timezone code - http://vbnet.mvps.org/index.html?code/locale/timezonebiaslookup.htm
-' Date      : 13/08/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
-'
-'Private Function IsDaylightSavingTime() As Boolean
-'
-'   Dim tzi As TIME_ZONE_INFORMATION
-'
-'   On Error GoTo IsDaylightSavingTime_Error
-'
-'   IsDaylightSavingTime = GetTimeZoneInformation(tzi) = TIME_ZONE_ID_DAYLIGHT
-'
-'   On Error GoTo 0
-'   Exit Function
-'
-'IsDaylightSavingTime_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure IsDaylightSavingTime of Form widgetPrefs"
-'
-'End Function
-
-
-'---------------------------------------------------------------------------------------
-' Procedure : GetTZBiasByName
-' Author    : Randy Birch for his timezone code - http://vbnet.mvps.org/index.html?code/locale/timezonebiaslookup.htm
-' Date      : 13/08/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
-'
-'Private Function GetTZBiasByName(sTimeZone As String) As Long
-'
-'   Dim rtzi As REG_TIME_ZONE_INFORMATION
-'   Dim hKey As Long
-'
-'  'open the passed time zone key
-'   On Error GoTo GetTZBiasByName_Error
-'
-'   hKey = OpenRegKey(HKEY_LOCAL_MACHINE, sTzKey & "\" & sTimeZone)
-'
-'   If hKey <> 0 Then
-'
-'     'obtain the data from the TZI member
-'      If RegQueryValueEx(hKey, _
-'                         "TZI", _
-'                         0&, _
-'                         ByVal 0&, _
-'                         rtzi, _
-'                         Len(rtzi)) = ERROR_SUCCESS Then
-'
-'        'tweak the Bias when in Daylight Saving time
-'         If BiasAdjust Then
-'            GetTZBiasByName = (rtzi.bias + rtzi.DaylightBias)
-'         Else
-'            GetTZBiasByName = (rtzi.bias + rtzi.StandardBias) 'StandardBias is usually 0
-'         End If
-'
-'      End If
-'
-'      RegCloseKey hKey
-'
-'   End If
-'
-'   On Error GoTo 0
-'   Exit Function
-'
-'GetTZBiasByName_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure GetTZBiasByName of Form widgetPrefs"
-'
-'End Function
-
-
-'---------------------------------------------------------------------------------------
-' Procedure : TrimNull
-' Author    : Randy Birch for his timezone code - http://vbnet.mvps.org/index.html?code/locale/timezonebiaslookup.htm
-' Date      : 13/08/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
-'
-'Private Function TrimNull(startstr As String) As String
-'
-'   On Error GoTo TrimNull_Error
-'
-'   TrimNull = Left$(startstr, lstrlenW(StrPtr(startstr)))
-'
-'   On Error GoTo 0
-'   Exit Function
-'
-'TrimNull_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure TrimNull of Form widgetPrefs"
-'
-'End Function
-
-
-'---------------------------------------------------------------------------------------
-' Procedure : OpenRegKey
-' Author    : Randy Birch for his timezone code - http://vbnet.mvps.org/index.html?code/locale/timezonebiaslookup.htm
-' Date      : 13/08/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
-'
-'Private Function OpenRegKey(ByVal hKey As Long, _
-'                            ByVal lpSubKey As String) As Long
-'
-'  Dim hSubKey As Long
-'
-'   On Error GoTo OpenRegKey_Error
-'
-'  If RegOpenKeyEx(hKey, _
-'                  lpSubKey, _
-'                  0, _
-'                  KEY_READ, _
-'                  hSubKey) = ERROR_SUCCESS Then
-'
-'      OpenRegKey = hSubKey
-'
-'  End If
-'
-'   On Error GoTo 0
-'   Exit Function
-'
-'OpenRegKey_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure OpenRegKey of Form widgetPrefs"
-'
-'End Function
-
-
-'---------------------------------------------------------------------------------------
-' Procedure : IsWinNTPlus
-' Author    : Randy Birch for his timezone code - http://vbnet.mvps.org/index.html?code/locale/timezonebiaslookup.htm
-' Date      : 13/08/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
-'
-'Private Function IsWinNTPlus() As Boolean
-'
-'   'returns True if running WinNT or better
-'   On Error GoTo IsWinNTPlus_Error
-'
-'   #If Win32 Then
-'
-'      Dim OSV As OSVERSIONINFO
-'
-'      OSV.OSVSize = Len(OSV)
-'
-'      If GetVersionEx(OSV) = 1 Then
-'
-'         IsWinNTPlus = (OSV.PlatformID = VER_PLATFORM_WIN32_NT)
-'
-'      End If
-'
-'   #End If
-'
-'   On Error GoTo 0
-'   Exit Function
-'
-'IsWinNTPlus_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure IsWinNTPlus of Form widgetPrefs"
-'
-'End Function
-
-'---------------------------------------------------------------------------------------
-' Procedure : lblDragCorner_MouseDown
-' Author    : beededea
-' Date      : 07/10/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
-'
-Private Sub lblDragCorner_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
-
-    On Error GoTo lblDragCorner_MouseDown_Error
+    'Dim prefsFormMonitorID As Long: prefsFormMonitorID = 0
     
-    If Button = vbLeftButton Then
-        ReleaseCapture
-        SendMessage Me.hwnd, WM_NCLBUTTONDOWN, HTBOTTOMRIGHT, 0
+    On Error GoTo tmrPrefsMonitorSaveHeight_Timer_Error
+    
+    If widgetPrefs.IsVisible = False Then Exit Sub
+
+    If LTrim$(gblMultiMonitorResize) <> "2" Then Exit Sub
+ 
+    If prefsMonitorStruct.IsPrimary = True Then
+        gblPrefsPrimaryHeightTwips = Trim$(CStr(widgetPrefs.Height))
+        sPutINISetting "Software\PzCPUGauge", "prefsPrimaryHeightTwips", gblPrefsPrimaryHeightTwips, gblSettingsFile
+    Else
+        gblPrefsSecondaryHeightTwips = Trim$(CStr(widgetPrefs.Height))
+        sPutINISetting "Software\PzCPUGauge", "prefsSecondaryHeightTwips", gblPrefsSecondaryHeightTwips, gblSettingsFile
     End If
-    
-    On Error GoTo 0
-    Exit Sub
-
-lblDragCorner_MouseDown_Error:
-
-     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure lblDragCorner_MouseDown of Form widgetPrefs"
-
-End Sub
-
-'---------------------------------------------------------------------------------------
-' Procedure : lblDragCorner_MouseMove
-' Author    : beededea
-' Date      : 07/10/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
-'
-Private Sub lblDragCorner_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
-
-    On Error GoTo lblDragCorner_MouseMove_Error
-
-    lblDragCorner.MousePointer = 8
-
-    On Error GoTo 0
-    Exit Sub
-
-lblDragCorner_MouseMove_Error:
-
-     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure lblDragCorner_MouseMove of Form widgetPrefs"
-   
-End Sub
-
-
-'---------------------------------------------------------------------------------------
-' Procedure : setPrefsFormZordering
-' Author    : beededea
-' Date      : 02/05/2023
-' Purpose   : set the z-ordering of the window
-'---------------------------------------------------------------------------------------
-'
-Public Sub setPrefsFormZordering()
-
-   On Error GoTo setPrefsFormZordering_Error
-
-'    If Val(gblWindowLevel) = 0 Then
-'        Call SetWindowPos(Me.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
-'    ElseIf Val(gblWindowLevel) = 1 Then
-'        Call SetWindowPos(Me.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
-'    ElseIf Val(gblWindowLevel) = 2 Then
-'        Call SetWindowPos(Me.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
-'    End If
 
    On Error GoTo 0
    Exit Sub
 
-setPrefsFormZordering_Error:
+tmrPrefsMonitorSaveHeight_Timer_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure setPrefsFormZordering of Module modMain"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrPrefsMonitorSaveHeight_Timer of Form widgetPrefs"
+
 End Sub
+
+
+
 
 
 '\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
@@ -5988,5 +7524,7 @@ End Sub
 '\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 '--- If you're Subclassing: Move the CODEFOLD STORAGE up as needed ---
 '/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+
+
 
 

@@ -1,4 +1,11 @@
 Attribute VB_Name = "modResize"
+'---------------------------------------------------------------------------------------
+' Module    : modResize
+' Author    : beededea
+' Date      : 14/02/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+
 Option Explicit
 
 '@IgnoreModule IntegerDataType, ModuleWithoutFolder
@@ -11,8 +18,8 @@ Public Type ControlPositionType
 End Type
 
 Public prefsControlPositions() As ControlPositionType
-Public prefsCurrentWidth As Double
-Public prefsCurrentHeight As Double
+Public gblPrefsStartWidth As Double
+Public gblPrefsStartHeight As Double
 
 Public msgBoxAControlPositions() As ControlPositionType
 Public msgBoxACurrentWidth As Double
@@ -36,7 +43,8 @@ Public Sub resizeControls(ByRef thisForm As Form, ByRef m_ControlPositions() As 
     ' Get the form's current scale factors.
     x_scale = thisForm.ScaleWidth / m_FormWid
     y_scale = thisForm.ScaleHeight / m_FormHgt
-    
+
+    ' Position the controls.
     I = 1
 
     For Each Ctrl In thisForm.Controls
