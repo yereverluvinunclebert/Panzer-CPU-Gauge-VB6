@@ -4,7 +4,7 @@ Version=1.9.11
 [GENERAL_INFO]
 CompanyName=BrickMoon Interplanetary Enterprises
 ProductName=Panzer-CPU-Gauge-VB6
-ProductVersion=0.1.12 beta
+ProductVersion=0.1.13 beta
 ProductDescription=A FOSS Dieselpunk CPU Gauge Widget for Windows
 ProductURL=https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-VB6
 CopyrightNotice=Copyright (c) 2025
