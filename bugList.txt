@@ -33,6 +33,12 @@ DONE
 ' closing via menu - done
 ' save position correctly - done
 
+' renamed the restart.exe to make it less generically-named and worrying to a/v tools
+' mouseDown on the gauge disables sampling timer and improves responsiveness.
+' restarted timers on mouseUp
+' add the test and error message for RC6 DLL registration
+
+
 ' -oOo-
 
 TODO

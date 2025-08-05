@@ -746,6 +746,9 @@ Private Sub tmrSampler_Timer()
         SDeg = (cpuPercent * 3) + 30
     End If
     
+    'restore the sampling rate if it has been temporarily changed
+    tmrSampler.Interval = Val(mSamplingInterval) * 1000
+    
     W.Parent.Refresh
 
    On Error GoTo 0

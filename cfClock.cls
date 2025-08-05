@@ -734,6 +734,13 @@ Private Sub gaugeForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, B
     On Error GoTo gaugeForm_MouseUp_Error
     
     frmTimer.tmrScreenResolution.Interval = 4500
+    
+    ' on the mouseDown event the sampling timers are stopped as extracting the CPU details causes a reduction in responsiveness to user input, this restores the sampling timers
+    ' on a specified interval that will be corrected later by the timer itself when it next runs.
+    
+    overlayWidget.tmrSampler.Interval = 3000
+    overlayWidget.tmrSampler.Enabled = True
+    overlayWidget.tmrAnimator.Enabled = True
 
     ' save the form x,y position whenever the globe/form is dragged
     Call saveMainRCFormPosition
@@ -880,6 +887,12 @@ Private Sub gaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer,
     frmTimer.tmrScreenResolution.Enabled = False
     frmTimer.tmrScreenResolution.Interval = 200
     frmTimer.tmrScreenResolution.Enabled = True
+        
+    ' on the mouseDown event the sampling timers are stopped as extracting the CPU details causes a reduction in responsiveness to user input, these timers are restarted during the
+    ' gaugeForm_MouseUp event when the user lets go of the gauge.
+    
+    overlayWidget.tmrSampler.Enabled = False
+    overlayWidget.tmrAnimator.Enabled = False
     
     If Button = vbRightButton Then
         gblMenuOccurred = True
