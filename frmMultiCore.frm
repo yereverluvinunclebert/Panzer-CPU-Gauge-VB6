@@ -233,8 +233,12 @@ Private Sub updateCoreDisplay()
     On Error GoTo updateCoreDisplay_Error
     
     tmrMultiCore.Interval = Val(gblSamplingInterval) * 1000
+    
+    If tmrMultiCore.Enabled = False Then Exit Sub
 
     Update_Cpu_Usage dblCpuUsage()
+    
+    If tmrMultiCore.Enabled = False Then Exit Sub
     
     ' display usage per core
     For I = 0 To NumCores

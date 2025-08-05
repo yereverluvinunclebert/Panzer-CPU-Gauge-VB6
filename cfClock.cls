@@ -741,6 +741,9 @@ Private Sub gaugeForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, B
     overlayWidget.tmrSampler.Interval = 3000
     overlayWidget.tmrSampler.Enabled = True
     overlayWidget.tmrAnimator.Enabled = True
+    
+    frmMultiCore.tmrMultiCore.Interval = 3000
+    frmMultiCore.tmrMultiCore.Enabled = True
 
     ' save the form x,y position whenever the globe/form is dragged
     Call saveMainRCFormPosition
@@ -893,6 +896,7 @@ Private Sub gaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer,
     
     overlayWidget.tmrSampler.Enabled = False
     overlayWidget.tmrAnimator.Enabled = False
+    frmMultiCore.tmrMultiCore.Enabled = False
     
     If Button = vbRightButton Then
         gblMenuOccurred = True
