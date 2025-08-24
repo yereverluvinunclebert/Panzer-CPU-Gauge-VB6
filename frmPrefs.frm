@@ -2711,7 +2711,7 @@ Private Sub setPrefsHeight()
     If gblDpiAwareness = "1" Then
         gblPrefsFormResizedInCode = True
         If gblPrefsPrimaryHeightTwips < gblPhysicalScreenHeightTwips Then
-            widgetPrefs.Height = CLng(gblPrefsPrimaryHeightTwips) ' 16450
+            widgetPrefs.Height = CLng(gblPrefsPrimaryHeightTwips) ' on first run this also sets the prefs to one third of the screen height (value set in readPrefsPosition)
         Else
             widgetPrefs.Height = gblPhysicalScreenHeightTwips - 1000
         End If
@@ -4619,12 +4619,7 @@ Private Sub populatePrefsComboBoxes()
     cmbMultiMonitorResize.ItemData(1) = 1
     cmbMultiMonitorResize.AddItem "Manual Sizing Stored Per Monitor", 2
     cmbMultiMonitorResize.ItemData(2) = 2
-    
-    cmbTickSwitchPref.AddItem "Tick", 0
-    cmbTickSwitchPref.ItemData(0) = 0
-    cmbTickSwitchPref.AddItem "Smooth", 1
-    cmbTickSwitchPref.ItemData(1) = 1
-    
+      
     cmbTickSwitchPref.AddItem "Flick", 0
     cmbTickSwitchPref.ItemData(0) = 0
     cmbTickSwitchPref.AddItem "Smooth", 1
