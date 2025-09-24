@@ -466,6 +466,7 @@ Public gblPrefsFormResizedInCode As Boolean
 Public gblFGaugeAvailable As Boolean
 
 Public gblCodingEnvironment As String
+Public gblRichClientEnvironment As String
 
 Public widgetPrefsOldHeight As Long
 Public widgetPrefsOldWidth As Long
@@ -1645,27 +1646,27 @@ Public Sub setRichClientTooltips()
         overlayWidget.Widget.ToolTip = "Use CTRL+mouse scrollwheel up/down to resize."
         aboutWidget.Widget.ToolTip = "Click on me to make me go away."
         
-        fGauge.gaugeForm.Widgets("housing/tickbutton").Widget.ToolTip = "Choose smooth movement or regular ticks"
-        fGauge.gaugeForm.Widgets("housing/helpbutton").Widget.ToolTip = "Press for a little help"
-        fGauge.gaugeForm.Widgets("housing/startbutton").Widget.ToolTip = "Press to restart (when stopped)"
-        fGauge.gaugeForm.Widgets("housing/stopbutton").Widget.ToolTip = "Press to stop clock operation."
-        fGauge.gaugeForm.Widgets("housing/middlebutton").Widget.ToolTip = "This button switches on the mutli-core display. If your CPU has more than one core a bar will be shown, displaying the CPU for each core."
-        fGauge.gaugeForm.Widgets("housing/lockbutton").Widget.ToolTip = "Press to lock the widget in place"
-        fGauge.gaugeForm.Widgets("housing/prefsbutton").Widget.ToolTip = "Press to open the widget preferences"
-        fGauge.gaugeForm.Widgets("housing/surround").Widget.ToolTip = "Ctrl + mouse scrollwheel up/down to resize, you can also drag me to a new position."
+        fGauge.gaugeForm.Widgets("tickbutton").Widget.ToolTip = "Choose smooth movement or regular ticks"
+        fGauge.gaugeForm.Widgets("helpbutton").Widget.ToolTip = "Press for a little help"
+        fGauge.gaugeForm.Widgets("startbutton").Widget.ToolTip = "Press to restart (when stopped)"
+        fGauge.gaugeForm.Widgets("stopbutton").Widget.ToolTip = "Press to stop clock operation."
+        fGauge.gaugeForm.Widgets("middlebutton").Widget.ToolTip = "This button switches on the mutli-core display. If your CPU has more than one core a bar will be shown, displaying the CPU for each core."
+        fGauge.gaugeForm.Widgets("lockbutton").Widget.ToolTip = "Press to lock the widget in place"
+        fGauge.gaugeForm.Widgets("prefsbutton").Widget.ToolTip = "Press to open the widget preferences"
+        fGauge.gaugeForm.Widgets("surround").Widget.ToolTip = "Ctrl + mouse scrollwheel up/down to resize, you can also drag me to a new position."
         
     Else
         overlayWidget.Widget.ToolTip = vbNullString
         aboutWidget.Widget.ToolTip = vbNullString
         
-        fGauge.gaugeForm.Widgets("housing/tickbutton").Widget.ToolTip = vbNullString
-        fGauge.gaugeForm.Widgets("housing/helpbutton").Widget.ToolTip = vbNullString
-        fGauge.gaugeForm.Widgets("housing/startbutton").Widget.ToolTip = vbNullString
-        fGauge.gaugeForm.Widgets("housing/stopbutton").Widget.ToolTip = vbNullString
-        fGauge.gaugeForm.Widgets("housing/middlebutton").Widget.ToolTip = vbNullString
-        fGauge.gaugeForm.Widgets("housing/lockbutton").Widget.ToolTip = vbNullString
-        fGauge.gaugeForm.Widgets("housing/prefsbutton").Widget.ToolTip = vbNullString
-        fGauge.gaugeForm.Widgets("housing/surround").Widget.ToolTip = vbNullString
+        fGauge.gaugeForm.Widgets("tickbutton").Widget.ToolTip = vbNullString
+        fGauge.gaugeForm.Widgets("helpbutton").Widget.ToolTip = vbNullString
+        fGauge.gaugeForm.Widgets("startbutton").Widget.ToolTip = vbNullString
+        fGauge.gaugeForm.Widgets("stopbutton").Widget.ToolTip = vbNullString
+        fGauge.gaugeForm.Widgets("middlebutton").Widget.ToolTip = vbNullString
+        fGauge.gaugeForm.Widgets("lockbutton").Widget.ToolTip = vbNullString
+        fGauge.gaugeForm.Widgets("prefsbutton").Widget.ToolTip = vbNullString
+        fGauge.gaugeForm.Widgets("surround").Widget.ToolTip = vbNullString
    
    End If
     
@@ -1985,8 +1986,10 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     
     ' stop all RC6 timers using properties to access the private timers
     
-    overlayWidget.tmrSampler.Enabled = False
-    overlayWidget.tmrAnimator.Enabled = False
+'    overlayWidget.tmrSampler.Enabled = False
+'    overlayWidget.tmrAnimator.Enabled = False
+    
+    Call stopAllCpuTimers
 
     'unload the RC6 widgets on the RC6 forms first
     
@@ -2354,14 +2357,14 @@ Public Sub toggleWidgetLock()
         If widgetPrefs.IsLoaded = True Then widgetPrefs.chkPreventDragging.Value = 0
         gblPreventDragging = "0"
         overlayWidget.Locked = False
-        fGauge.gaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(gblOpacity) / 100
+        fGauge.gaugeForm.Widgets("lockbutton").Widget.Alpha = Val(gblOpacity) / 100
     Else
         ' Call ' screenWrite("Widget locked in place")
         menuForm.mnuLockWidget.Checked = True
         If widgetPrefs.IsLoaded = True Then widgetPrefs.chkPreventDragging.Value = 1
         overlayWidget.Locked = True
         gblPreventDragging = "1"
-        fGauge.gaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
+        fGauge.gaugeForm.Widgets("lockbutton").Widget.Alpha = 0
     End If
     
     fGauge.gaugeForm.Refresh
@@ -2628,9 +2631,11 @@ End Sub
 '             this avoids that scenario.
 '---------------------------------------------------------------------------------------
 '
-Public Function ArrayString(ParamArray tokens()) As String()
+Public Function ArrayString(ParamArray tokens()) As String() ' always byval
     On Error GoTo ArrayString_Error
-
+    
+    Dim Arr() As String
+    
     ReDim Arr(UBound(tokens)) As String
     Dim I As Long
     For I = 0 To UBound(tokens)

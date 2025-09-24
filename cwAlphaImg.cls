@@ -68,9 +68,14 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
 
   If Cairo.ImageList.Exists(W.ImageKey) Then Set Srf = Cairo.ImageList(W.ImageKey) Else Exit Sub
     
-    CC.Operator = CAIRO_OPERATOR_CLEAR
-    CC.Paint 'clear the whole background of this Widgets underlying Surface via Clear-Operator
-    CC.Operator = CAIRO_OPERATOR_OVER 'switch back to the default-Operator
+    If gblRichClientEnvironment = "RC6" Then
+        ' Widgets are refreshed "from the ground up" in RC5 and not so in RC6
+        ' extra code NOT needed when using RC5 but now required in RC6 - starts
+        CC.Operator = CAIRO_OPERATOR_CLEAR
+        CC.Paint 'clear the whole background of this Widgets underlying Surface via Clear-Operator
+        CC.Operator = CAIRO_OPERATOR_OVER 'switch back to the default-Operator
+        ' extra code not needed when using RC5 but now required in RC6 - ends
+    End If
 
    CC.RenderSurfaceContent Srf, 0, 0, W.Width, W.Height, , W.Alpha 'render the current W.ImageKey-Surface (as loaded priorily into the ImageList)
 

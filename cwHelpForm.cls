@@ -258,8 +258,8 @@ Private Sub tmrHelpFadeOut_Timer()
         fMain.helpForm.Hide
     
         fileToPlay = "till.wav"
-        If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
-            PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+        If gblEnableSounds = "1" And fFExists(App.Path & "\resources\sounds\" & fileToPlay) Then
+            playSound App.Path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
         End If
         
         Exit Sub
@@ -306,12 +306,14 @@ Private Sub Draw(ByRef CC As cCairoContext, ByVal dx As Single, ByVal dy As Sing
     
     CC.ScaleDrawings mZoom, mZoom
 
-    ' Widgets are refreshed "from the ground up" in RC5 and not so in RC6
-    ' extra code NOT needed when using RC5 but now required in RC6 - starts
-    CC.Operator = CAIRO_OPERATOR_CLEAR
-    CC.Paint 'clear the whole background of this Widgets underlying Surface via Clear-Operator
-    CC.Operator = CAIRO_OPERATOR_OVER 'switch back to the default-Operator
-    ' extra code not needed when using RC5 but now required in RC6 - ends
+    If gblRichClientEnvironment = "RC6" Then
+        ' Widgets are refreshed "from the ground up" in RC5 and not so in RC6
+        ' extra code NOT needed when using RC5 but now required in RC6 - starts
+        CC.Operator = CAIRO_OPERATOR_CLEAR
+        CC.Paint 'clear the whole background of this Widgets underlying Surface via Clear-Operator
+        CC.Operator = CAIRO_OPERATOR_OVER 'switch back to the default-Operator
+        ' extra code not needed when using RC5 but now required in RC6 - ends
+    End If
     
     CC.RenderSurfaceContent "help", helpxo, helpyo, , , , mMyOpacity
         

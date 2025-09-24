@@ -12,6 +12,347 @@ Begin VB.Form widgetPrefs
    ScaleMode       =   0  'User
    ScaleWidth      =   8880
    Visible         =   0   'False
+   Begin VB.Frame fraAbout 
+      Caption         =   "About"
+      Height          =   8580
+      Left            =   270
+      TabIndex        =   88
+      Top             =   1155
+      Visible         =   0   'False
+      Width           =   8520
+      Begin VB.CommandButton btnGithubHome 
+         Caption         =   "Github &Home"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   6765
+         Style           =   1  'Graphical
+         TabIndex        =   153
+         ToolTipText     =   "Here you can visit the update location where you can download new versions of the programs."
+         Top             =   300
+         Width           =   1470
+      End
+      Begin VB.CommandButton btnDonate 
+         Caption         =   "&Donate"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   6765
+         Style           =   1  'Graphical
+         TabIndex        =   89
+         ToolTipText     =   "Opens a browser window and sends you to our donate page on Amazon"
+         Top             =   1800
+         Width           =   1470
+      End
+      Begin VB.Frame fraScrollbarCover 
+         BorderStyle     =   0  'None
+         Height          =   6225
+         Left            =   7980
+         TabIndex        =   102
+         Top             =   2205
+         Width           =   420
+      End
+      Begin VB.TextBox txtAboutText 
+         Appearance      =   0  'Flat
+         BackColor       =   &H8000000F&
+         BorderStyle     =   0  'None
+         Height          =   6135
+         Left            =   300
+         MultiLine       =   -1  'True
+         ScrollBars      =   2  'Vertical
+         TabIndex        =   101
+         Text            =   "frmPrefs.frx":25CA
+         Top             =   2205
+         Width           =   7935
+      End
+      Begin VB.CommandButton btnAboutDebugInfo 
+         Caption         =   "Debug &Info."
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   6765
+         Style           =   1  'Graphical
+         TabIndex        =   92
+         ToolTipText     =   "This gives access to the debugging tool"
+         Top             =   1425
+         Width           =   1470
+      End
+      Begin VB.CommandButton btnFacebook 
+         Caption         =   "&Facebook"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   6765
+         Style           =   1  'Graphical
+         TabIndex        =   91
+         ToolTipText     =   "This will link you to the Rocket/Steamy dock users Group"
+         Top             =   1050
+         Width           =   1470
+      End
+      Begin VB.CommandButton btnUpdate 
+         Caption         =   "&Update"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   6765
+         Style           =   1  'Graphical
+         TabIndex        =   90
+         ToolTipText     =   "Here you can visit the update location where you can download new versions of the programs."
+         Top             =   675
+         Width           =   1470
+      End
+      Begin VB.Label lblRevisionNum 
+         BackStyle       =   0  'Transparent
+         Caption         =   "0"
+         BeginProperty Font 
+            Name            =   "Centurion Light SF"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   240
+         Left            =   3150
+         TabIndex        =   105
+         Top             =   510
+         Width           =   525
+      End
+      Begin VB.Label lblMajorVersion 
+         BackStyle       =   0  'Transparent
+         Caption         =   "0"
+         BeginProperty Font 
+            Name            =   "Centurion Light SF"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   240
+         Left            =   2430
+         TabIndex        =   104
+         Top             =   510
+         Width           =   225
+      End
+      Begin VB.Label lblAbout 
+         Caption         =   "Dean Beedell © 2023"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   225
+         Index           =   8
+         Left            =   2415
+         TabIndex        =   100
+         Top             =   855
+         Width           =   2175
+      End
+      Begin VB.Label lblAbout 
+         Caption         =   "Originator"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   225
+         Index           =   7
+         Left            =   750
+         TabIndex        =   99
+         Top             =   855
+         Width           =   795
+      End
+      Begin VB.Label lblAbout 
+         Caption         =   "Version"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   225
+         Index           =   6
+         Left            =   765
+         TabIndex        =   98
+         Top             =   495
+         Width           =   795
+      End
+      Begin VB.Label lblAbout 
+         Caption         =   "Dean Beedell © 2023"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   225
+         Index           =   5
+         Left            =   2415
+         TabIndex        =   97
+         Top             =   1215
+         Width           =   2175
+      End
+      Begin VB.Label lblAbout 
+         Caption         =   "Current Developer"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   225
+         Index           =   4
+         Left            =   750
+         TabIndex        =   96
+         Top             =   1215
+         Width           =   1470
+      End
+      Begin VB.Label lblAbout 
+         Caption         =   "Target"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   225
+         Index           =   3
+         Left            =   750
+         TabIndex        =   95
+         Top             =   1560
+         Width           =   1470
+      End
+      Begin VB.Label lblAbout 
+         Caption         =   "Windows Vista, 7, 8, 10  && 11"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   225
+         Index           =   2
+         Left            =   2415
+         TabIndex        =   94
+         Top             =   1560
+         Width           =   3735
+      End
+      Begin VB.Label lblAbout 
+         Caption         =   "(32bit WoW64)"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   225
+         Index           =   1
+         Left            =   3495
+         TabIndex        =   93
+         Top             =   510
+         Width           =   3120
+      End
+      Begin VB.Label lblDotDot 
+         BackStyle       =   0  'Transparent
+         Caption         =   ".        ."
+         BeginProperty Font 
+            Name            =   "Centurion Light SF"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   225
+         Left            =   2610
+         TabIndex        =   106
+         Top             =   510
+         Width           =   495
+      End
+      Begin VB.Label lblMinorVersion 
+         BackStyle       =   0  'Transparent
+         Caption         =   "0"
+         BeginProperty Font 
+            Name            =   "Centurion Light SF"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   240
+         Left            =   2790
+         TabIndex        =   103
+         Top             =   510
+         Width           =   225
+      End
+   End
    Begin VB.Frame fraGeneral 
       Caption         =   "General"
       ForeColor       =   &H80000008&
@@ -39,9 +380,9 @@ Begin VB.Form widgetPrefs
          End
          Begin VB.ComboBox cmbTickSwitchPref 
             Height          =   315
-            ItemData        =   "frmPrefs.frx":25CA
+            ItemData        =   "frmPrefs.frx":3581
             Left            =   2010
-            List            =   "frmPrefs.frx":25CC
+            List            =   "frmPrefs.frx":3583
             Style           =   2  'Dropdown List
             TabIndex        =   166
             Top             =   1560
@@ -211,7 +552,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgDevelopment 
          Height          =   600
          Left            =   150
-         Picture         =   "frmPrefs.frx":25CE
+         Picture         =   "frmPrefs.frx":3585
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -219,7 +560,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgDevelopmentClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":2B86
+         Picture         =   "frmPrefs.frx":3B3D
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -259,7 +600,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgAbout 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":2F0C
+         Picture         =   "frmPrefs.frx":3EC3
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -267,7 +608,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgAboutClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":3494
+         Picture         =   "frmPrefs.frx":444B
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -292,7 +633,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgConfig 
          Height          =   600
          Left            =   165
-         Picture         =   "frmPrefs.frx":397F
+         Picture         =   "frmPrefs.frx":4936
          Stretch         =   -1  'True
          Top             =   240
          Width           =   600
@@ -300,7 +641,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgConfigClicked 
          Height          =   600
          Left            =   165
-         Picture         =   "frmPrefs.frx":3F5E
+         Picture         =   "frmPrefs.frx":4F15
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -325,7 +666,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgPosition 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":4463
+         Picture         =   "frmPrefs.frx":541A
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -333,7 +674,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgPositionClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":4A34
+         Picture         =   "frmPrefs.frx":59EB
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -378,7 +719,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgSounds 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":4DD2
+         Picture         =   "frmPrefs.frx":5D89
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -386,7 +727,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgSoundsClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":5391
+         Picture         =   "frmPrefs.frx":6348
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -426,7 +767,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgWindow 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":5861
+         Picture         =   "frmPrefs.frx":6818
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -434,7 +775,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgWindowClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":5D2B
+         Picture         =   "frmPrefs.frx":6CE2
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -458,7 +799,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgFonts 
          Height          =   600
          Left            =   180
-         Picture         =   "frmPrefs.frx":60D7
+         Picture         =   "frmPrefs.frx":708E
          Stretch         =   -1  'True
          Top             =   195
          Width           =   600
@@ -466,7 +807,7 @@ Begin VB.Form widgetPrefs
       Begin VB.Image imgFontsClicked 
          Height          =   600
          Left            =   180
-         Picture         =   "frmPrefs.frx":662D
+         Picture         =   "frmPrefs.frx":75E4
          Stretch         =   -1  'True
          Top             =   195
          Width           =   600
@@ -482,7 +823,7 @@ Begin VB.Form widgetPrefs
          Appearance      =   0  'Flat
          Height          =   600
          Left            =   165
-         Picture         =   "frmPrefs.frx":6AC6
+         Picture         =   "frmPrefs.frx":7A7D
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -502,347 +843,6 @@ Begin VB.Form widgetPrefs
          Stretch         =   -1  'True
          Top             =   240
          Width           =   600
-      End
-   End
-   Begin VB.Frame fraAbout 
-      Caption         =   "About"
-      Height          =   8580
-      Left            =   240
-      TabIndex        =   88
-      Top             =   1155
-      Visible         =   0   'False
-      Width           =   8520
-      Begin VB.CommandButton btnGithubHome 
-         Caption         =   "Github &Home"
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   360
-         Left            =   6765
-         Style           =   1  'Graphical
-         TabIndex        =   153
-         ToolTipText     =   "Here you can visit the update location where you can download new versions of the programs."
-         Top             =   300
-         Width           =   1470
-      End
-      Begin VB.CommandButton btnDonate 
-         Caption         =   "&Donate"
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   360
-         Left            =   6765
-         Style           =   1  'Graphical
-         TabIndex        =   89
-         ToolTipText     =   "Opens a browser window and sends you to our donate page on Amazon"
-         Top             =   1800
-         Width           =   1470
-      End
-      Begin VB.Frame fraScrollbarCover 
-         BorderStyle     =   0  'None
-         Height          =   6225
-         Left            =   7980
-         TabIndex        =   102
-         Top             =   2205
-         Width           =   420
-      End
-      Begin VB.TextBox txtAboutText 
-         Appearance      =   0  'Flat
-         BackColor       =   &H8000000F&
-         BorderStyle     =   0  'None
-         Height          =   6135
-         Left            =   300
-         MultiLine       =   -1  'True
-         ScrollBars      =   2  'Vertical
-         TabIndex        =   101
-         Text            =   "frmPrefs.frx":8110
-         Top             =   2205
-         Width           =   7935
-      End
-      Begin VB.CommandButton btnAboutDebugInfo 
-         Caption         =   "Debug &Info."
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   360
-         Left            =   6765
-         Style           =   1  'Graphical
-         TabIndex        =   92
-         ToolTipText     =   "This gives access to the debugging tool"
-         Top             =   1425
-         Width           =   1470
-      End
-      Begin VB.CommandButton btnFacebook 
-         Caption         =   "&Facebook"
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   360
-         Left            =   6765
-         Style           =   1  'Graphical
-         TabIndex        =   91
-         ToolTipText     =   "This will link you to the Rocket/Steamy dock users Group"
-         Top             =   1050
-         Width           =   1470
-      End
-      Begin VB.CommandButton btnUpdate 
-         Caption         =   "&Update"
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   360
-         Left            =   6765
-         Style           =   1  'Graphical
-         TabIndex        =   90
-         ToolTipText     =   "Here you can visit the update location where you can download new versions of the programs."
-         Top             =   675
-         Width           =   1470
-      End
-      Begin VB.Label lblDotDot 
-         BackStyle       =   0  'Transparent
-         Caption         =   ".        ."
-         BeginProperty Font 
-            Name            =   "Centurion Light SF"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   225
-         Left            =   2940
-         TabIndex        =   106
-         Top             =   510
-         Width           =   495
-      End
-      Begin VB.Label lblRevisionNum 
-         BackStyle       =   0  'Transparent
-         Caption         =   "0"
-         BeginProperty Font 
-            Name            =   "Centurion Light SF"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   240
-         Left            =   3450
-         TabIndex        =   105
-         Top             =   510
-         Width           =   525
-      End
-      Begin VB.Label lblMajorVersion 
-         BackStyle       =   0  'Transparent
-         Caption         =   "0"
-         BeginProperty Font 
-            Name            =   "Centurion Light SF"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   240
-         Left            =   2730
-         TabIndex        =   104
-         Top             =   510
-         Width           =   225
-      End
-      Begin VB.Label lblMinorVersion 
-         BackStyle       =   0  'Transparent
-         Caption         =   "0"
-         BeginProperty Font 
-            Name            =   "Centurion Light SF"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   240
-         Left            =   3090
-         TabIndex        =   103
-         Top             =   510
-         Width           =   225
-      End
-      Begin VB.Label lblAbout 
-         Caption         =   "Dean Beedell © 2023"
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   225
-         Index           =   8
-         Left            =   2715
-         TabIndex        =   100
-         Top             =   855
-         Width           =   2175
-      End
-      Begin VB.Label lblAbout 
-         Caption         =   "Originator"
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   225
-         Index           =   7
-         Left            =   1050
-         TabIndex        =   99
-         Top             =   855
-         Width           =   795
-      End
-      Begin VB.Label lblAbout 
-         Caption         =   "Version"
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   225
-         Index           =   6
-         Left            =   1065
-         TabIndex        =   98
-         Top             =   495
-         Width           =   795
-      End
-      Begin VB.Label lblAbout 
-         Caption         =   "Dean Beedell © 2023"
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   225
-         Index           =   5
-         Left            =   2715
-         TabIndex        =   97
-         Top             =   1215
-         Width           =   2175
-      End
-      Begin VB.Label lblAbout 
-         Caption         =   "Current Developer"
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   225
-         Index           =   4
-         Left            =   1050
-         TabIndex        =   96
-         Top             =   1215
-         Width           =   1470
-      End
-      Begin VB.Label lblAbout 
-         Caption         =   "Target"
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   225
-         Index           =   3
-         Left            =   1050
-         TabIndex        =   95
-         Top             =   1560
-         Width           =   1470
-      End
-      Begin VB.Label lblAbout 
-         Caption         =   "Windows Vista, 7, 8, 10  && 11"
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   225
-         Index           =   2
-         Left            =   2715
-         TabIndex        =   94
-         Top             =   1560
-         Width           =   3735
-      End
-      Begin VB.Label lblAbout 
-         Caption         =   "(32bit WoW64)"
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   225
-         Index           =   1
-         Left            =   3900
-         TabIndex        =   93
-         Top             =   510
-         Width           =   2655
       End
    End
    Begin VB.Frame fraSounds 
@@ -2767,7 +2767,7 @@ End Sub
             On Error GoTo setVisualStyles_Error
 
             For Each Ctrl In widgetPrefs.Controls
-                If (TypeOf Ctrl Is textBox) Or (TypeOf Ctrl Is FileListBox) Or (TypeOf Ctrl Is ComboBox) Or (TypeOf Ctrl Is CheckBox) Or (TypeOf Ctrl Is OptionButton) Or (TypeOf Ctrl Is Frame) Or (TypeOf Ctrl Is ListBox) Then
+                If (TypeOf Ctrl Is CommandButton) Or (TypeOf Ctrl Is ListBox) Or (TypeOf Ctrl Is textBox) Or (TypeOf Ctrl Is FileListBox) Or (TypeOf Ctrl Is ComboBox) Or (TypeOf Ctrl Is CheckBox) Or (TypeOf Ctrl Is OptionButton) Or (TypeOf Ctrl Is Frame) Or (TypeOf Ctrl Is PictureBox) Or (TypeOf Ctrl Is Slider) Then
                     Ctrl.VisualStyles = False
                 End If
             Next
@@ -3809,7 +3809,7 @@ Private Sub positionPrefsFramesButtons()
     frameWidth = rightHandAlignment - frameLeft
     fraScrollbarCover.Left = rightHandAlignment - 690
     
-    widgetPrefs.Width = rightHandAlignment + leftHandGutterWidth + 75 ' (not quite sure why we need the 75 twips padding) ' this triggers a resize '
+    'widgetPrefs.Width = rightHandAlignment + leftHandGutterWidth + 75 ' (not quite sure why we need the 75 twips padding) ' this triggers a resize '
     
     ' 9053 start
     
@@ -6520,7 +6520,7 @@ Private Sub loadPrefsAboutText()
     lblMinorVersion.Caption = App.Minor
     lblRevisionNum.Caption = App.Revision
     
-    lblAbout(1).Caption = "(32bit WoW64 using " & gblCodingEnvironment & ")"
+    lblAbout(1).Caption = "(32bit WoW64 using " & gblCodingEnvironment & " + " & gblRichClientEnvironment & ")"
     
     Call LoadFileToTB(txtAboutText, App.Path & "\resources\txt\about.txt", False)
     

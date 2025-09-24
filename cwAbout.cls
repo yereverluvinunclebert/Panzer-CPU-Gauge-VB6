@@ -372,12 +372,14 @@ Private Sub Draw(ByRef CC As cCairoContext, ByVal dx As Single, ByVal dy As Sing
   
     CC.ScaleDrawings mZoom, mZoom
 
-    ' Widgets are refreshed "from the ground up" in RC5 and not so in RC6
-    ' extra code NOT needed when using RC5 but now required in RC6 - starts
-    CC.Operator = CAIRO_OPERATOR_CLEAR
-    CC.Paint 'clear the whole background of this Widgets underlying Surface via Clear-Operator
-    CC.Operator = CAIRO_OPERATOR_OVER 'switch back to the default-Operator
-    ' extra code not needed when using RC5 but now required in RC6 - ends
+    If gblRichClientEnvironment = "RC6" Then
+        ' Widgets are refreshed "from the ground up" in RC5 and not so in RC6
+        ' extra code NOT needed when using RC5 but now required in RC6 - starts
+        CC.Operator = CAIRO_OPERATOR_CLEAR
+        CC.Paint 'clear the whole background of this Widgets underlying Surface via Clear-Operator
+        CC.Operator = CAIRO_OPERATOR_OVER 'switch back to the default-Operator
+        ' extra code not needed when using RC5 but now required in RC6 - ends
+    End If
     
     CC.RenderSurfaceContent "about", aboutxo, aboutyo, , , , mMyOpacity
         
@@ -386,22 +388,16 @@ Private Sub Draw(ByRef CC As cCairoContext, ByVal dx As Single, ByVal dy As Sing
     W.FontName = gblGaugeFont
     W.ForeColor = vbBlack
     W.FontBold = True
-    W.FontSize = 11
+    W.FontSize = 9
 
     W.SelectFontSettingsInto CC
     
     If gblDpiAwareness = "0" Then
-        CC.DrawText 350, 0, dx, dy - 275, "version " & App.Major & "." & App.Minor & "." & App.Revision & " beta", , , 2, True, , mMyOpacity
+        CC.DrawText 320, 0, dx, dy - 275, gblRichClientEnvironment & " " & gblCodingEnvironment & " version " & App.Major & "." & App.Minor & "." & App.Revision & " beta", , , 2, True, , mMyOpacity
     Else
-        
-        #If TWINBASIC Then
-            CC.DrawText 125, -202, dx, dy, "TwinBasic", , , 2, True, , mMyOpacity
-        #Else
-            CC.DrawText 168, -202, dx, dy, "VB6", , , 2, True, , mMyOpacity
-        #End If
-        CC.DrawText 350, 0, dx, dy - 1020, "version " & App.Major & "." & App.Minor & "." & App.Revision & " beta", , , 2, True, , mMyOpacity
-        
+        CC.DrawText 320, 0, dx, dy - 1020, gblRichClientEnvironment & " " & gblCodingEnvironment & " version " & App.Major & "." & App.Minor & "." & App.Revision & " beta", , , 2, True, , mMyOpacity
     End If
+
     W.Refresh
 
    On Error GoTo 0

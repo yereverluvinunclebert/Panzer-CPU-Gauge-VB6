@@ -185,14 +185,14 @@ Public Sub InitFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
         overlayWidget.cyPerc = 0.4727272
     
      ' set the various widgets as WithEvents Variables
-'    Set tickbutton = gaugeForm.Widgets("housing/tickbutton").Widget
-'    Set helpbutton = gaugeForm.Widgets("housing/helpbutton").Widget
-'    Set startbutton = gaugeForm.Widgets("housing/startbutton").Widget
-'    Set stopbutton = gaugeForm.Widgets("housing/stopbutton").Widget
-'    Set middlebutton = gaugeForm.Widgets("housing/middlebutton").Widget
-'    Set lockbutton = gaugeForm.Widgets("housing/lockbutton").Widget
-'    Set prefsbutton = gaugeForm.Widgets("housing/prefsbutton").Widget
-'    Set surround = gaugeForm.Widgets("housing/surround").Widget
+'    Set tickbutton = gaugeForm.Widgets("tickbutton").Widget
+'    Set helpbutton = gaugeForm.Widgets("helpbutton").Widget
+'    Set startbutton = gaugeForm.Widgets("startbutton").Widget
+'    Set stopbutton = gaugeForm.Widgets("stopbutton").Widget
+'    Set middlebutton = gaugeForm.Widgets("middlebutton").Widget
+'    Set lockbutton = gaugeForm.Widgets("lockbutton").Widget
+'    Set prefsbutton = gaugeForm.Widgets("prefsbutton").Widget
+'    Set surround = gaugeForm.Widgets("surround").Widget
     
     On Error GoTo 0
    Exit Sub
@@ -230,23 +230,23 @@ Private Sub gaugeForm_BubblingEvent(ByRef Sender As Object, ByRef EventName As S
     ' set the balloon tooltips and perform other tasks onMouseMove, RC style tooltips are defined elsewhere
      If EventName = "W_MouseMove" Then
         Select Case LCase$(Sender.Widget.Key)
-            Case "housing/lockbutton"
+            Case "lockbutton"
                 If gblGaugeTooltips = "0" Then CreateToolTip gaugeForm.hWnd, "Click me to lock the widget in place. This lock can be released by clicking again on the lock button, or in the preferences. A locking sound will denote the button's operation.", _
                      TTIconInfo, gblWidgetName & " Lock Button Help", , , , True
-            Case "housing/prefsbutton"
+            Case "prefsbutton"
                 If gblGaugeTooltips = "0" Then CreateToolTip gaugeForm.hWnd, "Click me to open the preferences utility. The configuration of the widget is performed using the preference utility.", _
                      TTIconInfo, gblWidgetName & " Prefs Button Help", , , , True
-            Case "housing/tickbutton"
+            Case "tickbutton"
                 If gblGaugeTooltips = "0" Then CreateToolTip gaugeForm.hWnd, "Click here to toggle the pointer movement from once per interval to a more fluid, continuous movement.", _
                      TTIconInfo, gblWidgetName & " Tick Button Help", , , , True
-            Case "housing/middlebutton"
+            Case "middlebutton"
                 If gblGaugeTooltips = "0" Then CreateToolTip gaugeForm.hWnd, "This button switches on the mutli-core display. If your CPU has more than one core a bar will be shown, displaying the CPU for each core.", _
                      TTIconInfo, gblWidgetName & " Multi-Core Button Help", , , , True
-            Case "housing/stopbutton"
+            Case "stopbutton"
                 Call stopbutton_mouseMove(Sender)
-            Case "housing/startbutton"
+            Case "startbutton"
                 Call startbutton_mouseMove(Sender)
-            Case "housing/helpbutton"
+            Case "helpbutton"
                 If gblGaugeTooltips = "0" Then CreateToolTip gaugeForm.hWnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
                      TTIconInfo, gblWidgetName & " Help Button Help", , , , True
             Case Else
@@ -258,15 +258,15 @@ Private Sub gaugeForm_BubblingEvent(ByRef Sender As Object, ByRef EventName As S
     
     If EventName = "W_MouseDown" Then
         Select Case LCase$(Sender.Widget.Key)
-            Case "housing/lockbutton"
+            Case "lockbutton"
                 Call lockbutton_mouseDown(Sender)
-            Case "housing/prefsbutton"
+            Case "prefsbutton"
                 Call prefsbutton_mouseDown(Sender)
-            Case "housing/tickbutton"
+            Case "tickbutton"
                 Call tickbutton_mouseDown(Sender)
-            Case "housing/middlebutton"
+            Case "middlebutton"
                  Call middlebutton_mouseDown(Sender)
-            Case "housing/stopbutton"
+            Case "stopbutton"
                 Call stopbutton_mouseDown(Sender)
             Case Else
                 Debug.Print Sender.Widget.Key
@@ -275,11 +275,11 @@ Private Sub gaugeForm_BubblingEvent(ByRef Sender As Object, ByRef EventName As S
     
     If EventName = "W_MouseUp" Then
         Select Case LCase$(Sender.Widget.Key)
-            Case "housing/prefsbutton"
+            Case "prefsbutton"
                 Call prefsbutton_mouseUp(Sender)
-            Case "housing/middlebutton"
+            Case "middlebutton"
                 Call middlebutton_mouseUp(Sender)
-            Case "housing/stopbutton"
+            Case "stopbutton"
                 Call stopbutton_mouseUp(Sender)
             Case Else
                 Debug.Print Sender.Widget.Key
@@ -288,9 +288,9 @@ Private Sub gaugeForm_BubblingEvent(ByRef Sender As Object, ByRef EventName As S
     
     If EventName = "W_Click" Then
         Select Case LCase$(Sender.Widget.Key)
-            Case "housing/helpbutton"
+            Case "helpbutton"
                  Call helpbutton_click
-            Case "housing/startbutton"
+            Case "startbutton"
                  Call startbutton_click
             Case Else
                 Debug.Print Sender.Widget.Key
@@ -739,11 +739,10 @@ Private Sub gaugeForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, B
     ' on a specified interval that will be corrected later by the timer itself when it next runs.
     
     overlayWidget.tmrSampler.Interval = 3000
-    overlayWidget.tmrSampler.Enabled = True
-    overlayWidget.tmrAnimator.Enabled = True
     
-    frmMultiCore.tmrMultiCore.Interval = 3000
-    frmMultiCore.tmrMultiCore.Enabled = True
+    Call startAllCpuTimers
+    
+    frmTimer.tmrScreenResolution.Interval = 4500
 
     ' save the form x,y position whenever the globe/form is dragged
     Call saveMainRCFormPosition
@@ -777,23 +776,24 @@ End Sub
 Private Sub gaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
   Static x0 As Single, y0 As Single: If Button = 0 Then x0 = x: y0 = y 'just store the offsets when no button is down
   
-   On Error GoTo gaugeForm_MouseMove_Error
-    
-    If overlayWidget.Locked = True Then Exit Sub
-    If gblIgnoreMouse = "1" Then Exit Sub
-    If gblMenuOccurred = True Then
-        gblMenuOccurred = False
-        Exit Sub
-    End If
+    On Error GoTo gaugeForm_MouseMove_Error
 
     If Button = vbLeftButton And Not gaugeForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
+    
+        If overlayWidget.Locked = True Then Exit Sub
+        If gblIgnoreMouse = "1" Then Exit Sub
+    
+        If gblMenuOccurred = True Then
+            gblMenuOccurred = False
+            Exit Sub
+        End If
 
-      FX = (x - x0) * gaugeForm.WidgetRoot.Zoom + gaugeForm.Left
-      FY = (y - y0) * gaugeForm.WidgetRoot.Zoom + gaugeForm.Top
-      gaugeForm.Move FX, FY
+        FX = (x - x0) * gaugeForm.WidgetRoot.Zoom + gaugeForm.Left
+        FY = (y - y0) * gaugeForm.WidgetRoot.Zoom + gaugeForm.Top
+        gaugeForm.Move FX, FY
       
-      Debug.Print "FX " & FX
-      Debug.Print "FY " & FY
+'      Debug.Print "FX " & FX
+'      Debug.Print "FY " & FY
       
     End If
 
@@ -886,17 +886,18 @@ End Sub
 Private Sub gaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
    On Error GoTo gaugeForm_MouseDown_Error
 
+    ' on the mouseDown event the sampling timers are stopped as extracting the CPU details causes a reduction in responsiveness to user input, these timers are restarted during the
+    ' gaugeForm_MouseUp event when the user lets go of the gauge.
+    
+    Call stopAllCpuTimers
+    
+    ' here run the timer to restart the sampling timers for both the CPU and multicore forms
+    frmTimer.tmrRestartSampling.Enabled = True
+
     'essential code to test for monitor resolution before and after a mouse-down pick up and drag to another monitor
     frmTimer.tmrScreenResolution.Enabled = False
     frmTimer.tmrScreenResolution.Interval = 200
     frmTimer.tmrScreenResolution.Enabled = True
-        
-    ' on the mouseDown event the sampling timers are stopped as extracting the CPU details causes a reduction in responsiveness to user input, these timers are restarted during the
-    ' gaugeForm_MouseUp event when the user lets go of the gauge.
-    
-    overlayWidget.tmrSampler.Enabled = False
-    overlayWidget.tmrAnimator.Enabled = False
-    frmMultiCore.tmrMultiCore.Enabled = False
     
     If Button = vbRightButton Then
         gblMenuOccurred = True

@@ -97,13 +97,21 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     extractCommand = Command$ ' capture any parameter passed, remove if a soft reload
     If restart = True Then extractCommand = vbNullString
     
+    'Test for the coding environment and set a global variable to alter conditions throughout, mostly in text
     #If TWINBASIC Then
         gblCodingEnvironment = "TwinBasic"
     #Else
         gblCodingEnvironment = "VB6"
     #End If
+    
+    ' Test for the version of RichClient and set a global variable to alter conditions throughout, mostly in text, there is no new_c.version in RC5
+    If fFExists(App.Path & "\BIN\vbRichClient5.dll") Then
+        gblRichClientEnvironment = "RC5"
+    ElseIf fFExists(App.Path & "\BIN\RC6.dll") Then
+        gblRichClientEnvironment = "RC6"
+    End If
         
-    menuForm.mnuAbout.Caption = "About Panzer CPU Gauge Cairo " & gblCodingEnvironment & " widget"
+    menuForm.mnuAbout.Caption = "About Panzer CPU Gauge " & gblRichClientEnvironment & " Cairo " & gblCodingEnvironment & " widget"
        
     ' Load the sounds into numbered buffers ready for playing
     Call loadAsynchSoundFiles
@@ -147,7 +155,7 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     ' place the form at the saved location and configure all the form elements
     Call makeVisibleFormElements
                 
-    ' run the functions that are also called at reload time.
+    ' called at runtime and on restart, sets the characteristics of the gauge, individual controls and menus
     Call adjustMainControls(licenceState) ' this needs to be here after the initialisation of the Cairo forms and widgets
     
     ' move/hide onto/from the main screen
@@ -210,6 +218,52 @@ main_routine_Error:
     
 End Sub
  
+
+'---------------------------------------------------------------------------------------
+' Procedure : stopAllCpuTimers
+' Author    : beededea
+' Date      : 17/09/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Sub stopAllCpuTimers()
+    On Error GoTo stopAllCpuTimers_Error
+
+    overlayWidget.tmrSampler.Enabled = False
+    overlayWidget.tmrAnimator.Enabled = False
+    frmMultiCore.tmrMultiCore.Enabled = False
+
+    On Error GoTo 0
+    Exit Sub
+
+stopAllCpuTimers_Error:
+
+     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure stopAllCpuTimers of Module modMain"
+
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : startAllCpuTimers
+' Author    : beededea
+' Date      : 17/09/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Sub startAllCpuTimers()
+    On Error GoTo startAllCpuTimers_Error
+
+    overlayWidget.tmrSampler.Enabled = True
+    overlayWidget.tmrAnimator.Enabled = True
+    frmMultiCore.tmrMultiCore.Enabled = True
+
+    On Error GoTo 0
+    Exit Sub
+
+startAllCpuTimers_Error:
+
+     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure startAllCpuTimers of Module modMain"
+
+End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : loadPreferenceForm
@@ -456,7 +510,8 @@ Private Sub initialiseGlobalVars()
     gblAspectRatio = vbNullString
     gblOldSettingsModificationTime = #1/1/2000 12:00:00 PM#
     gblCodingEnvironment = vbNullString
-
+    gblRichClientEnvironment = vbNullString
+    
     'gblTimeAreaClicked = vbNullString
     
    On Error GoTo 0
@@ -633,49 +688,49 @@ Public Sub adjustMainControls(Optional ByVal licenceState As Integer)
     
     ' set the characteristics of the interactive areas
     ' Note: set the Hover colour close to the original layer to avoid too much intrusion, 0 being grey
-    With fGauge.gaugeForm.Widgets("housing/helpbutton").Widget
+    With fGauge.gaugeForm.Widgets("helpbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(gblOpacity) / 100
     End With
      
-    With fGauge.gaugeForm.Widgets("housing/startbutton").Widget
+    With fGauge.gaugeForm.Widgets("startbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(gblOpacity) / 100
         .Tag = 0.25
     End With
       
-    With fGauge.gaugeForm.Widgets("housing/stopbutton").Widget
+    With fGauge.gaugeForm.Widgets("stopbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(gblOpacity) / 100
         .Tag = 0.25
     End With
       
-    With fGauge.gaugeForm.Widgets("housing/middlebutton").Widget
+    With fGauge.gaugeForm.Widgets("middlebutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(gblOpacity) / 100
     End With
           
-    With fGauge.gaugeForm.Widgets("housing/lockbutton").Widget
+    With fGauge.gaugeForm.Widgets("lockbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
     End With
           
-    With fGauge.gaugeForm.Widgets("housing/prefsbutton").Widget
+    With fGauge.gaugeForm.Widgets("prefsbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(gblOpacity) / 100
     End With
           
-    With fGauge.gaugeForm.Widgets("housing/tickbutton").Widget
+    With fGauge.gaugeForm.Widgets("tickbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
     End With
     
-    With fGauge.gaugeForm.Widgets("housing/surround").Widget
+    With fGauge.gaugeForm.Widgets("surround").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_SIZEALL
         .Alpha = Val(gblOpacity) / 100
@@ -683,29 +738,29 @@ Public Sub adjustMainControls(Optional ByVal licenceState As Integer)
     
     If gblPointerAnimate = "0" Then
         overlayWidget.PointerAnimate = False
-        fGauge.gaugeForm.Widgets("housing/tickbutton").Widget.Alpha = Val(gblOpacity) / 100
+        fGauge.gaugeForm.Widgets("tickbutton").Widget.Alpha = Val(gblOpacity) / 100
     Else
         overlayWidget.PointerAnimate = True
-        fGauge.gaugeForm.Widgets("housing/tickbutton").Widget.Alpha = 0
+        fGauge.gaugeForm.Widgets("tickbutton").Widget.Alpha = 0
     End If
     
 '    If gblSmoothSecondHand = "0" Then
 '        overlayWidget.SmoothSecondHand = False
-'        fGauge.gaugeForm.Widgets("housing/tickbutton").Widget.Alpha = Val(gblOpacity) / 100
+'        fGauge.gaugeForm.Widgets("tickbutton").Widget.Alpha = Val(gblOpacity) / 100
 '    Else
 '        overlayWidget.SmoothSecondHand = True
-'        fGauge.gaugeForm.Widgets("housing/tickbutton").Widget.Alpha = 0
+'        fGauge.gaugeForm.Widgets("tickbutton").Widget.Alpha = 0
 '    End If
         
    ' set the lock state of the gauge
    If gblPreventDragging = "0" Then
         menuForm.mnuLockWidget.Checked = False
         overlayWidget.Locked = False
-        fGauge.gaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(gblOpacity) / 100
+        fGauge.gaugeForm.Widgets("lockbutton").Widget.Alpha = Val(gblOpacity) / 100
     Else
         menuForm.mnuLockWidget.Checked = True
         overlayWidget.Locked = True ' this is just here for continuity's sake, it is also set at the time the control is selected
-        fGauge.gaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
+        fGauge.gaugeForm.Widgets("lockbutton").Widget.Alpha = 0
     End If
     
     overlayWidget.thisOpacity = Val(gblOpacity)
@@ -719,6 +774,13 @@ Public Sub adjustMainControls(Optional ByVal licenceState As Integer)
     
     ' set the hiding time for the hiding timer, can't read the minutes from comboxbox as the prefs isn't yet open
     Call setHidingTime
+    
+    ' if the multi-core CPU form is showing then change the menu to suit
+    If gblMultiCoreEnable = "0" Then
+        menuForm.menuMultiCore.Caption = "Show MultiCore CPU Display"
+    Else
+        menuForm.menuMultiCore.Caption = "Hide MultiCore CPU Display"
+    End If
 
     If gblMinutesToHide > 0 Then menuForm.mnuHideWidget.Caption = "Hide Widget for " & gblMinutesToHide & " min."
     

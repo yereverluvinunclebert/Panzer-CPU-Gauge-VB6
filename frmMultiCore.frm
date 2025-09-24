@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.OCX"
 Begin VB.Form frmMultiCore 
    Caption         =   "CPU Usage Per Core"
    ClientHeight    =   2085
@@ -110,8 +110,8 @@ Private Sub Form_Load()
             Me.Left = Val(gblMulticoreXPosTwips)
         Else
     
-            leftPoint = fGauge.gaugeForm.Widgets("housing/surround").Widget.Left
-            topPoint = fGauge.gaugeForm.Widgets("housing/stopButton").Widget.Top
+            leftPoint = fGauge.gaugeForm.Widgets("surround").Widget.Left
+            topPoint = fGauge.gaugeForm.Widgets("stopButton").Widget.Top
         
             Me.Top = ((topPoint) * gblScreenTwipsPerPixelY) - 150
             Me.Left = (fGauge.gaugeForm.Left + leftPoint) * gblScreenTwipsPerPixelX - 250

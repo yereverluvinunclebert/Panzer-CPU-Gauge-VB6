@@ -208,9 +208,9 @@ Public Property Let Ticking(ByVal newValue As Boolean)
     If mTicking <> newValue Then mTicking = newValue Else Exit Property
     
     If mTicking Then
-        tmrSampler.Enabled = True
+        Call startAllCpuTimers
     Else
-        tmrSampler.Enabled = False
+        Call stopAllCpuTimers
     End If
 
    On Error GoTo 0

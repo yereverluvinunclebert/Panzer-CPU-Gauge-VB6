@@ -38,11 +38,6 @@ DONE
 ' restarted timers on mouseUp
 ' add the test and error message for RC6 DLL registration
 
-
-' -oOo-
-
-TODO
-
 All occurrences of PzG switched to gbl
 DPI switch moved to subroutine to tidy up
 preference load moved to subroutine to tidy up
@@ -53,25 +48,27 @@ editor globals definition and usage throughout for TwinBasic
 addTargetFile source path empty then uses current app.path
 All TwinBasic changes implemented as per clock/calendar
 Tidy mainRoutine in modMain
-
-Secondary, not necessary changes
-
 prefs subclassing for resize on WM_EXITMOVED
 form_resize
-
 prefs balloon tooltips on all controls
 resizing using subclassing
 github home menu link
-
-Really not necessary changes
-
+Really not necessary changs
 dual automatic monitor sizing changes
+' setup2go create setup.exe
+
+' -oOo-
+
+TODO
+
+
+
+Secondary, not necessary changes
 
 ' usage balloon tooltip % needs to be dynamically updated, currently only seems to show an older percentage
 
 ' add second monitor - wip find cable!
 
-' test usage of RC6 for monitor awareness - wip
 '      adjust Form Position on startup placing form onto Correct Monitor when placed off screen due to
 '               monitor/resolution changes.
 
@@ -83,7 +80,7 @@ dual automatic monitor sizing changes
 ' adjustFormPositionToCorrectMonitor - about form
 ' adjustFormPositionToCorrectMonitor - help form
 
-' setup2go create setup.exe
+
 
 ' -oOo-
 
