@@ -2,7 +2,7 @@
  
   A FOSS CPU Gauge VB6 WoW64 Widget for Windows Vista, 7, 8 and 10/11+. There will also be a version for Reactos and XP, watch this space for the link. Also tested and running well on Linux and Mac os/X using Wine.
  
- My current VB6/RC6 PSD program being finished now, fundamentally complete, only awaiting testing on Windows XP and Win7 32bit and some multi monitor checking and the creation of the setup.exe. This Panzer widget is based upon the Yahoo widget of the same visual design and very similar operation.
+Fundamentally complete, only awaiting testing on Windows XP and Win7 32bit and some multi monitor checking and the creation of the setup.exe. This Panzer widget is based upon the Yahoo widget of the same visual design and very similar operation.
 
  Why VB6? Well, with a 64 bit, modern-language improvement upgrade on the way with 100% compatible TwinBasic coupled with support for transparent PNGs via RC/Cairo, VB6 code has an amazing future.
 
