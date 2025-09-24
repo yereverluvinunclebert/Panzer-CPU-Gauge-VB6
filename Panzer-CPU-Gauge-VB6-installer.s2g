@@ -4,7 +4,7 @@ Version=1.9.11
 [GENERAL_INFO]
 CompanyName=BrickMoon Interplanetary Enterprises
 ProductName=Panzer-CPU-Gauge-VB6
-ProductVersion=0.1.13 beta
+ProductVersion=0.1.33 beta
 ProductDescription=A FOSS Dieselpunk CPU Gauge Widget for Windows
 ProductURL=https://github.com/yereverluvinunclebert/Panzer-CPU-Gauge-VB6
 CopyrightNotice=Copyright (c) 2025
@@ -95,7 +95,7 @@ Show_ViewReadme_Checked=Yes
 Show_RunApplication_CheckBox=Yes
 Show_RunApplication_Checked=Yes
 Readme_Pathname=
-Application_Pathname=%AppDir%\Panzer-CPU-Gauge.exe
+Application_Pathname=%AppDir%\Panzer-CPU-Gauge-VB6.exe
 
 [EXTERNAL_TOOLS]
 RunBeforeInstall=No
@@ -278,7 +278,6 @@ File=%AppDir%\help\TOC.hhc,.\help\TOC.hhc,17,0,32
 File=%AppDir%\help\widgetOnWhite.jpg,.\help\widgetOnWhite.jpg,17,0,32
 File=%AppDir%\prefs.bat,.\prefs.bat,17,0,32
 File=%AppDir%\unhide.bat,.\unhide.bat,17,0,32
-File=%AppDir%\restart.exe,.\restart.exe,17,2,32
 File=%AppDir%\bugList.txt,.\bugList.txt,17,0,32
 File=%AppDir%\CCRSlider.ocx,.\CCRSlider.ocx,17,2,32
 File=%AppDir%\GPL LICENCE.TXT,.\GPL LICENCE.TXT,17,0,32
@@ -286,6 +285,7 @@ File=%AppDir%\README.md,.\README.md,17,0,32
 File=%AppDir%\help.chm,.\help.chm,17,0,32
 File=%AppDir%\Panzer-CPU-Gauge-VB6.RES,.\Panzer-CPU-Gauge-VB6.RES,17,0,32
 File=%AppDir%\Panzer-CPU-Gauge-VB6.exe,.\Panzer-CPU-Gauge-VB6.exe,17,2,32
+File=%AppDir%\stopProcessRestart.exe,.\stopProcessRestart.exe,17,2,32
 
 [SHORTCUTS]
 
